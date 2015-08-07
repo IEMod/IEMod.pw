@@ -1,0 +1,1173 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using Mono.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Mono.Cecil;
+using Mono.Cecil.Cil;
+using UnityEngine;
+
+#if !FIRSTRUN
+public class Mod4 : UIOptionsManager
+{
+	public string modname = "";
+	public string description = "";
+	public string author = "";
+
+	public static void main() 
+	{
+		CecilImporter.MakeFieldPublic ("StringTableManager", "StringTables");
+		CecilImporter.MakeFieldPublic ("StringTableManager", "StringTableLookup");
+        CecilImporter.MakeFieldPublic("MappedInput", "m_ControlNames");
+        CecilImporter.MakeFieldPublic("MappedInput", "ReadOnlyControls");
+        
+        CecilImporter.InjectFieldIntoType(typeof(Mod4), "UIOptionsManager", "autosaveChoices");
+        CecilImporter.InjectMethodIntoType("UIOptionsManager", "OnAutosaveSettingChanged", "PublicStatic");
+        CecilImporter.PatchExistingMethod(typeof(Mod4), "UIOptionsManager", "OnAutosaveSettingChanged", "OnAutosaveSettingChanged");
+
+		CecilImporter.InjectMethodIntoType ("UIOptionsManager", "OneTooltipCheckboxChanged", "PublicStatic");
+		CecilImporter.PatchExistingMethod (typeof(Mod4), "UIOptionsManager", "OneTooltipCheckboxChanged", "OneTooltipCheckboxChanged");
+
+		CecilImporter.InjectMethodIntoType ("UIOptionsManager", "DisableEngagementChanged", "PublicStatic");
+		CecilImporter.PatchExistingMethod (typeof(Mod4), "UIOptionsManager", "DisableEngagementChanged", "DisableEngagementChanged");
+
+		CecilImporter.InjectMethodIntoType ("UIOptionsManager", "BlueCirclesChanged", "PublicStatic");
+		CecilImporter.PatchExistingMethod (typeof(Mod4), "UIOptionsManager", "BlueCirclesChanged", "BlueCirclesChanged");
+
+		CecilImporter.InjectMethodIntoType ("UIOptionsManager", "BlueCirclesBGChanged", "PublicStatic");
+		CecilImporter.PatchExistingMethod (typeof(Mod4), "UIOptionsManager", "BlueCirclesBGChanged", "BlueCirclesBGChanged");
+
+		CecilImporter.InjectMethodIntoType ("UIOptionsManager", "AlwaysShowCirclesChanged", "PublicStatic");
+		CecilImporter.PatchExistingMethod (typeof(Mod4), "UIOptionsManager", "AlwaysShowCirclesChanged", "AlwaysShowCirclesChanged");
+
+		CecilImporter.InjectMethodIntoType ("UIOptionsManager", "UnlockCombatInvChanged", "PublicStatic");
+		CecilImporter.PatchExistingMethod (typeof(Mod4), "UIOptionsManager", "UnlockCombatInvChanged", "UnlockCombatInvChanged");
+
+		CecilImporter.InjectMethodIntoType ("UIOptionsManager", "FixBackerNamesChanged", "PublicStatic");
+		CecilImporter.PatchExistingMethod (typeof(Mod4), "UIOptionsManager", "FixBackerNamesChanged", "FixBackerNamesChanged");
+
+		CecilImporter.InjectMethodIntoType ("UIOptionsManager", "RemoveMovingRecoveryChanged", "PublicStatic");
+		CecilImporter.PatchExistingMethod (typeof(Mod4), "UIOptionsManager", "RemoveMovingRecoveryChanged", "RemoveMovingRecoveryChanged");
+
+        CecilImporter.InjectMethodIntoType("UIOptionsManager", "FastSneakChanged", "PublicStatic");
+        CecilImporter.PatchExistingMethod(typeof(Mod4), "UIOptionsManager", "FastSneakChanged", "FastSneakChanged");
+
+        CecilImporter.InjectMethodIntoType("UIOptionsManager", "ImprovedAIChanged", "PublicStatic");
+        CecilImporter.PatchExistingMethod(typeof(Mod4), "UIOptionsManager", "ImprovedAIChanged", "ImprovedAIChanged");
+
+        CecilImporter.InjectFieldIntoType(typeof(Mod4), "UIOptionsManager", "nerfedXPTableChoices");
+        CecilImporter.InjectMethodIntoType("UIOptionsManager", "OnNerfedXPTableSettingChanged", "PublicStatic");
+        CecilImporter.PatchExistingMethod(typeof(Mod4), "UIOptionsManager", "OnNerfedXPTableSettingChanged", "OnNerfedXPTableSettingChanged");
+
+        CecilImporter.InjectMethodIntoType("UIOptionsManager", "LootShufflerChanged", "PublicStatic");
+        CecilImporter.PatchExistingMethod(typeof(Mod4), "UIOptionsManager", "LootShufflerChanged", "LootShufflerChanged");
+
+        CecilImporter.InjectMethodIntoType("UIOptionsManager", "GameSpeedModChanged", "PublicStatic");
+        CecilImporter.PatchExistingMethod(typeof(Mod4), "UIOptionsManager", "GameSpeedModChanged", "GameSpeedModChanged");
+
+        CecilImporter.InjectMethodIntoType("UIOptionsManager", "CombatOnlyModChanged", "PublicStatic");
+        CecilImporter.PatchExistingMethod(typeof(Mod4), "UIOptionsManager", "CombatOnlyModChanged", "CombatOnlyModChanged");
+
+
+		CecilImporter.InjectMethodIntoType("UIOptionsManager", "NPCDispositionFixChanged", "PublicStatic");
+		CecilImporter.PatchExistingMethod(typeof(Mod4), "UIOptionsManager", "NPCDispositionFixChanged", "NPCDispositionFixChanged");
+		CecilImporter.InjectFieldIntoType(typeof(Mod4), "UIOptionsManager", "dispositionChoices");
+		CecilImporter.InjectMethodIntoType("UIOptionsManager", "OnPalleginaFavored1Changed", "PublicStatic");
+		CecilImporter.PatchExistingMethod(typeof(Mod4), "UIOptionsManager", "OnPalleginaFavored1Changed", "OnPalleginaFavored1Changed");
+		CecilImporter.InjectMethodIntoType("UIOptionsManager", "OnPalleginaFavored2Changed", "PublicStatic");
+		CecilImporter.PatchExistingMethod(typeof(Mod4), "UIOptionsManager", "OnPalleginaFavored2Changed", "OnPalleginaFavored2Changed");
+		CecilImporter.InjectMethodIntoType("UIOptionsManager", "OnPalleginaDisfavored1Changed", "PublicStatic");
+		CecilImporter.PatchExistingMethod(typeof(Mod4), "UIOptionsManager", "OnPalleginaDisfavored1Changed", "OnPalleginaDisfavored1Changed");
+		CecilImporter.InjectMethodIntoType("UIOptionsManager", "OnPalleginaDisfavored2Changed", "PublicStatic");
+		CecilImporter.PatchExistingMethod(typeof(Mod4), "UIOptionsManager", "OnPalleginaDisfavored2Changed", "OnPalleginaDisfavored2Changed");
+
+        CecilImporter.InjectMethodIntoType("UIOptionsManager", "DisableFriendlyFireChanged", "PublicStatic");
+        CecilImporter.PatchExistingMethod(typeof(Mod4), "UIOptionsManager", "DisableFriendlyFireChanged", "DisableFriendlyFireChanged");
+
+		CecilImporter.PatchExistingNestedType (typeof(Mod4), "UIOptionsManager", "OptionsPage", "OptionsPage");
+		CecilImporter.PatchExistingMethod (typeof(Mod4), "UIOptionsManager", ".ctor", "ConstructorNew");
+		CecilImporter.PatchExistingMethod (typeof(Mod4), "UIOptionsManager", "SetMenuLayout", "SetMenuLayoutNew");
+		CecilImporter.PatchExistingMethod (typeof(Mod4), "UIOptionsManager", "Start", "StartNew");
+
+		Mod401.main ();
+	}
+
+    public static void OnAutosaveSettingChanged(object value)
+    {
+        int i;
+        for (i = 0; i < autosaveChoices.Length && value != autosaveChoices[i]; ++i)
+        {
+        }
+
+        if (i == autosaveChoices.Length)
+        {
+            i = 0;
+        }
+
+        ((Mod601)UIOptionsManager.Instance.m_GameMode).SetAutosaveSetting(i);
+    }
+
+    public static void FixBackerNamesChanged(GameObject test, bool state)
+	{
+		((Mod601)UIOptionsManager.Instance.m_GameMode).FixBackerNames = state ? 1 : 0;
+	}
+
+	public static void RemoveMovingRecoveryChanged(GameObject test, bool state)
+	{
+		((Mod601)UIOptionsManager.Instance.m_GameMode).RemoveMovingRecovery = state ? 1 : 0;
+	}
+
+	public static void UnlockCombatInvChanged(GameObject test, bool state)
+	{
+		((Mod601)UIOptionsManager.Instance.m_GameMode).UnlockCombatInv = state ? 1 : 0;
+	}
+
+	public static void AlwaysShowCirclesChanged(GameObject test, bool state)
+	{
+		((Mod601)UIOptionsManager.Instance.m_GameMode).AlwaysShowCircles = state ? 1 : 0;
+	}
+
+    public static void FastSneakChanged(GameObject test, bool state)
+    {
+        ((Mod601)UIOptionsManager.Instance.m_GameMode).FastSneak = state ? 1 : 0;
+    }
+
+    public static void ImprovedAIChanged(GameObject test, bool state)
+    {
+        ((Mod601)UIOptionsManager.Instance.m_GameMode).ImprovedAI = state;
+    }
+
+    public static void OnNerfedXPTableSettingChanged(object value)
+    {
+        int i;
+        for (i = 0; i < nerfedXPTableChoices.Length && value != nerfedXPTableChoices[i]; ++i)
+        {
+        }
+
+        if (i == nerfedXPTableChoices.Length)
+        {
+            i = 0;
+        }
+
+        ((Mod601)UIOptionsManager.Instance.m_GameMode).NerfedXPTableSetting = i;
+    }
+
+    public static void LootShufflerChanged(GameObject test, bool state)
+    {
+        ((Mod601)UIOptionsManager.Instance.m_GameMode).LootShuffler = state;
+    }
+
+    public static void GameSpeedModChanged(GameObject test, bool state)
+    {
+        ((Mod601)UIOptionsManager.Instance.m_GameMode).GameSpeedMod = state;
+    }
+
+    public static void CombatOnlyModChanged(GameObject test, bool state)
+    {
+        ((Mod601)UIOptionsManager.Instance.m_GameMode).CombatOnlyMod = state;
+    }
+
+	public static void NPCDispositionFixChanged(GameObject test, bool state)
+	{
+		((Mod601)UIOptionsManager.Instance.m_GameMode).NPCDispositionFix = state;
+	}
+
+	public static void OnPalleginaFavored1Changed(object value)
+	{
+		int i;
+		for (i = 0; i < dispositionChoices.Length && value != dispositionChoices[i]; ++i)
+		{
+		}
+
+		if (i == dispositionChoices.Length)
+		{
+			i = 0;
+		}
+		var val = (int)((Disposition.Axis)Enum.Parse(typeof(Disposition.Axis), Convert.ToString(dispositionChoices[i])));
+
+		((Mod601)UIOptionsManager.Instance.m_GameMode).PalleginaFavored1 = val;
+	}
+
+	public static void OnPalleginaFavored2Changed(object value)
+	{
+		int i;
+		for (i = 0; i < dispositionChoices.Length && value != dispositionChoices[i]; ++i)
+		{
+		}
+
+		if (i == dispositionChoices.Length)
+		{
+			i = 0;
+		}
+		var val = (int)((Disposition.Axis)Enum.Parse(typeof(Disposition.Axis), Convert.ToString(dispositionChoices[i])));
+
+		((Mod601)UIOptionsManager.Instance.m_GameMode).PalleginaFavored2 = val;
+	}
+
+	public static void OnPalleginaDisfavored1Changed(object value)
+	{
+		int i;
+		for (i = 0; i < dispositionChoices.Length && value != dispositionChoices[i]; ++i)
+		{
+		}
+
+		if (i == dispositionChoices.Length)
+		{
+			i = 0;
+		}
+		var val = (int)((Disposition.Axis)Enum.Parse(typeof(Disposition.Axis), Convert.ToString(dispositionChoices[i])));
+
+		((Mod601)UIOptionsManager.Instance.m_GameMode).PalleginaDisfavored1 = val;
+	}
+
+	public static void OnPalleginaDisfavored2Changed(object value)
+	{
+		int i;
+		for (i = 0; i < dispositionChoices.Length && value != dispositionChoices[i]; ++i)
+		{
+		}
+
+		if (i == dispositionChoices.Length)
+		{
+			i = 0;
+		}
+		var val = (int)((Disposition.Axis)Enum.Parse(typeof(Disposition.Axis), Convert.ToString(dispositionChoices[i])));
+
+		((Mod601)UIOptionsManager.Instance.m_GameMode).PalleginaDisfavored2 = val;
+	}
+
+    public static void DisableFriendlyFireChanged(GameObject test, bool state)
+    {
+        ((Mod601)UIOptionsManager.Instance.m_GameMode).DisableFriendlyFire = state;
+    }
+
+	public static void OneTooltipCheckboxChanged(GameObject test, bool state)
+	{
+		((Mod601)UIOptionsManager.Instance.m_GameMode).Besterita = state ? 1 : 0;
+	}
+
+	public static void DisableEngagementChanged(GameObject test, bool state)
+	{
+		((Mod601)UIOptionsManager.Instance.m_GameMode).DisableEngagement = state ? 1 : 0;
+	}
+
+	public static void BlueCirclesChanged(GameObject test, bool state)
+	{
+		((Mod601)UIOptionsManager.Instance.m_GameMode).BlueCircles = state ? 1 : 0;
+
+		Transform IElikeCirclesCheckbox = UIOptionsManager.Instance.transform.GetChild (0).GetChild (1).GetChild (3).GetChild (10).GetChild (3);
+
+		if (!state)
+		{
+			IElikeCirclesCheckbox.gameObject.GetComponent<UIOptionsTag> ().Label.color = Color.gray;
+			IElikeCirclesCheckbox.gameObject.GetComponent<UIOptionsTag> ().Checkbox.isChecked = false;
+			((Mod601)UIOptionsManager.Instance.m_GameMode).BlueCirclesBG = 0;
+
+		} else
+		{
+			IElikeCirclesCheckbox.gameObject.GetComponent<UIOptionsTag> ().Label.color = Color.white;
+		}
+	}
+
+	public static void BlueCirclesBGChanged(GameObject test, bool state)
+	{
+		Transform BlueCirclesCheckbox = UIOptionsManager.Instance.transform.GetChild (0).GetChild (1).GetChild (3).GetChild (10).GetChild (2);
+
+		if (BlueCirclesCheckbox.gameObject.GetComponent<UIOptionsTag> ().Checkbox.isChecked)
+		{
+			((Mod601)UIOptionsManager.Instance.m_GameMode).BlueCirclesBG = state ? 1 : 0;
+		} 
+		else
+		{
+			Transform IElikeCirclesCheckbox = UIOptionsManager.Instance.transform.GetChild (0).GetChild (1).GetChild (3).GetChild (10).GetChild (3);
+			IElikeCirclesCheckbox.gameObject.GetComponent<UIOptionsTag> ().Checkbox.isChecked = false;
+			((Mod601)UIOptionsManager.Instance.m_GameMode).BlueCirclesBG = 0;
+		}
+
+	}
+
+    public static object[] autosaveChoices;
+    public static object[] nerfedXPTableChoices;
+	public static object[] dispositionChoices;
+
+	private void StartNew()
+	{
+		// adding a new page button and page itself
+		GameObject[] newpages = new GameObject[9];
+
+		for (int i = 0; i < 7; i++)
+			newpages [i] = Pages [i];
+
+		newpages [7] = new GameObject ();
+		newpages [7].transform.parent = newpages [5].transform.parent;
+		newpages [7].transform.localScale = newpages [5].transform.localScale;
+		newpages [7].transform.localPosition = newpages [5].transform.localPosition;
+		newpages [7].name = "CustomMod";
+
+		newpages [8] = new GameObject();
+		newpages [8].transform.parent = newpages [5].transform.parent;
+		newpages [8].transform.localScale = newpages [5].transform.localScale;
+		newpages [8].transform.localPosition = newpages [5].transform.localPosition;
+		newpages [8].name = "CustomMod2";
+
+		Pages = newpages;
+		// end
+
+        this.SetMenuLayout(OptionsMenuLayout.InGame);
+		this.QuitButton.onClick = (UIEventListener.VoidDelegate) Delegate.Combine(this.QuitButton.onClick, new UIEventListener.VoidDelegate(this.OnQuitClicked));
+		this.SaveButton.onClick = (UIEventListener.VoidDelegate) Delegate.Combine(this.SaveButton.onClick, new UIEventListener.VoidDelegate(this.OnSaveClicked));
+		this.LoadButton.onClick = (UIEventListener.VoidDelegate) Delegate.Combine(this.LoadButton.onClick, new UIEventListener.VoidDelegate(this.OnLoadClicked));
+		this.m_Options = base.GetComponentsInChildren<UIOptionsTag>(true);
+
+        int StringId = 2020; // change this number when an update comes out... look it up in data/localized/en/text/game/gui.stringtable
+
+		// adding the "Disable excessive highlight" checkbox"
+		//TODO: it's a bad idea to getchild by index, change it to something else later
+        // Find our example checkbox: the ScreenEdgeScrolling checkbox
+        Transform screenEdgeScrolling = null;
+        for (var i = 0; i < this.m_Options.Length; ++i)
+        {
+            var o = this.m_Options[i];
+            if (o.Checkbox && o.BoolSuboption == GameOption.BoolOption.SCREEN_EDGE_SCROLLING)
+            {
+                screenEdgeScrolling = o.transform;
+            }
+        }
+
+        Transform exampleCheckbox = screenEdgeScrolling;
+        var exampleDropdown = this.ResolutionDropdown.transform.parent;
+                    
+        Transform ModPage = Pages [7].transform;
+		GameObject highlightCheckBox = (GameObject) GameObject.Instantiate (exampleCheckbox.gameObject);
+
+		highlightCheckBox.transform.parent = ModPage;
+		highlightCheckBox.name = "TooltipChbox";
+		highlightCheckBox.transform.localScale = new Vector3 (1, 1, 1);
+		highlightCheckBox.transform.localPosition = new Vector3 (-210, 330, 0);
+		highlightCheckBox.GetComponent<UIOptionsTag> ().BoolSuboption = (GameOption.BoolOption)Mod6.BoolOption.BESTER; // this line is causing an error... hm...
+		StringId++;
+		highlightCheckBox.GetComponent<UIOptionsTag> ().CheckboxLabel = new GUIDatabaseString (StringId);
+		StringId++;
+		highlightCheckBox.GetComponent<UIOptionsTag> ().TooltipString = new GUIDatabaseString (StringId);
+		highlightCheckBox.GetComponent<UIOptionsTag> ().Checkbox.startsChecked = PlayerPrefs.GetInt ("Besterita", 0) > 0 ? true : false;
+		highlightCheckBox.GetComponent<UIOptionsTag> ().Checkbox.onStateChange = (UICheckbox.OnStateChange) new UICheckbox.OnStateChange(OneTooltipCheckboxChanged);
+//		// end of adding new checkbox
+
+		// adding the Disable Engagement checkbox
+		GameObject disableEngagementCheckbox = (GameObject)GameObject.Instantiate (exampleCheckbox.gameObject);
+		disableEngagementCheckbox.transform.parent = ModPage;
+		disableEngagementCheckbox.name = "DisEngChbox";
+		disableEngagementCheckbox.transform.localScale = new Vector3 (1, 1, 1);
+		disableEngagementCheckbox.transform.localPosition = new Vector3 (-210, 300, 0);
+		disableEngagementCheckbox.GetComponent<UIOptionsTag> ().BoolSuboption = (GameOption.BoolOption)Mod6.BoolOption.DISABLE_ENGAGEMENT;
+		StringId++;
+		disableEngagementCheckbox.GetComponent<UIOptionsTag> ().CheckboxLabel = new GUIDatabaseString (StringId);
+		StringId++;
+		disableEngagementCheckbox.GetComponent<UIOptionsTag> ().TooltipString = new GUIDatabaseString (StringId);
+		disableEngagementCheckbox.GetComponent<UIOptionsTag> ().Checkbox.startsChecked = PlayerPrefs.GetInt ("DisableEngagement", 0) > 0 ? true : false;
+		disableEngagementCheckbox.GetComponent<UIOptionsTag> ().Checkbox.onStateChange = (UICheckbox.OnStateChange) new UICheckbox.OnStateChange(DisableEngagementChanged);
+		// end of adding checkbox
+
+		// adding the Blue Circles checkbox
+		GameObject blueCirclesCheckbox = (GameObject)GameObject.Instantiate (exampleCheckbox.gameObject);
+		blueCirclesCheckbox.transform.parent = ModPage;
+		blueCirclesCheckbox.name = "BlueCircChbox";
+		blueCirclesCheckbox.transform.localScale = new Vector3 (1, 1, 1);
+		blueCirclesCheckbox.transform.localPosition = new Vector3 (-210, 270, 0);
+		blueCirclesCheckbox.GetComponent<UIOptionsTag> ().BoolSuboption = (GameOption.BoolOption)Mod6.BoolOption.BLUE_CIRCLES;
+		StringId++;
+		blueCirclesCheckbox.GetComponent<UIOptionsTag> ().CheckboxLabel = new GUIDatabaseString (StringId);
+		StringId++;
+		blueCirclesCheckbox.GetComponent<UIOptionsTag> ().TooltipString = new GUIDatabaseString (StringId);
+		blueCirclesCheckbox.GetComponent<UIOptionsTag> ().Checkbox.startsChecked = PlayerPrefs.GetInt ("BlueCircles", 0) > 0 ? true : false;
+		blueCirclesCheckbox.GetComponent<UIOptionsTag> ().Checkbox.onStateChange = (UICheckbox.OnStateChange) new UICheckbox.OnStateChange(BlueCirclesChanged);
+		// end of adding checkbox
+
+//		// adding the IE Blue Circles checkbox
+		GameObject blueCirclesBGCheckbox = (GameObject)GameObject.Instantiate (exampleCheckbox.gameObject);
+		blueCirclesBGCheckbox.transform.parent = ModPage;
+		blueCirclesBGCheckbox.name = "BlueCircIEChbox";
+		blueCirclesBGCheckbox.transform.localScale = new Vector3 (1, 1, 1);
+		blueCirclesBGCheckbox.transform.localPosition = new Vector3 (-180, 240, 0);
+		blueCirclesBGCheckbox.GetComponent<UIOptionsTag> ().BoolSuboption = (GameOption.BoolOption)Mod6.BoolOption.BLUE_CIRCLESBG;
+		StringId++;
+		blueCirclesBGCheckbox.GetComponent<UIOptionsTag> ().CheckboxLabel = new GUIDatabaseString (StringId);
+		StringId++;
+		blueCirclesBGCheckbox.GetComponent<UIOptionsTag> ().TooltipString = new GUIDatabaseString (StringId);
+		blueCirclesBGCheckbox.GetComponent<UIOptionsTag> ().Checkbox.startsChecked = PlayerPrefs.GetInt ("BlueCirclesBG", 0) > 0 ? true : false;
+		blueCirclesBGCheckbox.GetComponent<UIOptionsTag> ().Checkbox.onStateChange = (UICheckbox.OnStateChange) new UICheckbox.OnStateChange(BlueCirclesBGChanged);
+		if (PlayerPrefs.GetInt ("BlueCircles", 0) == 0)
+			blueCirclesBGCheckbox.gameObject.GetComponent<UIOptionsTag> ().Label.color = Color.gray;
+//		// end of adding checkbox
+
+		// adding the Always Show Circles checkbox
+		GameObject alwaysShowCirclesCheckbox = (GameObject)GameObject.Instantiate (exampleCheckbox.gameObject);
+		alwaysShowCirclesCheckbox.transform.parent = ModPage;
+		alwaysShowCirclesCheckbox.name = "AlwaysCircChbox";
+		alwaysShowCirclesCheckbox.transform.localScale = new Vector3 (1, 1, 1);
+		alwaysShowCirclesCheckbox.transform.localPosition = new Vector3 (-210, 210, 0);
+		alwaysShowCirclesCheckbox.GetComponent<UIOptionsTag> ().BoolSuboption = (GameOption.BoolOption)Mod6.BoolOption.ALWAYS_SHOW_CIRCLES;
+		StringId++;
+		alwaysShowCirclesCheckbox.GetComponent<UIOptionsTag> ().CheckboxLabel = new GUIDatabaseString (StringId);
+		StringId++;
+		alwaysShowCirclesCheckbox.GetComponent<UIOptionsTag> ().TooltipString = new GUIDatabaseString (StringId);
+		alwaysShowCirclesCheckbox.GetComponent<UIOptionsTag> ().Checkbox.startsChecked = PlayerPrefs.GetInt ("AlwaysShowCircles", 0) > 0 ? true : false;
+		alwaysShowCirclesCheckbox.GetComponent<UIOptionsTag> ().Checkbox.onStateChange = (UICheckbox.OnStateChange) new UICheckbox.OnStateChange(AlwaysShowCirclesChanged);
+		// end of adding checkbox
+
+		// adding the Unlock Combat Inv checkbox
+		GameObject UnlockCombatInvChbox = (GameObject)GameObject.Instantiate (exampleCheckbox.gameObject);
+		UnlockCombatInvChbox.transform.parent = ModPage;
+		UnlockCombatInvChbox.name = "UnlockCombInv";
+		UnlockCombatInvChbox.transform.localScale = new Vector3 (1, 1, 1);
+		UnlockCombatInvChbox.transform.localPosition = new Vector3 (-210, 180, 0);
+		UnlockCombatInvChbox.GetComponent<UIOptionsTag> ().BoolSuboption = (GameOption.BoolOption)Mod6.BoolOption.UNLOCK_COMBAT_INV;
+		StringId++;
+		UnlockCombatInvChbox.GetComponent<UIOptionsTag> ().CheckboxLabel = new GUIDatabaseString (StringId);
+		StringId++;
+		UnlockCombatInvChbox.GetComponent<UIOptionsTag> ().TooltipString = new GUIDatabaseString (StringId);
+		UnlockCombatInvChbox.GetComponent<UIOptionsTag> ().Checkbox.startsChecked = PlayerPrefs.GetInt ("UnlockCombatInv", 0) > 0 ? true : false;
+		UnlockCombatInvChbox.GetComponent<UIOptionsTag> ().Checkbox.onStateChange = (UICheckbox.OnStateChange) new UICheckbox.OnStateChange(UnlockCombatInvChanged);
+		// end of adding checkbox
+
+		// adding the Fix Backer Names checkbox
+		GameObject FixBackerNamesChbox = (GameObject)GameObject.Instantiate (exampleCheckbox.gameObject);
+		FixBackerNamesChbox.transform.parent = ModPage;
+		FixBackerNamesChbox.name = "FixBackerNames";
+		FixBackerNamesChbox.transform.localScale = new Vector3 (1, 1, 1);
+		FixBackerNamesChbox.transform.localPosition = new Vector3 (-210, 150, 0);
+		FixBackerNamesChbox.GetComponent<UIOptionsTag> ().BoolSuboption = (GameOption.BoolOption)Mod6.BoolOption.FIX_BACKER_NAMES;
+		StringId++;
+		FixBackerNamesChbox.GetComponent<UIOptionsTag> ().CheckboxLabel = new GUIDatabaseString (StringId);
+		StringId++;
+		FixBackerNamesChbox.GetComponent<UIOptionsTag> ().TooltipString = new GUIDatabaseString (StringId);
+		FixBackerNamesChbox.GetComponent<UIOptionsTag> ().Checkbox.startsChecked = PlayerPrefs.GetInt ("FixBackerNames", 0) > 0 ? true : false;
+		FixBackerNamesChbox.GetComponent<UIOptionsTag> ().Checkbox.onStateChange = (UICheckbox.OnStateChange) new UICheckbox.OnStateChange(FixBackerNamesChanged);
+		// end of adding checkbox
+
+		// adding the Fix Backer Names checkbox
+		GameObject RemoveMovingRecoveryChbox = (GameObject)GameObject.Instantiate (exampleCheckbox.gameObject);
+		RemoveMovingRecoveryChbox.transform.parent = ModPage;
+		RemoveMovingRecoveryChbox.name = "RemoveMovingRec";
+		RemoveMovingRecoveryChbox.transform.localScale = new Vector3 (1, 1, 1);
+		RemoveMovingRecoveryChbox.transform.localPosition = new Vector3 (-210, 120, 0);
+		RemoveMovingRecoveryChbox.GetComponent<UIOptionsTag> ().BoolSuboption = (GameOption.BoolOption)Mod6.BoolOption.REMOVE_MOVING_RECOVERY;
+		StringId++;
+		RemoveMovingRecoveryChbox.GetComponent<UIOptionsTag> ().CheckboxLabel = new GUIDatabaseString (StringId);
+		StringId++;
+		RemoveMovingRecoveryChbox.GetComponent<UIOptionsTag> ().TooltipString = new GUIDatabaseString (StringId);
+		RemoveMovingRecoveryChbox.GetComponent<UIOptionsTag> ().Checkbox.startsChecked = PlayerPrefs.GetInt ("RemoveMovingRecovery", 0) > 0 ? true : false;
+		RemoveMovingRecoveryChbox.GetComponent<UIOptionsTag> ().Checkbox.onStateChange = (UICheckbox.OnStateChange) new UICheckbox.OnStateChange(RemoveMovingRecoveryChanged);
+		// end of adding checkbox
+
+        // adding the FastStealth checkbox
+        GameObject FastSneakChbox = (GameObject)GameObject.Instantiate(exampleCheckbox.gameObject);
+        FastSneakChbox.transform.parent = ModPage;
+        FastSneakChbox.name = "FastSneakCb";
+        FastSneakChbox.transform.localScale = new Vector3(1, 1, 1);
+        FastSneakChbox.transform.localPosition = new Vector3(-210, 90, 0);
+        FastSneakChbox.GetComponent<UIOptionsTag>().BoolSuboption = (GameOption.BoolOption)Mod6.BoolOption.FAST_SNEAK;
+        StringId++;
+        FastSneakChbox.GetComponent<UIOptionsTag>().CheckboxLabel = new GUIDatabaseString(StringId);
+        StringId++;
+        FastSneakChbox.GetComponent<UIOptionsTag>().TooltipString = new GUIDatabaseString(StringId);
+        FastSneakChbox.GetComponent<UIOptionsTag>().Checkbox.startsChecked = PlayerPrefs.GetInt("FastSneak", 0) > 0 ? true : false;
+        FastSneakChbox.GetComponent<UIOptionsTag>().Checkbox.onStateChange = (UICheckbox.OnStateChange)new UICheckbox.OnStateChange(FastSneakChanged);
+        // end of adding checkbox
+
+        // adding the FastStealth checkbox
+        GameObject ImprovedAIChbox = (GameObject)GameObject.Instantiate(exampleCheckbox.gameObject);
+        ImprovedAIChbox.transform.parent = ModPage;
+        ImprovedAIChbox.name = "ImprovedAICb";
+        ImprovedAIChbox.transform.localScale = new Vector3(1, 1, 1);
+        ImprovedAIChbox.transform.localPosition = new Vector3(-210, 60, 0);
+        ImprovedAIChbox.GetComponent<UIOptionsTag>().BoolSuboption = (GameOption.BoolOption)Mod6.BoolOption.IMPROVED_AI;
+        StringId++;
+        ImprovedAIChbox.GetComponent<UIOptionsTag>().CheckboxLabel = new GUIDatabaseString(StringId);
+        StringId++;
+        ImprovedAIChbox.GetComponent<UIOptionsTag>().TooltipString = new GUIDatabaseString(StringId);
+        ImprovedAIChbox.GetComponent<UIOptionsTag>().Checkbox.startsChecked = PlayerPrefs.GetInt("ImprovedAI", 0) > 0 ? true : false;
+        ImprovedAIChbox.GetComponent<UIOptionsTag>().Checkbox.onStateChange = (UICheckbox.OnStateChange)new UICheckbox.OnStateChange(ImprovedAIChanged);
+
+        //Adding Disable Friendly Fire checkbox
+        GameObject DisableFFCB = (GameObject)GameObject.Instantiate(exampleCheckbox.gameObject);
+        DisableFFCB.transform.parent = ModPage;
+        DisableFFCB.name = "DisableFFCb";
+        DisableFFCB.transform.localScale = new Vector3(1, 1, 1);
+        DisableFFCB.transform.localPosition = new Vector3(-210, 30, 0);
+        DisableFFCB.GetComponent<UIOptionsTag>().BoolSuboption = (GameOption.BoolOption)Mod6.BoolOption.DISABLE_FRIENDLY_FIRE;
+        StringId++;
+        DisableFFCB.GetComponent<UIOptionsTag>().CheckboxLabel = new GUIDatabaseString(StringId);
+        StringId++;
+        DisableFFCB.GetComponent<UIOptionsTag>().TooltipString = new GUIDatabaseString(StringId);
+        DisableFFCB.GetComponent<UIOptionsTag>().Checkbox.startsChecked = PlayerPrefs.GetInt("DisableFriendlyFire", 0) > 0 ? true : false;
+        DisableFFCB.GetComponent<UIOptionsTag>().Checkbox.onStateChange = (UICheckbox.OnStateChange)new UICheckbox.OnStateChange(DisableFriendlyFireChanged);
+
+        // end of adding checkbox
+
+        // adding NerfedXPTable settings
+        var nerfedXPTableDropdown = (GameObject)GameObject.Instantiate(exampleDropdown.gameObject);
+        nerfedXPTableDropdown.transform.parent = ModPage;
+        nerfedXPTableDropdown.name = "NerfedXPTableDropdown";
+        nerfedXPTableDropdown.transform.localScale = new Vector3(1, 1, 1);
+        nerfedXPTableDropdown.transform.localPosition = new Vector3(-80, -80, 0);
+        if (nerfedXPTableChoices == null)
+        {
+            nerfedXPTableChoices = new object[4];
+            nerfedXPTableChoices[0] = "Disabled";
+            nerfedXPTableChoices[1] = "25% increase: 1250,3750,...82,500";
+            nerfedXPTableChoices[2] = "50% increase: 1500,4500,...99,000";
+            nerfedXPTableChoices[3] = "Square progression: 1000,4000,...121,000";
+        }
+        const int nerfedXPTableWidth = 510;
+        nerfedXPTableDropdown.transform.GetChild(1).GetChild(0).localScale = new Vector3(nerfedXPTableWidth, 32, 0); // width of combobox
+        nerfedXPTableDropdown.transform.GetChild(1).GetChild(3).localPosition = new Vector3(nerfedXPTableWidth - 27, 10, 0); // position of down arrow
+        nerfedXPTableDropdown.transform.GetChild(1).GetChild(2).GetChild(0).localScale = new Vector3(nerfedXPTableWidth, 37, 0); // width of dropdown
+        nerfedXPTableDropdown.transform.GetChild(1).GetComponent<UIDropdownMenu>().OptionRootText.lineWidth = nerfedXPTableWidth;
+        nerfedXPTableDropdown.transform.GetChild(1).GetComponent<UIDropdownMenu>().SelectedText.lineWidth = nerfedXPTableWidth;
+        nerfedXPTableDropdown.transform.GetChild(1).GetComponent<UIDropdownMenu>().OptionGrid.cellWidth = nerfedXPTableWidth;
+        nerfedXPTableDropdown.transform.GetChild(1).GetComponent<UIDropdownMenu>().Options = nerfedXPTableChoices;
+        nerfedXPTableDropdown.transform.GetChild(1).GetComponent<UIDropdownMenu>().SelectedItem = nerfedXPTableChoices[PlayerPrefs.GetInt("NerfedXPTableSetting")];
+        nerfedXPTableDropdown.transform.GetChild(1).GetComponent<UIDropdownMenu>().OnDropdownOptionChangedEvent += new UIDropdownMenu.DropdownOptionChanged(OnNerfedXPTableSettingChanged);
+        nerfedXPTableDropdown.transform.GetChild(0).GetComponent<UILabel>().lineWidth = 300;
+        nerfedXPTableDropdown.transform.GetChild(0).GetComponent<UILabel>().shrinkToFit = false;
+        nerfedXPTableDropdown.transform.GetChild(0).GetComponent<GUIStringLabel>().DatabaseString = new GUIDatabaseString(++StringId);
+        nerfedXPTableDropdown.GetComponent<UIOptionsTag>().TooltipString = new GUIDatabaseString(++StringId);
+        // end of adding dropdown
+
+        //Adding Loot Shuffler checkbox
+        GameObject LootShufflerChBox = (GameObject)GameObject.Instantiate(exampleCheckbox.gameObject);
+        LootShufflerChBox.transform.parent = ModPage;
+        LootShufflerChBox.name = "LootShufflerCb";
+        LootShufflerChBox.transform.localScale = new Vector3(1, 1, 1);
+        LootShufflerChBox.transform.localPosition = new Vector3(210, 330, 0);
+        LootShufflerChBox.GetComponent<UIOptionsTag>().BoolSuboption = (GameOption.BoolOption)Mod6.BoolOption.LOOT_SHUFFLER;
+        StringId++;
+        LootShufflerChBox.GetComponent<UIOptionsTag>().CheckboxLabel = new GUIDatabaseString(StringId);
+        StringId++;
+        LootShufflerChBox.GetComponent<UIOptionsTag>().TooltipString = new GUIDatabaseString(StringId);
+        LootShufflerChBox.GetComponent<UIOptionsTag>().Checkbox.startsChecked = PlayerPrefs.GetInt("LootShuffler", 0) > 0 ? true : false;
+        LootShufflerChBox.GetComponent<UIOptionsTag>().Checkbox.onStateChange = (UICheckbox.OnStateChange)new UICheckbox.OnStateChange(LootShufflerChanged);
+        // end of adding checkbox
+
+        //Adding Game Speed Mod checkbox
+        GameObject GameSpeedModChBox = (GameObject)GameObject.Instantiate(exampleCheckbox.gameObject);
+        GameSpeedModChBox.transform.parent = ModPage;
+        GameSpeedModChBox.name = "GameSpeedModCb";
+        GameSpeedModChBox.transform.localScale = new Vector3(1, 1, 1);
+        GameSpeedModChBox.transform.localPosition = new Vector3(210, 270, 0);
+        GameSpeedModChBox.GetComponent<UIOptionsTag>().BoolSuboption = (GameOption.BoolOption)Mod6.BoolOption.GAME_SPEED_MOD;
+        StringId++;
+        GameSpeedModChBox.GetComponent<UIOptionsTag>().CheckboxLabel = new GUIDatabaseString(StringId);
+        StringId++;
+        GameSpeedModChBox.GetComponent<UIOptionsTag>().TooltipString = new GUIDatabaseString(StringId);
+        GameSpeedModChBox.GetComponent<UIOptionsTag>().Checkbox.startsChecked = PlayerPrefs.GetInt("GameSpeedMod", 0) > 0 ? true : false;
+        GameSpeedModChBox.GetComponent<UIOptionsTag>().Checkbox.onStateChange = (UICheckbox.OnStateChange)new UICheckbox.OnStateChange(GameSpeedModChanged);
+        // end of adding checkbox
+
+        //Adding Combat Only Mod checkbox
+        GameObject CombatOnlyModChBox = (GameObject)GameObject.Instantiate(exampleCheckbox.gameObject);
+        CombatOnlyModChBox.transform.parent = ModPage;
+        CombatOnlyModChBox.name = "CombatOnlyModCb";
+        CombatOnlyModChBox.transform.localScale = new Vector3(1, 1, 1);
+        CombatOnlyModChBox.transform.localPosition = new Vector3(210, 240, 0);
+        CombatOnlyModChBox.GetComponent<UIOptionsTag>().BoolSuboption = (GameOption.BoolOption)Mod6.BoolOption.COMBAT_ONLY_MOD;
+        StringId++;
+        CombatOnlyModChBox.GetComponent<UIOptionsTag>().CheckboxLabel = new GUIDatabaseString(StringId);
+        StringId++;
+        CombatOnlyModChBox.GetComponent<UIOptionsTag>().TooltipString = new GUIDatabaseString(StringId);
+        CombatOnlyModChBox.GetComponent<UIOptionsTag>().Checkbox.startsChecked = PlayerPrefs.GetInt("CombatOnlydMod", 0) > 0 ? true : false;
+        CombatOnlyModChBox.GetComponent<UIOptionsTag>().Checkbox.onStateChange = (UICheckbox.OnStateChange)new UICheckbox.OnStateChange(CombatOnlyModChanged);
+        // end of adding checkbox
+
+        // add autosave settings
+        var autosaveDropdown = (GameObject)GameObject.Instantiate(exampleDropdown.gameObject);
+        autosaveDropdown.transform.parent = ModPage;
+        autosaveDropdown.name = "AutoPauseDropdown";
+        autosaveDropdown.transform.localScale = new Vector3(1, 1, 1);
+        autosaveDropdown.transform.localPosition = new Vector3(-80, -30, 0);
+        if (autosaveChoices == null)
+        {
+            autosaveChoices = new object[7];
+            autosaveChoices[0] = "Save after every area transition (standard)";
+            autosaveChoices[1] = "Save after area transitions, but only once per 15 minutes";
+            autosaveChoices[2] = "Save after area transitions, but only once per 30 minutes";
+            autosaveChoices[3] = "Save before every area transition";
+            autosaveChoices[4] = "Save before area transitions, but only once per 15 minutes";
+            autosaveChoices[5] = "Save before area transitions, but only once per 30 minutes";
+            autosaveChoices[6] = "Disable autosave";
+        }
+        const int autosaveDropdownWidth = 510;
+        autosaveDropdown.transform.GetChild(1).GetChild(0).localScale = new Vector3(autosaveDropdownWidth, 32, 1); // width of combobox
+        autosaveDropdown.transform.GetChild(1).GetChild(3).localPosition = new Vector3(autosaveDropdownWidth - 27, 10, 0); // position of down arrow
+        autosaveDropdown.transform.GetChild(1).GetChild(2).GetChild(0).localScale = new Vector3(autosaveDropdownWidth, 37, 0); // width of dropdown
+        autosaveDropdown.transform.GetChild(1).GetComponent<UIDropdownMenu>().OptionRootText.lineWidth = autosaveDropdownWidth;
+        autosaveDropdown.transform.GetChild(1).GetComponent<UIDropdownMenu>().SelectedText.lineWidth = autosaveDropdownWidth;
+        autosaveDropdown.transform.GetChild(1).GetComponent<UIDropdownMenu>().OptionGrid.cellWidth = autosaveDropdownWidth;
+        autosaveDropdown.transform.GetChild(1).GetComponent<UIDropdownMenu>().Options = autosaveChoices;
+        autosaveDropdown.transform.GetChild(1).GetComponent<UIDropdownMenu>().SelectedItem = autosaveChoices[PlayerPrefs.GetInt("AutosaveSetting")];
+        autosaveDropdown.transform.GetChild(1).GetComponent<UIDropdownMenu>().OnDropdownOptionChangedEvent += new UIDropdownMenu.DropdownOptionChanged(OnAutosaveSettingChanged);
+        autosaveDropdown.transform.GetChild(0).GetComponent<UILabel>().lineWidth = 300;
+        autosaveDropdown.transform.GetChild(0).GetComponent<UILabel>().shrinkToFit = false;
+        autosaveDropdown.transform.GetChild(0).GetComponent<GUIStringLabel>().DatabaseString = new GUIDatabaseString(++StringId);
+        autosaveDropdown.GetComponent<UIOptionsTag>().TooltipString = new GUIDatabaseString(++StringId);
+
+        // end autopause
+
+		// adding the NPCDispositionFix checkbox
+		GameObject NPCDispositionFixChbox = (GameObject)GameObject.Instantiate(exampleCheckbox.gameObject);
+		NPCDispositionFixChbox.transform.parent = ModPage;
+		NPCDispositionFixChbox.name = "NPCDispositionFixCb";
+		NPCDispositionFixChbox.transform.localScale = new Vector3(1, 1, 1);
+		NPCDispositionFixChbox.transform.localPosition = new Vector3(210, 300, 0);
+		NPCDispositionFixChbox.GetComponent<UIOptionsTag>().BoolSuboption = (GameOption.BoolOption)Mod6.BoolOption.NPC_DISPOSITION_FIX;
+		StringId++;
+		NPCDispositionFixChbox.GetComponent<UIOptionsTag>().CheckboxLabel = new GUIDatabaseString(StringId);
+		StringId++;
+		NPCDispositionFixChbox.GetComponent<UIOptionsTag>().TooltipString = new GUIDatabaseString(StringId);
+		NPCDispositionFixChbox.GetComponent<UIOptionsTag>().Checkbox.startsChecked = PlayerPrefs.GetInt("NPCDispositionFix", 0) > 0 ? true : false;
+		NPCDispositionFixChbox.GetComponent<UIOptionsTag>().Checkbox.onStateChange = (UICheckbox.OnStateChange)new UICheckbox.OnStateChange(NPCDispositionFixChanged);
+		// end of adding checkbox
+
+		// Pallegina dispositions mod page
+
+		ModPage = Pages[8].transform;
+		if (dispositionChoices == null)
+		{
+			dispositionChoices = Enum.GetNames(typeof(Disposition.Axis));
+		}
+		const int dispositionChoicesWidth = 150;
+
+		// adding pallegina dis/favored disposition settings
+
+		var favoredDisposition1 = (GameObject)GameObject.Instantiate(exampleDropdown.gameObject);
+		favoredDisposition1.transform.parent = ModPage;
+		favoredDisposition1.name = "PalleginaFavored1";
+		favoredDisposition1.transform.localScale = new Vector3(1, 1, 1);
+		favoredDisposition1.transform.localPosition = new Vector3(-60, 300, 0);
+		favoredDisposition1.transform.GetChild(1).GetChild(0).localScale = new Vector3(dispositionChoicesWidth, 32, 1); // width of combobox
+		favoredDisposition1.transform.GetChild(1).GetChild(3).localPosition = new Vector3(dispositionChoicesWidth - 27, 10, 0); // position of down arrow
+		favoredDisposition1.transform.GetChild(1).GetChild(2).GetChild(0).localScale = new Vector3(dispositionChoicesWidth, 37, 0); // width of dropdown
+		favoredDisposition1.transform.GetChild(1).GetComponent<UIDropdownMenu>().OptionRootText.lineWidth = dispositionChoicesWidth;
+		favoredDisposition1.transform.GetChild(1).GetComponent<UIDropdownMenu>().SelectedText.lineWidth = dispositionChoicesWidth;
+		favoredDisposition1.transform.GetChild(1).GetComponent<UIDropdownMenu>().OptionGrid.cellWidth = dispositionChoicesWidth;
+		favoredDisposition1.transform.GetChild(1).GetComponent<UIDropdownMenu>().Options = dispositionChoices;
+		favoredDisposition1.transform.GetChild(1).GetComponent<UIDropdownMenu>().SelectedItem = dispositionChoices[PlayerPrefs.GetInt("PalleginaFavored1")];
+		favoredDisposition1.transform.GetChild(1).GetComponent<UIDropdownMenu>().OnDropdownOptionChangedEvent += new UIDropdownMenu.DropdownOptionChanged(OnPalleginaFavored1Changed);
+        favoredDisposition1.transform.GetChild(0).GetComponent<UILabel>().lineWidth = 300;
+        favoredDisposition1.transform.GetChild(0).GetComponent<UILabel>().shrinkToFit = false;
+        favoredDisposition1.transform.GetChild(0).GetComponent<GUIStringLabel>().DatabaseString = new GUIDatabaseString(++StringId);
+
+		var favoredTooltip = ++StringId;
+		favoredDisposition1.GetComponent<UIOptionsTag>().TooltipString = new GUIDatabaseString(favoredTooltip);
+
+		var favoredDisposition2 = (GameObject)GameObject.Instantiate(exampleDropdown.gameObject);
+		favoredDisposition2.transform.parent = ModPage;
+		favoredDisposition2.name = "PalleginaFavored2";
+		favoredDisposition2.transform.localScale = new Vector3(1, 1, 1);
+		favoredDisposition2.transform.localPosition = new Vector3(100, 300, 0);
+		favoredDisposition2.transform.GetChild(1).GetChild(0).localScale = new Vector3(dispositionChoicesWidth, 32, 1); // width of combobox
+		favoredDisposition2.transform.GetChild(1).GetChild(3).localPosition = new Vector3(dispositionChoicesWidth - 27, 10, 0); // position of down arrow
+		favoredDisposition2.transform.GetChild(1).GetChild(2).GetChild(0).localScale = new Vector3(dispositionChoicesWidth, 37, 0); // width of dropdown
+		favoredDisposition2.transform.GetChild(1).GetComponent<UIDropdownMenu>().OptionRootText.lineWidth = dispositionChoicesWidth;
+		favoredDisposition2.transform.GetChild(1).GetComponent<UIDropdownMenu>().SelectedText.lineWidth = dispositionChoicesWidth;
+		favoredDisposition2.transform.GetChild(1).GetComponent<UIDropdownMenu>().OptionGrid.cellWidth = dispositionChoicesWidth;
+		favoredDisposition2.transform.GetChild(1).GetComponent<UIDropdownMenu>().Options = dispositionChoices;
+		favoredDisposition2.transform.GetChild(1).GetComponent<UIDropdownMenu>().SelectedItem = dispositionChoices[PlayerPrefs.GetInt("PalleginaFavored2")];
+		favoredDisposition2.transform.GetChild(1).GetComponent<UIDropdownMenu>().OnDropdownOptionChangedEvent += new UIDropdownMenu.DropdownOptionChanged(OnPalleginaFavored2Changed);
+		favoredDisposition2.transform.GetChild(0).GetComponent<GUIStringLabel>().DatabaseString = null;
+		favoredDisposition2.GetComponent<UIOptionsTag>().TooltipString = new GUIDatabaseString(favoredTooltip);
+
+		var disfavoredDisposition1 = (GameObject)GameObject.Instantiate(exampleDropdown.gameObject);
+		disfavoredDisposition1.transform.parent = ModPage;
+		disfavoredDisposition1.name = "PalleginaFavored1";
+		disfavoredDisposition1.transform.localScale = new Vector3(1, 1, 1);
+		disfavoredDisposition1.transform.localPosition = new Vector3(-60, 250, 0);
+		disfavoredDisposition1.transform.GetChild(1).GetChild(0).localScale = new Vector3(dispositionChoicesWidth, 32, 1); // width of combobox
+		disfavoredDisposition1.transform.GetChild(1).GetChild(3).localPosition = new Vector3(dispositionChoicesWidth - 27, 10, 0); // position of down arrow
+		disfavoredDisposition1.transform.GetChild(1).GetChild(2).GetChild(0).localScale = new Vector3(dispositionChoicesWidth, 37, 0); // width of dropdown
+		disfavoredDisposition1.transform.GetChild(1).GetComponent<UIDropdownMenu>().OptionRootText.lineWidth = dispositionChoicesWidth;
+		disfavoredDisposition1.transform.GetChild(1).GetComponent<UIDropdownMenu>().SelectedText.lineWidth = dispositionChoicesWidth;
+		disfavoredDisposition1.transform.GetChild(1).GetComponent<UIDropdownMenu>().OptionGrid.cellWidth = dispositionChoicesWidth;
+		disfavoredDisposition1.transform.GetChild(1).GetComponent<UIDropdownMenu>().Options = dispositionChoices;
+		disfavoredDisposition1.transform.GetChild(1).GetComponent<UIDropdownMenu>().SelectedItem = dispositionChoices[PlayerPrefs.GetInt("PalleginaDisfavored1")];
+		disfavoredDisposition1.transform.GetChild(1).GetComponent<UIDropdownMenu>().OnDropdownOptionChangedEvent += new UIDropdownMenu.DropdownOptionChanged(OnPalleginaDisfavored1Changed);
+        disfavoredDisposition1.transform.GetChild(0).GetComponent<UILabel>().lineWidth = 300;
+        disfavoredDisposition1.transform.GetChild(0).GetComponent<UILabel>().shrinkToFit = false;
+        disfavoredDisposition1.transform.GetChild(0).GetComponent<GUIStringLabel>().DatabaseString = new GUIDatabaseString(++StringId);
+
+		var disfavoredTooltip = ++StringId;
+		disfavoredDisposition1.GetComponent<UIOptionsTag>().TooltipString = new GUIDatabaseString(disfavoredTooltip);
+
+		var disfavoredDisposition2 = (GameObject)GameObject.Instantiate(exampleDropdown.gameObject);
+		disfavoredDisposition2.transform.parent = ModPage;
+		disfavoredDisposition2.name = "PalleginaFavored2";
+		disfavoredDisposition2.transform.localScale = new Vector3(1, 1, 1);
+		disfavoredDisposition2.transform.localPosition = new Vector3(100, 250, 0);
+		disfavoredDisposition2.transform.GetChild(1).GetChild(0).localScale = new Vector3(dispositionChoicesWidth, 32, 1); // width of combobox
+		disfavoredDisposition2.transform.GetChild(1).GetChild(3).localPosition = new Vector3(dispositionChoicesWidth - 27, 10, 0); // position of down arrow
+		disfavoredDisposition2.transform.GetChild(1).GetChild(2).GetChild(0).localScale = new Vector3(dispositionChoicesWidth, 37, 0); // width of dropdown
+		disfavoredDisposition2.transform.GetChild(1).GetComponent<UIDropdownMenu>().OptionRootText.lineWidth = dispositionChoicesWidth;
+		disfavoredDisposition2.transform.GetChild(1).GetComponent<UIDropdownMenu>().SelectedText.lineWidth = dispositionChoicesWidth;
+		disfavoredDisposition2.transform.GetChild(1).GetComponent<UIDropdownMenu>().OptionGrid.cellWidth = dispositionChoicesWidth;
+		disfavoredDisposition2.transform.GetChild(1).GetComponent<UIDropdownMenu>().Options = dispositionChoices;
+		disfavoredDisposition2.transform.GetChild(1).GetComponent<UIDropdownMenu>().SelectedItem = dispositionChoices[PlayerPrefs.GetInt("PalleginaDisfavored2")];
+		disfavoredDisposition2.transform.GetChild(1).GetComponent<UIDropdownMenu>().OnDropdownOptionChangedEvent += new UIDropdownMenu.DropdownOptionChanged(OnPalleginaDisfavored2Changed);
+		disfavoredDisposition2.transform.GetChild(0).GetComponent<GUIStringLabel>().DatabaseString = null;
+		disfavoredDisposition2.GetComponent<UIOptionsTag>().TooltipString = new GUIDatabaseString(disfavoredTooltip);
+
+		// end of adding dropdown
+
+
+		this.PageButtonGroup.OnRadioSelectionChangedEvent += new UIRadioButtonGroup.RadioSelectionChanged(this.OnChangePage); // changed to Event
+		this.m_PageButtonGrid = this.PageButtonGroup.GetComponent<UIGrid>();
+		this.m_PageButtons = new UIMultiSpriteImageButton[9];
+		this.m_PageButtons[0] = this.PageButtonPrefab;
+		for (int i = 0; i < 9; i++)
+		{
+			if (i > 0)
+			{
+				this.m_PageButtons[i] = NGUITools.AddChild(this.PageButtonPrefab.transform.parent.gameObject, this.PageButtonPrefab.gameObject).GetComponent<UIMultiSpriteImageButton>();
+			}
+			if (i < this.PageTitleStringIds.Length)
+			{
+				GUIStringLabel.Get(this.m_PageButtons[i].Label).SetString(this.PageTitleStringIds[i]);
+			}
+			else if(i == this.PageTitleStringIds.Length) // added this line
+			{
+				GUIStringLabel.Get (this.m_PageButtons [i].Label).FormatString = "IE Mod"; // added this line
+				//Debug.LogWarning("Not enough strings provided for every options tab in OptionsManager.");
+			}
+			else if (i == this.PageTitleStringIds.Length + 1)
+			{
+				GUIStringLabel.Get(this.m_PageButtons[i].Label).FormatString = "Dispositions"; // added this line
+				//Debug.LogWarning("Not enough strings provided for every options tab in OptionsManager.");
+			}
+			this.m_PageButtons[i].name = this.PageOrder[i] + "." + this.m_PageButtons[i].name;
+		}
+		this.m_PageButtonGrid.Reposition();
+		foreach (UIOptionsTag tag in this.m_Options)
+		{
+			if (tag.Checkbox != null)
+			{
+				tag.Checkbox.onStateChange = (UICheckbox.OnStateChange) Delegate.Combine(tag.Checkbox.onStateChange, new UICheckbox.OnStateChange(this.OnCheckChanged));
+			}
+		}
+
+		this.CombatTimerSlider.Slider.OnChanged = (UIOptionsSlider.OnSettingChanged) Delegate.Combine(this.CombatTimerSlider.Slider.OnChanged, new UIOptionsSlider.OnSettingChanged(this.OnCombatTimerChanged));
+		this.AutoslowThresholdSlider.Slider.OnChanged = (UIOptionsSlider.OnSettingChanged) Delegate.Combine(this.AutoslowThresholdSlider.Slider.OnChanged, new UIOptionsSlider.OnSettingChanged(this.OnAutoslowThresholdChanged));
+		this.TooltipDelay.Slider.OnChanged = (UIOptionsSlider.OnSettingChanged) Delegate.Combine(this.TooltipDelay.Slider.OnChanged, new UIOptionsSlider.OnSettingChanged(this.OnTooltipDelayChanged));
+        this.FontSize.Slider.OnChanged = (UIOptionsSlider.OnSettingChanged) Delegate.Combine(this.FontSize.Slider.OnChanged, new UIOptionsSlider.OnSettingChanged(this.OnFontSizeChanged));
+		this.GammaSlider.Slider.OnChanged = (UIOptionsSlider.OnSettingChanged) Delegate.Combine(this.GammaSlider.Slider.OnChanged, new UIOptionsSlider.OnSettingChanged(this.OnGammaSliderChanged));
+        this.AreaLootRangeSlider.Slider.OnChanged = (UIOptionsSlider.OnSettingChanged) Delegate.Combine(this.AreaLootRangeSlider.Slider.OnChanged, new UIOptionsSlider.OnSettingChanged(this.OnAreaLootSliderChanged));
+        this.VoiceFrequency.Slider.OnChanged = (UIOptionsSlider.OnSettingChanged) Delegate.Combine(this.VoiceFrequency.Slider.OnChanged, new UIOptionsSlider.OnSettingChanged(this.OnVoiceFrequencyChanged));
+        this.ScrollSpeed.Slider.OnChanged = (UIOptionsSlider.OnSettingChanged) Delegate.Combine(this.ScrollSpeed.Slider.OnChanged, new UIOptionsSlider.OnSettingChanged(this.OnScrollSpeedChanged));
+
+        this.LanguageDropdown.OnDropdownOptionChangedEvent += new UIDropdownMenu.DropdownOptionChanged(this.OnLanguageChanged); // changed to Event
+		this.ResolutionDropdown.OnDropdownOptionChangedEvent += new UIDropdownMenu.DropdownOptionChanged(this.OnResolutionChanged); // changed to Event
+		this.QualitySlider.Slider.OnChanged = (UIOptionsSlider.OnSettingChanged) Delegate.Combine(this.QualitySlider.Slider.OnChanged, new UIOptionsSlider.OnSettingChanged(this.OnQualityChanged));
+		this.FrameRateMaxSlider.Slider.OnChanged = (UIOptionsSlider.OnSettingChanged) Delegate.Combine(this.FrameRateMaxSlider.Slider.OnChanged, new UIOptionsSlider.OnSettingChanged(this.OnMaxFPSChanged));
+
+        this.m_VolumeSliders = new UIOptionsSliderGroup[4];
+        UIOptionsVolumeSlider[] componentsInChildren = base.GetComponentsInChildren<UIOptionsVolumeSlider>(true);
+        UIOptionsVolumeSlider[] array = componentsInChildren;
+        for (int k = 0; k < array.Length; k++)
+        {
+            UIOptionsVolumeSlider uIOptionsVolumeSlider = array[k];
+            if (this.m_VolumeSliders[(int)uIOptionsVolumeSlider.Category] == null)
+            {
+                UIOptionsSliderGroup component = uIOptionsVolumeSlider.GetComponent<UIOptionsSliderGroup>();
+                this.m_VolumeSliders[(int)uIOptionsVolumeSlider.Category] = component;
+                component.Slider.OnChanged = (UIOptionsSlider.OnSettingChanged)Delegate.Combine(component.Slider.OnChanged, new UIOptionsSlider.OnSettingChanged(this.OnVolumeChanged));
+            }
+        }
+		this.AcceptButton.onClick = (UIEventListener.VoidDelegate) Delegate.Combine(this.AcceptButton.onClick, new UIEventListener.VoidDelegate(this.OnAcceptClick));
+		this.DefControlsButton.onClick = (UIEventListener.VoidDelegate) Delegate.Combine(this.DefControlsButton.onClick, new UIEventListener.VoidDelegate(this.OnRestoreDefaultControls));
+		this.ApplyResolutionButton.onClick = (UIEventListener.VoidDelegate) Delegate.Combine(this.ApplyResolutionButton.onClick, new UIEventListener.VoidDelegate(this.OnApplyResolution));
+	}
+
+
+
+	public void ConstructorNew()
+	{
+		//PageOrder = new int[] { 0, 3, 1, 4, 5, 2 }; // this doesn't convert into ilcode yet. it creates a field and a type in <PrivateImplementationDetails> and we need to copy them (and rename them)...
+		// it's too much hassle for something so easy to write slightly differently
+		PageOrder = new int[9];
+		PageOrder [0] = 0;
+		PageOrder [1] = 3;
+		PageOrder [2] = 1;
+		PageOrder [3] = 4;
+		PageOrder [4] = 5;
+		PageOrder [5] = 2;
+		PageOrder [6] = 6;
+		PageOrder [7] = 7;
+		PageOrder [8] = 8;
+		m_ValidOptionPages = (UIOptionsManager.OptionsPage)OptionsPage.CONTROLS | (UIOptionsManager.OptionsPage)OptionsPage.SOUND | (UIOptionsManager.OptionsPage)OptionsPage.GRAPHICS | (UIOptionsManager.OptionsPage)OptionsPage.GAME | (UIOptionsManager.OptionsPage)OptionsPage.AUTOPAUSE | (UIOptionsManager.OptionsPage)OptionsPage.MENU | (UIOptionsManager.OptionsPage)OptionsPage.CUSTOM | (UIOptionsManager.OptionsPage)OptionsPage.CUSTOM2;
+		m_GameMode = new GameMode();
+        m_Controls = new ControlMapping();
+	}
+
+	public void SetMenuLayoutNew(OptionsMenuLayout layout)
+	{
+		switch (layout)
+		{
+		case OptionsMenuLayout.InGame:
+			this.m_ValidOptionPages = (UIOptionsManager.OptionsPage)OptionsPage.CONTROLS | (UIOptionsManager.OptionsPage)OptionsPage.SOUND | (UIOptionsManager.OptionsPage)OptionsPage.DIFFICULTY | (UIOptionsManager.OptionsPage)OptionsPage.GRAPHICS | (UIOptionsManager.OptionsPage)OptionsPage.GAME | (UIOptionsManager.OptionsPage)OptionsPage.AUTOPAUSE | (UIOptionsManager.OptionsPage)OptionsPage.MENU; // doesn't it need CUSTOM added?
+			break;
+
+		case OptionsMenuLayout.MainMenu:
+			this.m_ValidOptionPages = (UIOptionsManager.OptionsPage)OptionsPage.CONTROLS | (UIOptionsManager.OptionsPage)OptionsPage.SOUND | (UIOptionsManager.OptionsPage)OptionsPage.GRAPHICS | (UIOptionsManager.OptionsPage)OptionsPage.GAME | (UIOptionsManager.OptionsPage)OptionsPage.AUTOPAUSE | (UIOptionsManager.OptionsPage)OptionsPage.DIFFICULTY | (UIOptionsManager.OptionsPage)OptionsPage.CUSTOM | (UIOptionsManager.OptionsPage)OptionsPage.CUSTOM2;
+			break;
+
+		case OptionsMenuLayout.Difficulty:
+			this.m_ValidOptionPages = (UIOptionsManager.OptionsPage)OptionsPage.GAME;
+			break;
+		}
+		System.Collections.Generic.Dictionary<uint, StringTable> GuiStringtable = StringTableManager.StringTables [StringTableManager.StringTableLookup [DatabaseString.StringTableType.Gui]]; // text/game/gui.stringtable
+
+		//TODO: after new updates come out, this number may change! So adjust it.
+		Debug.Log ("IEMod debug: current stringcount is "+GuiStringtable [1].Entries.Count);
+
+        if (GuiStringtable[1].Entries.Count == 1964) // when updating to a newer version, get this number from the debug log from the line above
+		{
+            int lastId = 2020; // get this from the file itself in data/localized/en/text/game/gui.stringtable
+	
+			StringTable.Entry newtext = new StringTable.Entry ();
+			newtext.DefaultText = "One tooltip at a time";
+			lastId++;
+			newtext.StringID = lastId;   // !!!!!!! change it to linq (find entry with highest ID) when lambda expressions are fixed in cecilimporter!
+			GuiStringtable [1].Entries.Add (newtext);
+
+			StringTable.Entry moretext = new StringTable.Entry ();
+			moretext.DefaultText = "When holding down TAB, displays only one tooltip - for the hovered character.";
+			lastId++;
+			moretext.StringID = lastId;
+			GuiStringtable [1].Entries.Add (moretext);
+
+			StringTable.Entry disableEngagementText = new StringTable.Entry ();
+			disableEngagementText.DefaultText = "Disable engagement";
+			lastId++;
+			disableEngagementText.StringID = lastId;
+			GuiStringtable [1].Entries.Add (disableEngagementText);
+
+			StringTable.Entry disableEngagementTooltip = new StringTable.Entry ();
+			disableEngagementTooltip.DefaultText = "Engagement begone.";
+			lastId++;
+			disableEngagementTooltip.StringID = lastId;
+			GuiStringtable [1].Entries.Add (disableEngagementTooltip);
+
+			StringTable.Entry blueCirclesText = new StringTable.Entry ();
+			blueCirclesText.DefaultText = "Blue selection circles";
+			lastId++;
+			blueCirclesText.StringID = lastId;
+			GuiStringtable [1].Entries.Add (blueCirclesText);
+
+			StringTable.Entry blueCirclesTooltip = new StringTable.Entry ();
+			blueCirclesTooltip.DefaultText = "Make selection circles for neutral NPCs blue. \n(colorblind mode must be disabled)";
+			lastId++;
+			blueCirclesTooltip.StringID = lastId;
+			GuiStringtable [1].Entries.Add (blueCirclesTooltip);
+
+			StringTable.Entry blueCirclesBGText = new StringTable.Entry ();
+			blueCirclesBGText.DefaultText = "IE-like blue";
+			lastId++;
+			blueCirclesBGText.StringID = lastId;
+			GuiStringtable [1].Entries.Add (blueCirclesBGText);
+
+			StringTable.Entry blueCirclesBGTooltip = new StringTable.Entry ();
+			blueCirclesBGTooltip.DefaultText = "Blue selection circles become cyan, like in IE games. (requires exit to main menu)";
+			lastId++;
+			blueCirclesBGTooltip.StringID = lastId;
+			GuiStringtable [1].Entries.Add (blueCirclesBGTooltip);
+
+			StringTable.Entry alwaysShowCirclesText = new StringTable.Entry ();
+			alwaysShowCirclesText.DefaultText = "Always show circles";
+			lastId++;
+			alwaysShowCirclesText.StringID = lastId;
+			GuiStringtable [1].Entries.Add (alwaysShowCirclesText);
+
+			StringTable.Entry alwaysShowCirclesTooltip = new StringTable.Entry ();
+			alwaysShowCirclesTooltip.DefaultText = "Display selection circles for neutral NPCs at all times.";
+			lastId++;
+			alwaysShowCirclesTooltip.StringID = lastId;
+			GuiStringtable [1].Entries.Add (alwaysShowCirclesTooltip);
+
+			StringTable.Entry UnlockCombatInvText = new StringTable.Entry ();
+			UnlockCombatInvText.DefaultText = "Unlock combat inventory/loot";
+			lastId++;
+			UnlockCombatInvText.StringID = lastId;
+			GuiStringtable [1].Entries.Add (UnlockCombatInvText);
+
+			StringTable.Entry UnlockCombatInvTooltip = new StringTable.Entry ();
+			UnlockCombatInvTooltip.DefaultText = "Allows looting containers during combat, transfering items between party members, as well as equipping and unequipping all gear, except body armor.";
+			lastId++;
+			UnlockCombatInvTooltip.StringID = lastId;
+			GuiStringtable [1].Entries.Add (UnlockCombatInvTooltip);
+
+			StringTable.Entry FixBackerNamesText = new StringTable.Entry ();
+			FixBackerNamesText.DefaultText = "Fantasy names for backers";
+			lastId++;
+			FixBackerNamesText.StringID = lastId;
+			GuiStringtable [1].Entries.Add (FixBackerNamesText);
+
+			StringTable.Entry FixBackerNamesTooltip = new StringTable.Entry ();
+			FixBackerNamesTooltip.DefaultText = "Some backer names can be immersion breaking, so this mod replaces them with random fantasy names based on their race and gender. Takes effect after reloading or transitionning.";
+			lastId++;
+			FixBackerNamesTooltip.StringID = lastId;
+			GuiStringtable [1].Entries.Add (FixBackerNamesTooltip);
+
+			StringTable.Entry RemoveMovingRecoveryText = new StringTable.Entry ();
+			RemoveMovingRecoveryText.DefaultText = "Fix moving recovery rate";
+			lastId++;
+			RemoveMovingRecoveryText.StringID = lastId;
+			GuiStringtable [1].Entries.Add (RemoveMovingRecoveryText);
+
+			StringTable.Entry RemoveMovingRecoveryTooltip = new StringTable.Entry ();
+			RemoveMovingRecoveryTooltip.DefaultText = "This mod removes additional recovery rate penalty for moving characters.";
+			lastId++;
+			RemoveMovingRecoveryTooltip.StringID = lastId;
+			GuiStringtable [1].Entries.Add (RemoveMovingRecoveryTooltip);
+
+            StringTable.Entry FastSneakText = new StringTable.Entry();
+            FastSneakText.DefaultText = "Fast Scouting Mode";
+            lastId++;
+            FastSneakText.StringID = lastId;
+            GuiStringtable[1].Entries.Add(FastSneakText);
+
+            StringTable.Entry FastSneakTooltip = new StringTable.Entry();
+            FastSneakTooltip.DefaultText = "This mod makes Scouting Mode move at normal running speed (instead of walking speed).  Note: when enemies are visible, your scouting movement speed is reduced to walking speed";
+            lastId++;
+            FastSneakTooltip.StringID = lastId;
+            GuiStringtable[1].Entries.Add(FastSneakTooltip);
+
+            StringTable.Entry ImprovedAIText = new StringTable.Entry();
+            ImprovedAIText.DefaultText = "Improved AI";
+            lastId++;
+            ImprovedAIText.StringID = lastId;
+            GuiStringtable[1].Entries.Add(ImprovedAIText);
+
+            StringTable.Entry ImprovedAITooltip = new StringTable.Entry();
+            ImprovedAITooltip.DefaultText = "Some improvements to the combat AI";
+            lastId++;
+            ImprovedAITooltip.StringID = lastId;
+            GuiStringtable[1].Entries.Add(ImprovedAITooltip);
+
+            StringTable.Entry DisableFFText = new StringTable.Entry();
+            DisableFFText.DefaultText = "Disable Friendly Fire";
+            lastId++;
+            DisableFFText.StringID = lastId;
+            GuiStringtable[1].Entries.Add(DisableFFText);
+
+            StringTable.Entry DisableFFTooltip = new StringTable.Entry();
+            DisableFFTooltip.DefaultText = "Disables friendly fire from occurring on spells or abilities.";
+            lastId++;
+            DisableFFTooltip.StringID = lastId;
+            GuiStringtable[1].Entries.Add(DisableFFTooltip);
+
+            StringTable.Entry NerfedXPTableText = new StringTable.Entry();
+            NerfedXPTableText.DefaultText = "Nerfed XP Table";
+            lastId++;
+            NerfedXPTableText.StringID = lastId;
+            GuiStringtable[1].Entries.Add(NerfedXPTableText);
+
+            StringTable.Entry NerfedXPTableTooltip = new StringTable.Entry();
+            NerfedXPTableTooltip.DefaultText = "Increases experience needed. Note: You may need to use ChangeClass to de-level if enabling/increasing this setting midgame.";
+            lastId++;
+            NerfedXPTableTooltip.StringID = lastId;
+            GuiStringtable[1].Entries.Add(NerfedXPTableTooltip);
+
+            StringTable.Entry LootShufflerText = new StringTable.Entry();
+            LootShufflerText.DefaultText = "Loot Shuffler";
+            lastId++;
+            LootShufflerText.StringID = lastId;
+            GuiStringtable[1].Entries.Add(LootShufflerText);
+
+            StringTable.Entry LootShufflerTooltip = new StringTable.Entry();
+            LootShufflerTooltip.DefaultText = "Random loot will change on every reload. (Loot is set when opening a container.)";
+            lastId++;
+            LootShufflerTooltip.StringID = lastId;
+            GuiStringtable[1].Entries.Add(LootShufflerTooltip);
+
+            StringTable.Entry GameSpeedModText = new StringTable.Entry();
+            GameSpeedModText.DefaultText = "Game Speed Mod";
+            lastId++;
+            GameSpeedModText.StringID = lastId;
+            GuiStringtable[1].Entries.Add(GameSpeedModText);
+
+            StringTable.Entry GameSpeedModTooltip = new StringTable.Entry();
+            GameSpeedModTooltip.DefaultText = "Holding control when toggling fast or slow mode will use more extreme speeds.";
+            lastId++;
+            GameSpeedModTooltip.StringID = lastId;
+            GuiStringtable[1].Entries.Add(GameSpeedModTooltip);
+
+            StringTable.Entry CombatOnlyModText = new StringTable.Entry();
+            CombatOnlyModText.DefaultText = "Remove Combat-Only Restrictions";
+            lastId++;
+            CombatOnlyModText.StringID = lastId;
+            GuiStringtable[1].Entries.Add(CombatOnlyModText);
+
+            StringTable.Entry CombatOnlyModTooltip = new StringTable.Entry();
+            CombatOnlyModTooltip.DefaultText = "Allows all spells and abilities to function outside of combat. (This can significantly affect game balance.)";
+            lastId++;
+            CombatOnlyModTooltip.StringID = lastId;
+            GuiStringtable[1].Entries.Add(CombatOnlyModTooltip);
+
+            StringTable.Entry AutosaveDropDownText = new StringTable.Entry();
+            AutosaveDropDownText.DefaultText = "Autosave Frequency";
+            lastId++;
+            AutosaveDropDownText.StringID = lastId;
+            GuiStringtable[1].Entries.Add(AutosaveDropDownText);
+
+            StringTable.Entry AutosaveDropDownTooltip = new StringTable.Entry();
+            AutosaveDropDownTooltip.DefaultText = "Configures how often the game will autosave";
+            lastId++;
+            AutosaveDropDownTooltip.StringID = lastId;
+            GuiStringtable[1].Entries.Add(AutosaveDropDownTooltip);
+
+			StringTable.Entry NPCDispositionFixText = new StringTable.Entry();
+			NPCDispositionFixText.DefaultText = "NPC Disposition Fix";
+			lastId++;
+			NPCDispositionFixText.StringID = lastId;
+			GuiStringtable[1].Entries.Add(NPCDispositionFixText);
+
+			StringTable.Entry NPCDispositionFixTooltip = new StringTable.Entry();
+			NPCDispositionFixTooltip.DefaultText = "Applies disposition-based bonuses to NPC paladins and priests. Patches in favored and disfavored dispositions for Pallegina's order.";
+			lastId++;
+			NPCDispositionFixTooltip.StringID = lastId;
+			GuiStringtable[1].Entries.Add(NPCDispositionFixTooltip);
+
+			StringTable.Entry PalleginaFavoredText = new StringTable.Entry();
+			PalleginaFavoredText.DefaultText = "Pallegina's Favored Dispositions";
+			lastId++;
+			PalleginaFavoredText.StringID = lastId;
+			GuiStringtable[1].Entries.Add(PalleginaFavoredText);
+
+			StringTable.Entry PalleginaFavoredTooltip = new StringTable.Entry();
+			PalleginaFavoredTooltip.DefaultText = "Favored dispositions for Pallegina's Order - Brotherhood of the Five Suns.";
+			lastId++;
+			PalleginaFavoredTooltip.StringID = lastId;
+			GuiStringtable[1].Entries.Add(PalleginaFavoredTooltip);
+
+			StringTable.Entry PalleginaDisfavoredText = new StringTable.Entry();
+			PalleginaDisfavoredText.DefaultText = "Pallegina's Disfavored Dispositions";
+			lastId++;
+			PalleginaDisfavoredText.StringID = lastId;
+			GuiStringtable[1].Entries.Add(PalleginaDisfavoredText);
+
+			StringTable.Entry PalleginaDisfavoredTooltip = new StringTable.Entry();
+			PalleginaDisfavoredTooltip.DefaultText = "Disfavored dispositions for Pallegina's Order - Brotherhood of the Five Suns.";
+			lastId++;
+			PalleginaDisfavoredTooltip.StringID = lastId;
+			GuiStringtable[1].Entries.Add(PalleginaDisfavoredTooltip);
+
+            // === PLACE AFTER ALL IEMod strings ===
+            // Add Walk Toggle Key string
+            StringTable.Entry WalkToggle = new StringTable.Entry();
+            WalkToggle.DefaultText = "Toggle Walking";
+            WalkToggle.StringID = ++lastId;
+            GuiStringtable[1].Entries.Add(WalkToggle);
+            MappedInput.m_ControlNames[(int)MappedControl.Deprecated_CHANT_EDITOR] = new GUIDatabaseString(WalkToggle.StringID);
+
+            // Add control to MappedInput
+            var newControls = new MappedControl[1];
+            newControls[0] = MappedControl.Deprecated_CHANT_EDITOR;
+            MappedInput.CategorizedControls[1] = MappedInput.CategorizedControls[1].Concat(newControls).ToArray();
+            MappedInput.ReadOnlyControls = MappedInput.ReadOnlyControls.Except(newControls).ToArray();
+		}
+	}
+
+	public new enum OptionsPage
+	{
+        MENU = 1,
+        GAME = 2,
+        AUTOPAUSE = 4,
+        DIFFICULTY = 8,
+        GRAPHICS = 16,
+        SOUND = 32,
+        CONTROLS = 64,
+        CUSTOM = 128,
+        CUSTOM2 = 256
+    }
+
+
+}
+
+public abstract class Mod401 :  UIWindowManager
+{
+	public static void main()
+	{
+		CecilImporter.PatchExistingMethod (typeof(Mod401), "UIWindowManager", "WindowHidden", "WindowHiddenNew");
+	}
+
+
+	public void WindowHiddenNew(UIHudWindow window, bool unsuspend)
+	{
+		if (unsuspend)
+		{
+			if (window.IAmSuspending != null) ////// ADDED THIS CHECK... For some reason, after I change the number of pageButtons, this thing requires this check.
+			{
+				foreach (UIHudWindow window2 in window.IAmSuspending)
+				{
+					window2.Unsuspend ();
+				}
+				window.IAmSuspending.Clear ();
+			}
+		}
+		if (UIAbilityTooltipManager.Instance != null)
+		{
+			UIAbilityTooltipManager.Instance.HideAll ();
+		}
+		UIActionBarTooltip.GlobalHide ();
+		if ((UIWindowSwitcher.Instance != null) && (UIWindowSwitcher.Instance.Anchor.widgetContainer == window.SwitcherAnchor))
+		{
+			UIWindowSwitcher.Instance.Hide ();
+		}
+		bool flag = false;
+		bool flag2 = false;
+		bool flag3 = false;
+		bool flag4 = false;
+		bool flag5 = false;
+		foreach (UIHudWindow window3 in this.m_Windows)
+		{
+			if (window3.WindowActive () && (window3 != window))
+			{
+				flag |= window3.HidesHud;
+				flag3 = window3.EatsMouseInput || flag3;
+				flag2 = window3.PausesGame || flag2;
+				flag4 = (window3.DimsBackground || window3.DimsBackgroundTemp) || flag4;
+				flag5 |= window3.ClickOffCloses && !window3.DimsBackground;
+			}
+		}
+		if (window.EatsKeyInput && (CameraControl.Instance != null))
+		{
+			CameraControl.Instance.EnablePlayerControl(true);
+		}
+		if (!flag && (InGameHUD.Instance != null))
+		{
+			InGameHUD.Instance.HidePause = false;
+		}
+		if (this.m_WindowHasGamePaused && !flag2)
+		{
+			this.m_WindowHasGamePaused = false;
+			if (TimeController.Instance != null)
+			{
+				TimeController.Instance.UiPaused = false;
+			}
+		}
+		if (this.m_WindowHasBgDimmed && !flag4)
+		{
+			this.m_WindowHasBgDimmed = false;
+			this.DimBackgroundTween.Play(false);
+		}
+		if (!flag5)
+		{
+			this.NonDimBackgroundObject.SetActive(false);
+		}
+		if (this.OnWindowHidden != null)
+		{
+			this.OnWindowHidden();
+		}
+	}
+}
+#endif
