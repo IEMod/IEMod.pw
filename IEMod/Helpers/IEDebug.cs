@@ -19,22 +19,22 @@ namespace IEMod.Helpers {
 			_logger = writer;
 		}
 
-		public static void WriteLine(string format) {
+		public static void Log(string format) {
 			_logger.WriteLine(format);
 			Debug.Log("IEMod: " + format);
 			_logger.Flush();
 		}
 
-		public static void WriteLine(string format, params object[] args) {
+		public static void Log(string format, params object[] args) {
 			_logger.WriteLine(format, args);
 			Debug.Log("IEMod: " + string.Format(format, args));
 			_logger.Flush();
 		}
 
-		public static void Throw(string message, object[] args = null, string locationId = "", Exception innerEx = null) {
-			WriteLine("!! EXCEPTION !!: " + message);
+		public static IEModException Exception(Exception innerEx, string message, params object[] args) {
+			Log("!! EXCEPTION !!: " + message);
 			args = args ?? new object[] {};
-			throw new IEModException(String.Format(message, args) + " \r\n LocationId: " + locationId, innerEx);
+			return new IEModException(String.Format(message, args), innerEx);
 		}
 	}
 }

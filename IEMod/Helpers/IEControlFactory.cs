@@ -15,7 +15,7 @@ namespace IEMod.Helpers {
 	/// This class allows you to construct standard controls quickly and easily, obscuring any ugliness the task involves.
 	/// </summary>
 	[NewType]
-	public class IEControlCreator {
+	public class IEControlFactory {
 
 
 		public GameObject ExampleCheckbox;
@@ -23,31 +23,6 @@ namespace IEMod.Helpers {
 		public Transform CurrentParent;
 		public GameObject ExamplePage;
 		
-		private Func<T> CreateGetter<T>(Expression<Func<T>> memberAccess) {
-			return memberAccess.Compile();
-		}
-
-		private Action<T> CreateSetter<T>(Expression<Func<T>> memberAccess) {
-			if (!(memberAccess.Body is MemberExpression)) {
-				throw new IEModException("Expected MemberExpression body, but got: "
-					+ memberAccess.Body.ToString());
-			}
-			var asPropExpr = (MemberExpression) memberAccess.Body;
-			
-			Action<T> setter;
-			if (asPropExpr.Member is FieldInfo) {
-				var asFieldInfo = (FieldInfo) asPropExpr.Member;
-				setter = value => asFieldInfo.SetValue(null, value);
-			} else if (asPropExpr.Member is PropertyInfo) {
-				var asPropertyInfo = (PropertyInfo) asPropExpr.Member;
-				setter = value => asPropertyInfo.SetValue(null, value, null);
-			} else {
-				throw new IEModException(
-					"Expected PropertyInfo or FieldInfo member, but got: "
-						+ asPropExpr.Member);
-			}
-			return setter;
-		}
 
 		private IEComboBoxChoice[] EnumToChoices(Type enumType) {
 			var list = new List<IEComboBoxChoice>();
@@ -83,7 +58,7 @@ namespace IEMod.Helpers {
 		/// <returns></returns>
 		public GameObject Page(string name) {
 			if (ExamplePage == null) {
-				IEDebug.Throw("You must initialize the ExamplePage to create a Page");
+				IEDebug.Exception(null, "You must initialize the ExamplePage to create a Page", null);
 			}
 			var newPage = new GameObject ();
 			newPage.transform.parent = ExamplePage.transform.parent;
@@ -97,12 +72,12 @@ namespace IEMod.Helpers {
 		/// Creates a new dropdown/combo box bound to an enum-valued field or property. The enum part is important, as this is how the dropdown's options are generated. Labels are taken from attributes.
 		/// </summary>
 		/// <typeparam name="T">The type of the field/property. MUST be an enum type.</typeparam>
-		/// <param name="enumMember">A simple member access expression for accessing the property/field you want to bind this control to. For example, <c>() => IEModOptions.YourProperty</c></param>
+		/// <param name="enumMemberAccessExpr">A simple member access expression for accessing the property/field you want to bind this control to. For example, <c>() => IEModOptions.YourProperty</c></param>
 		/// <param name="width">The width of the dropdown. You have to specify it now because setting it is complicated.</param>
 		/// <param name="labelWidth">The width of the GUI label attached to the dropdown. If you set it to 0, there will be no label.</param>
 		/// <param name="localPos">The transform.localPosition of the dropdown. You can set this later.</param>
 		/// <returns></returns>
-		public GameObject EnumBoundDropdown<T>(Expression<Func<T>> enumMember, int width, int labelWidth, Vector3? localPos = null)
+		public GameObject EnumBoundDropdown<T>(Expression<Func<T>> enumMemberAccessExpr, int width, int labelWidth)
 		where T : struct, IConvertible, IFormattable, IComparable{
 			/*
 			 *
@@ -125,15 +100,15 @@ namespace IEMod.Helpers {
 			// end of adding dropdown
 			 */
 			if (!typeof (T).IsEnum) {
-				IEDebug.Throw("Expected an enum type, but got {0}", new [] {typeof(T)});
+				IEDebug.Exception(null, "Expected an enum type, but got {0}", typeof(T));
 			}
 			if (ExampleComboBox == null) {
-				IEDebug.Throw("You must initialize the ExampleComboBox to create a combo box.");
+				IEDebug.Exception(null, "You must initialize the ExampleComboBox to create a combo box.", null);
 			}
-			var pos = localPos ?? new Vector3(0, 0, 0);
-			var getter = enumMember.Compile();
-			var setter = CreateSetter(enumMember);
-			var asMemberExpr = (MemberExpression) enumMember.Body;
+			var pos = new Vector3(0, 0, 0);
+			var getter = ReflectHelper.CreateGetter(enumMemberAccessExpr);
+			var setter = ReflectHelper.CreateSetter(enumMemberAccessExpr);
+			var asMemberExpr = (MemberExpression) enumMemberAccessExpr.Body;
 			var comboBox = (GameObject) GameObject.Instantiate(ExampleComboBox);
 
 			//+ Basic setup
@@ -193,9 +168,9 @@ namespace IEMod.Helpers {
 		/// <summary>
 		/// Creates a new checkbox bound to a boolean-valued property or field. Labels are taken from attributes.
 		/// </summary>
-		/// <param name="propertyExpr">A simple member access expression for accessing the property/field you want to bind this control to. For example, <c>() => IEModOptions.YourProperty</c></param>
+		/// <param name="memberAccessExpr">A simple member access expression for accessing the property/field you want to bind this control to. For example, <c>() => IEModOptions.YourProperty</c></param>
 		/// <returns></returns>
-		public GameObject Checkbox(Expression<Func<bool>> propertyExpr) {
+		public GameObject Checkbox(Expression<Func<bool>> memberAccessExpr) {
 		/*
 		 * //+ Reference
 		 * 	FixBackerNamesChbox.transform.parent = ModPage;
@@ -210,16 +185,16 @@ namespace IEMod.Helpers {
 			FixBackerNamesChbox.GetComponent<UIOptionsTag> ().Checkbox.onStateChange = (UICheckbox.OnStateChange) new UICheckbox.OnStateChange((test, state) => {
 		 */
 			if (ExampleCheckbox == null) {
-				IEDebug.Throw("You must initialize the ExampleCheckbox to create a check box.");
+				IEDebug.Exception(null, "You must initialize the ExampleCheckbox to create a check box.", null);
 			}
-			var asMemberExpr = (MemberExpression) propertyExpr.Body;
+			var asMemberExpr = (MemberExpression) memberAccessExpr.Body;
 			var member = asMemberExpr.Member;
-			IEDebug.WriteLine("Creating Checkbox : {0}", member.Name);
-			var setter = CreateSetter(propertyExpr);
+			IEDebug.Log("Creating Checkbox : {0}", member.Name);
+			var setter = ReflectHelper.CreateSetter(memberAccessExpr);
 			var chBox = (GameObject) GameObject.Instantiate(ExampleCheckbox);
 			chBox.transform.parent = CurrentParent;
-			
-			var getter = propertyExpr.Compile();
+
+			var getter = ReflectHelper.CreateGetter(memberAccessExpr);
 			chBox.name = asMemberExpr.Member.Name;
 			
 			var uiTag = chBox.GetComponent<UIOptionsTag>();
@@ -233,7 +208,7 @@ namespace IEMod.Helpers {
 
 			uiTag.Checkbox.startsChecked = getter();
 			uiTag.Checkbox.onStateChange += (sender, state) => setter(state);
-			IEDebug.WriteLine("IEMod created: " + chBox.name);
+			IEDebug.Log("IEMod created: " + chBox.name);
 			return chBox;
 		}
 	}

@@ -109,7 +109,7 @@
     <Compile Include="Helpers\PlayerPrefsHelper.cs" />
     <Compile Include="Mods\GameSpeed\mod_TimeController.cs" />
     <Compile Include="Mods\Options\Definitions\mod_GameMode.cs" />
-    <Compile Include="Helpers\IEControlCreator.cs" />
+    <Compile Include="Helpers\IEControlFactory.cs" />
     <Compile Include="Mods\LootShuffler\mod_Loot.cs" />
     <Compile Include="Mods\Memorials\mod_MemorialContainer.cs" />
     <Compile Include="Mods\NoEngagement\mod_AIController.cs" />

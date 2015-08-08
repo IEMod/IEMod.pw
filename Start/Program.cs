@@ -124,13 +124,22 @@ namespace Start {
 			Console.Read();
 		}
 
+		private static void Test<T>(Expression<Func<T>> exprTest) {
+			var memberExpr = (MemberExpression)exprTest.Body;
+			var prop = memberExpr.Member;
+			var targ = (MemberExpression)memberExpr.Expression;
+			var res = targ.Expression;
+		}
+
 		[STAThread]
 		private static void Main(string[] args) {
 
 			//PrepareEnvironment(); <-- uncomment this to prepare your modding environment. it will copy some files and modify a few from your PoE folder
 			//you need to have your game paths correct in the PathConsts file.
-			DoSetup();
-			PatchGame();
+			var str = "Hi";
+			Test(() => str.Length);
+			//DoSetup();
+			//PatchGame();
 			LogFile.Flush();
 			LogFile.Close();
 		}

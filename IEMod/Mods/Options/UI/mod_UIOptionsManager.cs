@@ -92,15 +92,15 @@ namespace IEMod.Mods.Options {
 			var exampleDropdown = this.ResolutionDropdown.transform.parent;
 			var pageParent = Pages[5].transform.parent;
 
-			var controlCreator = new IEControlCreator {
+			var controlFactory = new IEControlFactory {
 				ExampleCheckbox = exampleCheckbox.gameObject,
 				ExamplePage = Pages[5],
 				CurrentParent = pageParent,
 				ExampleComboBox = exampleDropdown.gameObject
 			};
 
-			var ieModOptions = controlCreator.Page("IEModOptions");
-			var ieModDisposition = controlCreator.Page("IEModOptions_Disposition");
+			var ieModOptions = controlFactory.Page("IEModOptions");
+			var ieModDisposition = controlFactory.Page("IEModOptions_Disposition");
 			Pages = Pages.Concat(new[] {
 				ieModOptions,
 				ieModDisposition
@@ -115,70 +115,70 @@ namespace IEMod.Mods.Options {
 			this.m_Options = base.GetComponentsInChildren<UIOptionsTag>(true);
 			// end
 			//File.WriteAllText("ComboboxDump.txt", UnityObjectDumper.PrintUnityGameObject(exampleDropdown.gameObject, null, x => false));
-			controlCreator.CurrentParent = Pages[7].transform;
+			controlFactory.CurrentParent = Pages[7].transform;
 			
 			//The following are the controls that appear in the GUI of the mod.
-			_oneTooltip = controlCreator.Checkbox(() => IEModOptions.OneTooltip);
+			_oneTooltip = controlFactory.Checkbox(() => IEModOptions.OneTooltip);
 			_oneTooltip.transform.localPosition = new Vector3(-210, 330, 0);
 
-			_disableEngagement = controlCreator.Checkbox(() => IEModOptions.DisableEngagement);
+			_disableEngagement = controlFactory.Checkbox(() => IEModOptions.DisableEngagement);
 			_disableEngagement.transform.localPosition = new Vector3(-210, 300, 0);
 
-			_blueCircles = controlCreator.Checkbox(() => IEModOptions.BlueCircles);
+			_blueCircles = controlFactory.Checkbox(() => IEModOptions.BlueCircles);
 			_blueCircles.transform.localPosition = new Vector3(-210, 270, 0);
 		    
-			_blueCirclesBg = controlCreator.Checkbox(() => IEModOptions.BlueCirclesBG);
+			_blueCirclesBg = controlFactory.Checkbox(() => IEModOptions.BlueCirclesBG);
 			_blueCirclesBg.transform.localPosition = new Vector3(-180, 240, 0);
 
-			_alwaysShowCircles = controlCreator.Checkbox(() => IEModOptions.AlwaysShowCircles);
+			_alwaysShowCircles = controlFactory.Checkbox(() => IEModOptions.AlwaysShowCircles);
 			_alwaysShowCircles.transform.localPosition = new Vector3(-210, 210, 0);
 
-			_unlockCombatInv = controlCreator.Checkbox(() => IEModOptions.UnlockCombatInv);
+			_unlockCombatInv = controlFactory.Checkbox(() => IEModOptions.UnlockCombatInv);
 			_unlockCombatInv.transform.localPosition = new Vector3(-210, 180, 0);
 
-			_fixBackerNames = controlCreator.Checkbox(() => IEModOptions.FixBackerNames);
+			_fixBackerNames = controlFactory.Checkbox(() => IEModOptions.FixBackerNames);
 			_fixBackerNames.transform.localPosition = new Vector3(-210, 150, 0);
 
-			_removeMovingRecovery = controlCreator.Checkbox(() => IEModOptions.RemoveMovingRecovery);
+			_removeMovingRecovery = controlFactory.Checkbox(() => IEModOptions.RemoveMovingRecovery);
 			_removeMovingRecovery.transform.localPosition = new Vector3(-210, 120, 0);
 
-			_fastSneak = controlCreator.Checkbox(() => IEModOptions.FastSneak);
+			_fastSneak = controlFactory.Checkbox(() => IEModOptions.FastSneak);
 			_fastSneak.transform.localPosition = new Vector3(-210, 90, 0);
 
-			_improvedAi = controlCreator.Checkbox(() => IEModOptions.ImprovedAI);
+			_improvedAi = controlFactory.Checkbox(() => IEModOptions.ImprovedAI);
 			_improvedAi.transform.localPosition = new Vector3(-210, 60, 0);
 
-			_disableFfCb = controlCreator.Checkbox(() => IEModOptions.DisableFriendlyFire);
+			_disableFfCb = controlFactory.Checkbox(() => IEModOptions.DisableFriendlyFire);
 			_disableFfCb.transform.localPosition = new Vector3(-210, 30, 0);
 
-			_lootShuffler = controlCreator.Checkbox(() => IEModOptions.LootShuffler);
+			_lootShuffler = controlFactory.Checkbox(() => IEModOptions.LootShuffler);
 			_lootShuffler.transform.localPosition = new Vector3(210, 300, 0);
 
-			_gameSpeed = controlCreator.Checkbox(() => IEModOptions.GameSpeedMod);
+			_gameSpeed = controlFactory.Checkbox(() => IEModOptions.GameSpeedMod);
 			_gameSpeed.transform.localPosition = new Vector3(210, 270, 0);
 
-			_combatOnly = controlCreator.Checkbox(() => IEModOptions.CombatOnlyMod);
+			_combatOnly = controlFactory.Checkbox(() => IEModOptions.CombatOnlyMod);
 			_combatOnly.transform.localPosition = new Vector3(210, 240, 0);
 
-			_bonusSpellsPerDay = controlCreator.Checkbox(() => IEModOptions.BonusSpellsPerDay);
+			_bonusSpellsPerDay = controlFactory.Checkbox(() => IEModOptions.BonusSpellsPerDay);
 			_bonusSpellsPerDay.transform.localPosition = new Vector3(210, 210, 0);
 
-			_targetTurnedEnemies = controlCreator.Checkbox(() => IEModOptions.TargetTurnedEnemies);
+			_targetTurnedEnemies = controlFactory.Checkbox(() => IEModOptions.TargetTurnedEnemies);
 			_targetTurnedEnemies.transform.localPosition = new Vector3(210, 180, 0);
 			
-			_npcDispositionFix = controlCreator.Checkbox(() => IEModOptions.NPCDispositionFix);
+			_npcDispositionFix = controlFactory.Checkbox(() => IEModOptions.NPCDispositionFix);
 			_npcDispositionFix.transform.localPosition = new Vector3(210, 150, 0);
 			
-			_nerfedXpCmb = controlCreator.EnumBoundDropdown(() => IEModOptions.NerfedXPTableSetting, 515, 300);
+			_nerfedXpCmb = controlFactory.EnumBoundDropdown(() => IEModOptions.NerfedXPTableSetting, 515, 300);
 			_nerfedXpCmb.transform.localPosition = new Vector3(-80, -70, 0);
 
-			_perEncounterSpellsCmb = controlCreator.EnumBoundDropdown(() => IEModOptions.PerEncounterSpellsSetting, 515, 300);
+			_perEncounterSpellsCmb = controlFactory.EnumBoundDropdown(() => IEModOptions.PerEncounterSpellsSetting, 515, 300);
 			_perEncounterSpellsCmb.transform.localPosition = new Vector3(-80, -110, 0);
 
-			_extraGrimoireSpellsCmb = controlCreator.EnumBoundDropdown(() => IEModOptions.ExtraWizardSpells, 515, 300);
+			_extraGrimoireSpellsCmb = controlFactory.EnumBoundDropdown(() => IEModOptions.ExtraWizardSpells, 515, 300);
 			_extraGrimoireSpellsCmb.transform.localPosition = new Vector3(-80, -150, 0);
 
-			_autosaveCmb = controlCreator.EnumBoundDropdown(() => IEModOptions.AutosaveSetting, 515, 300);
+			_autosaveCmb = controlFactory.EnumBoundDropdown(() => IEModOptions.AutosaveSetting, 515, 300);
 			_autosaveCmb.transform.localPosition = new Vector3(-80, -30, 0);
 
 			// add autosave settings
@@ -186,19 +186,19 @@ namespace IEMod.Mods.Options {
 
 			// Pallegina dispositions mod page
 
-			controlCreator.CurrentParent = ieModDisposition.transform;
-			var favoredDisposition1 = controlCreator.EnumBoundDropdown(() => IEModOptions.PalleginaFavored1,
+			controlFactory.CurrentParent = ieModDisposition.transform;
+			var favoredDisposition1 = controlFactory.EnumBoundDropdown(() => IEModOptions.PalleginaFavored1,
 				150,
 				300);
 			favoredDisposition1.transform.localPosition = new Vector3(-60, 300, 0);
 
-			var favoredDisposition2 = controlCreator.EnumBoundDropdown(() => IEModOptions.PalleginaFavored2, 150, 0);
+			var favoredDisposition2 = controlFactory.EnumBoundDropdown(() => IEModOptions.PalleginaFavored2, 150, 0);
 			favoredDisposition2.transform.localPosition = new Vector3(100, 300, 0);
 
-			var disDisposition1 = controlCreator.EnumBoundDropdown(() => IEModOptions.PalleginaDisfavored1,150, 300);
+			var disDisposition1 = controlFactory.EnumBoundDropdown(() => IEModOptions.PalleginaDisfavored1,150, 300);
 			disDisposition1.transform.localPosition = new Vector3(-60, 250, 0);
 
-			var disDisposition2 = controlCreator.EnumBoundDropdown(() => IEModOptions.PalleginaDisfavored2, 150, 0);
+			var disDisposition2 = controlFactory.EnumBoundDropdown(() => IEModOptions.PalleginaDisfavored2, 150, 0);
 			disDisposition2.transform.localPosition = new Vector3(100, 250, 0);
 			
 			//END OF CONTROL DEFINITIONS. The rest is built in stuff that needs to happen after creating all of our controls.
