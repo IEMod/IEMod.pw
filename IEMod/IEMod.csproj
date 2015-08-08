@@ -99,7 +99,7 @@
     <Compile Include="Mods\Targeting\mod_AttackAOE.cs" />
     <Compile Include="Mods\BonusSpellsPerDay\mod_SpellMax.cs" />
     <Compile Include="Mods\GameStateMod\mod_GameState.cs" />
-    <Compile Include="Mods\Options\UI\IEComboBoxChoice.cs" />
+    <Compile Include="Helpers\IEComboBoxChoice.cs" />
     <Compile Include="Helpers\IEDebug.cs" />
     <Compile Include="Mods\StringTable\mod_StringTableManager.cs" />
     <Compile Include="Mods\StringTable\IEModString.cs" />
@@ -109,7 +109,7 @@
     <Compile Include="Helpers\PlayerPrefsHelper.cs" />
     <Compile Include="Mods\GameSpeed\mod_TimeController.cs" />
     <Compile Include="Mods\Options\Definitions\mod_GameMode.cs" />
-    <Compile Include="Mods\Options\UI\IEControlCreator.cs" />
+    <Compile Include="Helpers\IEControlCreator.cs" />
     <Compile Include="Mods\LootShuffler\mod_Loot.cs" />
     <Compile Include="Mods\Memorials\mod_MemorialContainer.cs" />
     <Compile Include="Mods\NoEngagement\mod_AIController.cs" />
