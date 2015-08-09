@@ -61,10 +61,11 @@ namespace IEMod.Helpers {
 				IEDebug.Exception(null, "You must initialize the ExamplePage to create a Page", null);
 			}
 			var newPage = new GameObject ();
-			newPage.transform.parent = ExamplePage.transform.parent;
+			
 			newPage.transform.localScale =  ExamplePage.transform.localScale;
 			newPage.transform.localPosition =  ExamplePage.transform.localPosition;
 			newPage.name = name;
+			newPage.transform.parent = ExamplePage.transform.parent;
 			return newPage;
 		}
 
@@ -112,7 +113,7 @@ namespace IEMod.Helpers {
 			var comboBox = (GameObject) GameObject.Instantiate(ExampleComboBox);
 
 			//+ Basic setup
-			comboBox.transform.parent = CurrentParent;			
+					
 			comboBox.name = asMemberExpr.Member.Name;
 			//! You have to explicitly set localPosition and localScale to something after Instantiate!!!
 			//! Otherwise, the UI will broken, but no exception will be reported.
@@ -162,6 +163,7 @@ namespace IEMod.Helpers {
 				var asChoice = (IEComboBoxChoice) option;
 				setter((T) asChoice.Value);
 			};
+			comboBox.transform.parent = CurrentParent;	
 			return comboBox;
 		}
 
@@ -192,7 +194,7 @@ namespace IEMod.Helpers {
 			IEDebug.Log("Creating Checkbox : {0}", member.Name);
 			var setter = ReflectHelper.CreateSetter(memberAccessExpr);
 			var chBox = (GameObject) GameObject.Instantiate(ExampleCheckbox);
-			chBox.transform.parent = CurrentParent;
+			
 
 			var getter = ReflectHelper.CreateGetter(memberAccessExpr);
 			chBox.name = asMemberExpr.Member.Name;
@@ -208,6 +210,7 @@ namespace IEMod.Helpers {
 
 			uiTag.Checkbox.startsChecked = getter();
 			uiTag.Checkbox.onStateChange += (sender, state) => setter(state);
+			chBox.transform.parent = CurrentParent;
 			IEDebug.Log("IEMod created: " + chBox.name);
 			return chBox;
 		}

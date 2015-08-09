@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace Start {
 			Serilog.Log.Logger = log;
 		}
 
+		private const string Test = "Hi";
 
 		private static void PrepareEnvironment()
 		{
@@ -120,15 +122,17 @@ namespace Start {
 			
 			//+ End
 			patcher.WriteTo(copyToPath);
-			
-			Console.Read();
-		}
-
-		private static void Test<T>(Expression<Func<T>> exprTest) {
-			var memberExpr = (MemberExpression)exprTest.Body;
-			var prop = memberExpr.Member;
-			var targ = (MemberExpression)memberExpr.Expression;
-			var res = targ.Expression;
+			Console.WriteLine("Going to run PEVerify to check the IL for errors. Press ESC to cancel, or any other key to continue.");
+			if (Console.ReadKey().Key != ConsoleKey.Escape) {
+				var info = new ProcessStartInfo() {
+					UseShellExecute = false,
+					FileName = "cmd",
+					Arguments = string.Format("/c \"\"{1}\" /il /md /verbose /unique \"{0}\"\"", copyToPath, Paths.PeVerifyPath)
+				};
+				Process.Start(info).WaitForExit();
+				Console.WriteLine("Press any key to close.");
+				Console.ReadKey();
+			}
 		}
 
 		[STAThread]
@@ -136,10 +140,9 @@ namespace Start {
 
 			//PrepareEnvironment(); <-- uncomment this to prepare your modding environment. it will copy some files and modify a few from your PoE folder
 			//you need to have your game paths correct in the PathConsts file.
-			var str = "Hi";
-			Test(() => str.Length);
-			//DoSetup();
-			//PatchGame();
+
+			DoSetup();
+			PatchGame();
 			LogFile.Flush();
 			LogFile.Close();
 		}

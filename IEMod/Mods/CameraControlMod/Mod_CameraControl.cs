@@ -8,6 +8,7 @@ namespace IEMod.Mods.CameraControlMod {
 		[ModifiesMember("DoUpdate")]
 		public void DoUpdateNew()
 		{
+			
 			if (Application.isPlaying)
 			{
 				Camera main = Camera.main;

@@ -6,14 +6,7 @@ using Patchwork.Attributes;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("IEMod")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("IEMod")]
-[assembly: AssemblyCopyright("Copyright ©  2015")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+
 [assembly: PatchAssembly]
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -33,5 +26,15 @@ using Patchwork.Attributes;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyTitle("IEMod")]
+[assembly: AssemblyDescription("A mod for Pillars of Eternity.")]
+
+namespace IEMod {
+	/// <summary>
+	/// Provides version information for IEMod.
+	/// </summary>
+	[NewType]
+	public static class IEModVersion {
+		public const string Version = "0.7.0.0";
+	}
+}
