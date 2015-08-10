@@ -46,7 +46,9 @@ namespace IEMod.Mods.Options {
 
 		public static int SaveInterval;
 
+		
 		[Label("Autosave setting")]
+		[Description("Auto save setting")]
 		public static AutoSaveSetting AutosaveSetting;
 
 		[Label("Fix moving recovery rate")]
@@ -234,16 +236,16 @@ namespace IEMod.Mods.Options {
 		[NewType]
 		public enum ExtraSpellsInGrimoire {
 			[Description("No extra preparation slots.")]
-			None,
+			None = 0,
 
 			[Description("One (1) extra preparation slot.")]
-			One,
+			One = 1,
 
 			[Description("Two (2) extra preparation slots.")]
-			Two,
+			Two = 2,
 
 			[Description("Three (3) extra preparation slots.")]
-			Three
+			Three = 3
 		}
 	}
 }

@@ -9,7 +9,7 @@ using IEMod.Mods.ObjectBrowser;
 using Patchwork.Attributes;
 using UnityEngine;
 
-namespace IEMod.Mods.Console {
+namespace IEMod.Mods.ConsoleMod {
 	[ModifiesType()]
 	public class mod_CommandLine : CommandLine
 	{
@@ -40,13 +40,12 @@ namespace IEMod.Mods.Console {
 				set;
 			}
 		}
-		[ModifiesType()]
+		[ModifiesType]
 		public class Mod5_QuestManager : QuestManager {
-			public new bool ActiveQuests
-			{
-				[ModifiesAccessibility()]
-				get;
-				set;
+
+			[ModifiesAccessibility("get_ActiveQuests")]
+			public void ActiveGetter() {
+				
 			}
 		}
 		[ModifiesType("StringTableManager")]

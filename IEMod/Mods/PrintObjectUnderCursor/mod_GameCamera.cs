@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace IEMod.Mods.PrintObjectUnderCursor
 {
-	[ModifiesType]
+
 	class mod_GameCamera : UICamera {
 
 		[NewMember]

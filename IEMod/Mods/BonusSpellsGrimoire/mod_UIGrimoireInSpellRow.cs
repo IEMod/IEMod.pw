@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using IEMod.Mods.Options;
 using Patchwork.Attributes;
 using UnityEngine;
 
 namespace IEMod.Mods.BonusSpellsGrimoire {
 
-	[ModifiesType]
-	public class mod_UIGrimoireInSpellRow : UIGrimoireInSpellRow
+		[ModifiesType]
+	public class mod_UIGrimoireSpellsInRow : UIGrimoireInSpellRow
 	{
 
 		[ModifiesMember("Init")]
@@ -22,7 +23,7 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 
 
 
-			int bonusSpellSlots = PlayerPrefs.GetInt("ExtraWizardSpells", 0);
+			int bonusSpellSlots = (int)IEModOptions.ExtraWizardSpells;
 
 			this.Grid.maxPerLine = 4 + bonusSpellSlots;
 
@@ -75,7 +76,7 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 						}
 						this.m_Spells[i].SetSpell(genericSpell);
 						this.m_Spells[i].SetVisibility(true);
-						this.m_Spells[i].SetSelected(i < (4 + PlayerPrefs.GetInt("ExtraWizardSpells",0)) && spellLevel == UIGrimoireManager.Instance.LevelButtons.CurrentLevel);
+						this.m_Spells[i].SetSelected(i < (4 + (int)IEModOptions.ExtraWizardSpells) && spellLevel == UIGrimoireManager.Instance.LevelButtons.CurrentLevel);
 						this.m_Spells[i].SetDisabled(GameState.InCombat);
 						i++;
 					}

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace IEMod.Mods.CombatOnly {
 	[ModifiesType()]
-	public class mod_GenericAbility : GenericAbility
+	public class Mod_CombatOnly_GenericAbility : GenericAbility
 	{
 		public GenericAbility.NotReadyValue WhyNotReadyNew
 		{
@@ -52,7 +52,7 @@ namespace IEMod.Mods.CombatOnly {
 					return;
 				}
 				//MOD (Remove combat-only restrictions) - changed this condition:
-				if (this.CombatOnly && !GameState.InCombat && !IEModOptions.CombatOnlyMod)
+				if (this.CombatOnly && !GameState.InCombat && !(IEModOptions.CombatOnlyMod))
 				{
 					this.Deactivate(this.m_owner);
 					return;
@@ -250,3 +250,4 @@ namespace IEMod.Mods.CombatOnly {
 
 	}
 }
+

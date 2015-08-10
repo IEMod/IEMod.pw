@@ -10,11 +10,6 @@ namespace IEMod.Mods.AlwaysShowCircles {
 	[ModifiesType]
 	public abstract class Mod_AlwaysShowSelectionCircles_Faction : Faction
 	{
-		[NewMember]
-		[DuplicatesBody("ShowSelectionCircle")]
-		private bool ShowSelectionCircleOrig(bool elevate) {
-			throw new DeadEndException("ShowSelectionCircleOrig");
-		}
 
 		[ModifiesMember("ShowSelectionCircle")]	
 		public bool ShowSelectionCircleNew(bool elevate) {

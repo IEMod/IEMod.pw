@@ -38,7 +38,7 @@ namespace IEMod.Mods.GameSpeed {
 		[ModifiesMember("ToggleSlow")]
 		public void ToggleSlowNew()
 		{
-			if (IEModOptions.GameSpeedMod) {
+			if (GameInput.GetControlkey() && IEModOptions.GameSpeedMod) {
 				this.TimeScale = this.TimeScale == 0.16f ? this.NormalTime : 0.16f;
 				this.UpdateTimeScale();
 			} else if (!GameInput.GetControlkey()) {

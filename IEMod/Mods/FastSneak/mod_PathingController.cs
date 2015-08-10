@@ -11,7 +11,7 @@ namespace IEMod.Mods.FastSneak {
 		public void UpdateStealthNew()
 		{
 			if (IEModOptions.FastSneak ||
-				(!GameState.InCombat && mod_Player.WalkMode)) // modified
+				(!GameState.InCombat && Mod_NoEngagement_Player.WalkMode)) // modified
 			{
 				if (this.m_currentMovementType != AnimationController.MovementType.Walk)
 				{

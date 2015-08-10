@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using IEMod.Mods.Options;
 using Patchwork.Attributes;
 using UnityEngine;
 
@@ -24,7 +25,7 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 				return true;
 			}
 
-			int numBonusSpells = PlayerPrefs.GetInt("ExtraWizardSpells", 0);
+			int numBonusSpells = (int)IEModOptions.ExtraWizardSpells;
 
 			if (numBonusSpells == 0 && Spells[level].IsFull())
 			{
@@ -54,9 +55,9 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 				{
 					this.Spells[i] = new Grimoire.SpellChapter();
 				}
-				else if (this.Spells[i].SpellData.Length != (4 + PlayerPrefs.GetInt("ExtraWizardSpells")))
+				else if (this.Spells[i].SpellData.Length != (4 + (int)IEModOptions.ExtraWizardSpells))
 				{
-					if (this.Spells[i].SpellData.Length > (4 + PlayerPrefs.GetInt("ExtraWizardSpells")))
+					if (this.Spells[i].SpellData.Length > (4 + (int)IEModOptions.ExtraWizardSpells))
 					{
 						Debug.LogError(string.Concat(new object[]
 						{
@@ -67,7 +68,7 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 							": some will be dropped!"
 						}));
 					}
-					GenericSpell[] array2 = new GenericSpell[(4 + PlayerPrefs.GetInt("ExtraWizardSpells"))];
+					GenericSpell[] array2 = new GenericSpell[(4 + (int)IEModOptions.ExtraWizardSpells)];
 					for (int j = 0; j < Mathf.Min(array2.Length, this.Spells[i].SpellData.Length); j++)
 					{
 						array2[j] = this.Spells[i].SpellData[j];
@@ -84,7 +85,7 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 				int num = spell.SpellLevel - 1;
 				if (num >= 0 && num < 6)
 				{
-					for (int i = 0; i < 4 + PlayerPrefs.GetInt("ExtraWizardSpells",0); i++)
+					for (int i = 0; i < 4 + (int)IEModOptions.ExtraWizardSpells; i++)
 					{
 						if (this.Spells[num].SpellData[i] != null && this.Spells[num].SpellData[i].DisplayName.StringID == spell.DisplayName.StringID)
 						{
@@ -115,7 +116,7 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 			}
 			for (int i = 0; i < num; i++)
 			{
-				for (int j = 0; j < 4 + PlayerPrefs.GetInt("ExtraWizardSpells",0); j++)
+				for (int j = 0; j < 4 + (int)IEModOptions.ExtraWizardSpells; j++)
 				{
 					if (this.Spells[i].SpellData[j] != null)
 					{

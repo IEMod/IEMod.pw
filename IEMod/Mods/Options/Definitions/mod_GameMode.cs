@@ -6,18 +6,24 @@ namespace IEMod.Mods.Options {
 	/// <summary>
 	/// This mod the GameMode class to save IEMod-specific preferences along with the normal preferences.
 	/// </summary>
-	[ModifiesType]
+	[ModifiesType("GameMode")]
 	public class mod_GameMode : GameMode
 	{
+
+		[MemberAlias(".ctor", typeof(object))]
+		private void object_ctor() {
+			
+		}
 		//Note that IEModOptions are just kept in a static class.
 		[NewMember]
-		[DuplicatesBody(".ctor")]
+		[DuplicatesBody(".ctor", typeof(GameMode))]
 		private void CtorOrig() {
 			throw new DeadEndException("CtorOrig");
 		}
 
 		[ModifiesMember(".ctor")]
 		public void CtorNew() {
+			object_ctor();
 			CtorOrig();
 			IEModOptions.LoadFromPrefs();
 		}

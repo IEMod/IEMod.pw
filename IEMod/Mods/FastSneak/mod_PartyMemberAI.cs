@@ -177,7 +177,7 @@ namespace IEMod.Mods.FastSneak {
 				}
             
 				// walk mode overrides fast sneak mode
-				if (mod_Player.WalkMode)
+				if (Mod_NoEngagement_Player.WalkMode)
 				{
 					walk = true;
 				}

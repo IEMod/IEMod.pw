@@ -61,7 +61,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.XML" />
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\PoE References\UnityEngine.dll</HintPath>
@@ -76,10 +76,6 @@
     <Compile Include="Helpers\ReflectHelper.cs" />
     <Compile Include="IEModType.cs" />
     <Compile Include="Mods\AI\Mod_AI_PathToPosition.cs" />
-    <Compile Include="Mods\AI\Mod_AIGameAIState.cs" />
-    <Compile Include="Mods\AI\Mod_AIMover.cs" />
-    <Compile Include="Mods\AI\Mod_AIPathFindingManager.cs" />
-    <Compile Include="Mods\AI\Mod_AITargetScanner.cs" />
     <Compile Include="Mods\AlwaysShowCircles\Mod_AlwaysShowSelectionCircles_Faction.cs" />
     <Compile Include="Mods\BonusSpellsGrimoire\mod_UIGrimoireInSpellRow.cs" />
     <Compile Include="Mods\BonusSpellsGrimoire\mod_Grimoire.cs" />
@@ -88,12 +84,10 @@
     <Compile Include="Mods\CombatLooting\Mod_CombatLooting_UIIventoryGridItem.cs" />
     <Compile Include="Mods\CombatLooting\mod_UIInventoryItemZone.cs" />
     <Compile Include="Mods\CombatOnly\mod_GenericAbility.cs" />
-    <Compile Include="Mods\Console\Mod_CommandLine.cs" />
-    <Compile Include="Mods\Console\mod_UIConsole.cs" />
+    <Compile Include="Mods\ConsoleMod\Mod_CommandLine.cs" />
+    <Compile Include="Mods\ConsoleMod\mod_UIConsole.cs" />
     <Compile Include="Mods\FastSneak\mod_PartyMemberAI.cs" />
-    <Compile Include="Mods\NoEngagement\mod_HudEngagementIndicator.cs" />
     <Compile Include="Mods\NoEngagement\mod_Player.cs" />
-    <Compile Include="Mods\NoEngagement\mod_UIChantEditor.cs" />
     <Compile Include="Mods\PartyBar\mod_UIPartyPortrait.cs" />
     <Compile Include="Mods\PartyBar\mod_UIPortraitOnClick.cs" />
     <Compile Include="Mods\PrintObjectUnderCursor\mod_GameCamera.cs" />
@@ -116,7 +110,6 @@
     <Compile Include="Helpers\IEControlFactory.cs" />
     <Compile Include="Mods\LootShuffler\mod_Loot.cs" />
     <Compile Include="Mods\Memorials\mod_MemorialContainer.cs" />
-    <Compile Include="Mods\NoEngagement\mod_AIController.cs" />
     <Compile Include="Mods\ObjectBrowser\Mod_OnGUI_Player.cs" />
     <Compile Include="Mods\PartyBar\mod_UIPartyPortraitBar.cs" />
     <Compile Include="Mods\PerEncounterSpells\mod_SpellMax.cs" />

@@ -26,6 +26,12 @@
 		/// </summary>
 		public const string YourDllReferencesPath = @"..\..\..\PoE References";
 
-		public const string PeVerifyPath = @"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6 Tools\PEVerify.exe";
+		/// <summary>
+		/// This is probably your path to PEVerify as well. PEVerify is a program that checks IL for issues.
+		/// </summary>
+		public const string PeVerifyPath = @"C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\PEVerify.exe";
+
+		public const string ILSpyPath =
+			@"C:\Users\lifeg_000\AppData\Local\Microsoft\VisualStudio\12.0\Extensions\bicaz2ty.1dn\ILSpy.exe";
 	}
 }

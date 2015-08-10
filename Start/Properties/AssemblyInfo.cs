@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -12,6 +13,9 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
+
+
+
 
 [assembly: Guid("7549700b-5e80-449c-ac34-e1559e1d283e")]
 [assembly: AssemblyTitle("IEMod Patcher")]

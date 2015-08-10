@@ -1,6 +1,6 @@
 using System;
 using System.IO;
-using IEMod.Mods.Console;
+using IEMod.Mods.ConsoleMod;
 using IEMod.Mods.Options;
 using Patchwork.Attributes;
 using UnityEngine;

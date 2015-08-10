@@ -11,9 +11,14 @@ namespace IEMod.Mods.CombatLooting {
 		[NewMember]
 		static List<string> ForbiddenToMoveItems;
 
+		[MemberAlias(".ctor", typeof(MonoBehaviour))]
+		private void MonoBehavior_ctor() {
+			
+		}
+
 		[ModifiesMember(".ctor")]
-		public void CtorNew()
-		{
+		public void CtorNew() {
+			MonoBehavior_ctor();
 			// Note: this type is marked as 'beforefieldinit'.
 			UIInventoryGridItem.s_TooltipRepeatTime = 0f;
 			UIInventoryGridItem.s_TooltipRepeatLast = Vector2.zero;

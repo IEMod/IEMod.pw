@@ -269,8 +269,14 @@ namespace IEMod.Mods.Options {
 			this.ApplyResolutionButton.onClick = (UIEventListener.VoidDelegate) Delegate.Combine(this.ApplyResolutionButton.onClick, new UIEventListener.VoidDelegate(this.OnApplyResolution));
 		}
 
+		[MemberAlias(".ctor", typeof(MonoBehaviour))]
+		private void MonoBehavior_ctor() {
+			
+		}
+
 		[ModifiesMember(".ctor")]
-		public void ConstructorNew() {
+		public void CtorNew() {
+			MonoBehavior_ctor();
 			PageOrder = new[] {
 				0,
 				3,

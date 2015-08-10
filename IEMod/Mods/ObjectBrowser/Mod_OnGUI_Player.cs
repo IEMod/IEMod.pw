@@ -6,8 +6,7 @@ using UnityEngine;
 
 namespace IEMod.Mods.ObjectBrowser {
 	[ModifiesType("Player")]
-	public class Mod_OnGUI_Player : Player
-	{
+	public class Mod_OnGUI_Player : Player {
 		[NewMember]
 		public string modname = "";
 
@@ -86,9 +85,14 @@ namespace IEMod.Mods.ObjectBrowser {
 			Debug.Log(output.ToString());
 		}
 
+		[MemberAlias(".ctor", typeof(MonoBehaviour))]
+		private void MonoBehavior_ctor() {
+			
+		}
+
 		[ModifiesMember(".ctor")]
-		public void CtorNew()
-		{
+		public void CtorNew() {
+			MonoBehavior_ctor();
 			// added code
 			showGameObjectBrowser = false;
 			scrollPosition = new Vector2(0, 0);

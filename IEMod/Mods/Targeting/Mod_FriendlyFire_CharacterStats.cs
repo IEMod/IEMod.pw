@@ -2,7 +2,7 @@ using Patchwork.Attributes;
 using UnityEngine;
 
 namespace IEMod.Mods.Targeting {
-	[ModifiesType]
+	
 	public class Mod_FriendlyFire_CharacterStats : CharacterStats
 	{
 		[ModifiesMember("AdjustDamageDealt")]

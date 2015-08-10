@@ -8,9 +8,14 @@ namespace IEMod.Mods.PartyBar {
 		[NewMember]
 		public bool Dragging;
 
+		[MemberAlias(".ctor", typeof(MonoBehaviour))]
+		private void MonoBehavior_ctor() {
+			
+		}
+
 		[ModifiesMember(".ctor")]
-		public void ctorNew()
-		{
+		public void CtorNew() {
+			MonoBehavior_ctor();
 			this.PulsePeriodSeconds = 0.5f;
 			this.PulseMinAlpha = 0.5f;
 			this.PulseMaxAlpha = 0.7f;

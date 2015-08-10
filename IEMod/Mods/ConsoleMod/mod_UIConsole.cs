@@ -1,7 +1,7 @@
 using Patchwork.Attributes;
 using UnityEngine;
 
-namespace IEMod.Mods.Console {
+namespace IEMod.Mods.ConsoleMod {
 	[ModifiesType()]
 	public  class mod_UIConsole : UIConsole
 	{
