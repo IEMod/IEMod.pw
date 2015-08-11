@@ -90,7 +90,6 @@
     <Compile Include="Mods\NoEngagement\mod_Player.cs" />
     <Compile Include="Mods\PartyBar\mod_UIPartyPortrait.cs" />
     <Compile Include="Mods\PartyBar\mod_UIPortraitOnClick.cs" />
-    <Compile Include="Mods\PrintObjectUnderCursor\mod_GameCamera.cs" />
     <Compile Include="Mods\SelectionCircles\mod_SelectionCircle.cs" />
     <Compile Include="Mods\Targeting\mod_AttackBase.cs" />
     <Compile Include="Mods\FastSneak\mod_PathingController.cs" />
