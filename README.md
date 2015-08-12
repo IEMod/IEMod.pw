@@ -1,4 +1,6 @@
 # IEMod<sub>pw</sub>
+
+[![Join the chat at https://gitter.im/GregRos/IEMod.pw](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/GregRos/IEMod.pw?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 **IEMod<sub>pw</sub> Version/Patchwork Version:** 0.7/0.5
 
 *Also stylized **IEMod.pw** in places that don't support subscripts*.
