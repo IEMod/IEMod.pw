@@ -1,8 +1,10 @@
-# IEMod<sub>pw</sub>
+# IEMod<sub>pw</sub> <a href="https://gitter.im/GregRos/Patchwork"><img style="float: right" src="https://badges.gitter.im/Join%20Chat.svg"/></a>
+
 **IEMod<sub>pw</sub> Version/Patchwork Version:** 0.7/0.5
 
-*Also stylized **IEMod.pw** in places that don't support subscripts*.
 
+*Also stylized __IEMod.pw__ in  places that don't support subscripts*.
+https://gitter.im/GregRos/IEMod.pw
 This is a **fork** of [IEMod](https://bitbucket.org/Bester/poe-modding-framework) mod for [Pillars of Eternity](http://eternity.obsidian.net/). I ported the mod to my new assembly modification framework, [Patchwork](https://github.com/GregRos/Patchwork). Originally I hoped to merge my fork into the original mod, but I couldn't contact any active developers, so I decided to continue development by myself for now.
 
 I've transferred this project from [my old Bitbucket repository](https://bitbucket.org/GregRoss/patchwork-iemod).
@@ -25,6 +27,9 @@ These are additional mods to the game, beyond the functionality of the original 
 
 ### Target Turned Enemies
 I've added an option called *"target turned enemies"* that makes enemies that have switched allegiance due to e.g. dominate, confusion, etc. to be considered hostile against your attacks. I always hated how being a little confused gave your enemies miraculous defensive benefits.
+
+### Console
+1. `ShowMouseDebug` enables a basic debug display for what is under the cursor.
 
 ## Code Injection
 See the [Patchwork library](https://github.com/GregRos/Patchwork) for more information. Patchwork is made part of this repository as a sub-module (basically a kind of sub-project).
@@ -82,7 +87,11 @@ Because debugging is so difficult, your best bet is to check things carefully. C
 
 It's best to throw `IEModException`, because you'll be able to find the exception in the log later, and it narrows down the place where it was thrown. Also, `IEDebug.Exception` creates a new `IEModException` and also logs it to the IE mod log, which is handy.
 
+You can use `UnityPrinter` to partially dump unity objects to file, including their Components and children. This is extremely helpful, especially when working with UI.
+
 *More to come later*
+
+
 
 ## Modding Intro
 *Here I'll talk about how modding unity games works in general (what I've managed to figure out, anyway), and Pillars of Eternity in particular.*

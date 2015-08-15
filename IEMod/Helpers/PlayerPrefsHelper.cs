@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 using Patchwork.Attributes;
 using UnityEngine;
 
@@ -17,6 +20,27 @@ namespace IEMod.Helpers {
 			return PlayerPrefs.GetInt(name, defaultValue ? 1 : 0) == 1;
 		}
 
+		private static object GetXmlObject(string name, Type type) {
+			var xmlSerializer = new XmlSerializer(type);
+			var content = PlayerPrefs.GetString(name);
+			if (String.IsNullOrEmpty(content)) {
+				return Activator.CreateInstance(type);
+			}
+			var obj = xmlSerializer.Deserialize(new StringReader(content));
+			if (obj == null) {
+				return Activator.CreateInstance(type);
+			}
+			return obj;
+		}
+
+		private static void SetXmlObject(string name, Type type, object o) {
+			var xmlSerializer = new XmlSerializer(type);
+			var strWriter = new StringWriter();
+			xmlSerializer.Serialize(strWriter, o);
+			var content = strWriter.ToString();
+			PlayerPrefs.SetString(name, content);
+		}
+
 		public static object GetObject(string name, Type type) {
 			object value;
 			var realType = type.IsEnum ? Enum.GetUnderlyingType(type) : type;
@@ -29,7 +53,8 @@ namespace IEMod.Helpers {
 			} else if (realType == typeof (float)) {
 				value = PlayerPrefs.GetFloat(name, 0.0f);
 			} else {
-				throw new IEModException("Invalid field type: " + realType);
+				IEDebug.Log("Going to try to deserialize PlayerPref {0} as XML", name);
+				return GetXmlObject(name, type);
 			}
 			var typedValue = type.IsEnum ? Enum.ToObject(type, value) : value;
 			return typedValue;
@@ -46,7 +71,8 @@ namespace IEMod.Helpers {
 			} else if (realType == typeof (float)) {
 				PlayerPrefs.SetFloat(name, (float) o);
 			} else {
-				throw new IEModException("Invalid field type: " + realType);
+				IEDebug.Log("Going to try to serialize PlayerPref '{0}' as XML", name);
+				SetXmlObject(name, type, o);
 			}
 		}
 

@@ -2,12 +2,61 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Xml.Serialization;
 using IEMod.Helpers;
 using Patchwork.Attributes;
+using UnityEngine;
 
 namespace IEMod.Mods.Options {
 	[NewType]
 	public static class IEModOptions {
+		[NewType]
+		[XmlInclude(typeof(Vector3))]
+		public class LayoutOptions {
+
+			public bool BuffsSideLeft;
+
+			public Vector3 FormationPosition;
+
+			public Vector3 PartyBarPosition;
+
+			public Vector3 PartySolidHudPosition;
+
+			public Vector3 HudPosition;
+
+			public Vector3 AbilitiesBarPosition;
+
+			public Vector3 LeftHudBarPosition;
+
+			public Vector3 RightHudBarPosition;
+
+			public Vector3 ClockPosition;
+
+			public Vector3 LogPosition;
+
+			public Vector3 CustomizeButtonPosition;
+
+			public bool AbilitiesHorizontal;
+
+			public bool HudTextureHidden;
+
+			public bool LogButtonsLeft;
+
+			public bool ButtonsBackground;
+
+			public bool UsingCustomTextures;
+
+			public bool PortraitHighlightsDisabled;
+
+			public bool UseCustomUI;
+
+			public bool PartyBarHorizontal;
+
+			public string FramePath;
+		}
+
+		public static LayoutOptions Layout = new LayoutOptions();
+
 		[Description("Display selection circles for neutral NPCs at all times.")]
 		[Label("Always show circles")]
 		public static bool AlwaysShowCircles = false;
@@ -130,6 +179,10 @@ namespace IEMod.Mods.Options {
 			)]
 		public static ExtraSpellsInGrimoire ExtraWizardSpells;
 
+		[Label("Disable backer dialogs")]
+		[Description("Disables talking with backer NPCs. I think?")]
+		public static bool DisableBackerDialog;
+
 		private static Dictionary<string, FieldInfo> _fieldCache;
 
 		public static Dictionary<string, FieldInfo> FieldCache {
@@ -151,18 +204,28 @@ namespace IEMod.Mods.Options {
 			}
 		}
 
+		public static string GetSettingName(string memberName) {
+			return memberName;
+		}
+
+		public static void DeleteAllSettings() {
+			foreach (var field in FieldCache.Values) {
+				PlayerPrefs.DeleteKey(GetSettingName(field.Name));
+			}
+		}
+
 		public static void SaveToPrefs() {
 			foreach (var field in FieldCache.Values) {
 				var fieldType = field.FieldType;
 				var value = field.GetValue(null);
-				PlayerPrefsHelper.SetObject(field.Name, fieldType, value);
+				PlayerPrefsHelper.SetObject(GetSettingName(field.Name), fieldType, value);
 			}
 		}
 
 		public static bool IsIdenticalToPrefs() {
 			foreach (var field in FieldCache.Values) {
 				var myValue = field.GetValue(null);
-				var prefValue = PlayerPrefsHelper.GetObject(field.Name, field.FieldType);
+				var prefValue = PlayerPrefsHelper.GetObject(GetSettingName(field.Name), field.FieldType);
 				if (!Equals(myValue, prefValue)) {
 					return false;
 				}

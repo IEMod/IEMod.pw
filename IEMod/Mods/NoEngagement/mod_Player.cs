@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+using IEMod.Helpers;
 using IEMod.Mods.Options;
 using Patchwork.Attributes;
 using UnityEngine;
@@ -149,9 +152,11 @@ namespace IEMod.Mods.NoEngagement {
 				}
 			}
 		}
+		[NewMember]
+		private double lastTime = -1;
+
 		[ModifiesMember("UpdateCursor")]
-		protected void UpdateCursorNew()
-		{
+		protected void UpdateCursorNew() {
 			ToggleWalkMode();
 			if (this.m_isCasting && this.m_castAbility != null)
 			{

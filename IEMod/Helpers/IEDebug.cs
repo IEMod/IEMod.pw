@@ -22,23 +22,22 @@ namespace IEMod.Helpers {
 			_logger = writer;
 		}
 
-		public static void Log(string format) {
+		public static void Log(object format) {
+			if (format == null || (format is string && string.IsNullOrEmpty((string)format))) return;
 			_logger.WriteLine(format);
-			//Debug.Log("IEMod: " + format);
 			_logger.Flush();
 			_innerStream.Flush();
 		}
 
 		public static void Log(string format, params object[] args) {
-			_logger.WriteLine(format, args);
-			//Debug.Log("IEMod: " + string.Format(format, args));
-			_logger.Flush();
-			_innerStream.Flush();
+			Log((object)string.Format(format, args));
 		}
 
 		public static IEModException Exception(Exception innerEx, string message, params object[] args) {
-			Log("!! EXCEPTION !!: " + message);
+			Log("!! EXCEPTION !!: " + message, args);
 			args = args ?? new object[] {};
+			var writer = new IndentedTextWriter(new StringWriter());
+			PrintStackTrace(writer, new StackTrace(1));
 			return new IEModException(String.Format(message, args), innerEx);
 		}
 

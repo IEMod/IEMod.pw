@@ -85,7 +85,7 @@ namespace IEMod.Mods.Options {
 		[ModifiesMember("Start")]
 		private void StartNew() {
 			var exampleCheckbox =
-				base.GetComponentsInChildren<UIOptionsTag>(true).Single(
+				this.ComponentsInDescendants<UIOptionsTag>(true).Single(
 					opt => opt.Checkbox && opt.BoolSuboption == GameOption.BoolOption.SCREEN_EDGE_SCROLLING)
 					.transform;
 
@@ -93,10 +93,10 @@ namespace IEMod.Mods.Options {
 			var pageParent = Pages[5].transform.parent;
 
 			var controlFactory = new IEControlFactory {
-				ExampleCheckbox = exampleCheckbox.gameObject,
+				ExampleCheckbox = exampleCheckbox.Component<UIOptionsTag>(),
 				ExamplePage = Pages[5],
 				CurrentParent = pageParent,
-				ExampleComboBox = exampleDropdown.gameObject
+				ExampleDropdown = exampleDropdown.Component<UIOptionsTag>()
 			};
 
 			var ieModOptions = controlFactory.Page("IEModOptions");
@@ -112,7 +112,7 @@ namespace IEMod.Mods.Options {
 			this.SaveButton.onClick = (UIEventListener.VoidDelegate) Delegate.Combine(this.SaveButton.onClick, new UIEventListener.VoidDelegate(this.OnSaveClicked));
 			this.LoadButton.onClick = (UIEventListener.VoidDelegate) Delegate.Combine(this.LoadButton.onClick, new UIEventListener.VoidDelegate(this.OnLoadClicked));
         
-			this.m_Options = base.GetComponentsInChildren<UIOptionsTag>(true);
+			this.m_Options = this.ComponentsInDescendants<UIOptionsTag>(true);
 			// end
 			//File.WriteAllText("ComboboxDump.txt", UnityObjectDumper.PrintUnityGameObject(exampleDropdown.gameObject, null, x => false));
 			controlFactory.CurrentParent = Pages[7].transform;

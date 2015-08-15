@@ -24,6 +24,9 @@ namespace IEMod.Mods.PartyBar {
 			this.Dragging = false; // added
 		}
 
+		[NewMember]
+		public static bool IsHorizontal;
+
 		[ModifiesMember("Update")]
 		private void UpdateNew()
 		{
@@ -93,7 +96,8 @@ namespace IEMod.Mods.PartyBar {
 			//}
 			if (TimeController.Instance != null)
 			{
-				if (PlayerPrefs.GetInt("PartyBarToggled", 0) == 1) // ADDED THIS CONDITIONAL
+				//this is pretty impressive!
+				if (IsHorizontal) // ADDED THIS CONDITIONAL
 				{
 					//float desiredXPosition = this.m_Owner.GetDesiredXPosition(this.CurrentSlot); // old line
 					float desiredYPosition = (UIPartyPortraitBar.Instance.PortraitWidth + 20) * (this.CurrentSlot * -1);
@@ -204,7 +208,7 @@ namespace IEMod.Mods.PartyBar {
 			Dragging = true; // added this line
 			PlayerPrefs.SetInt ("dragging", 1);
 			Transform transform = this.transform;
-			if (PlayerPrefs.GetInt("PartyBarToggled", 0) == 1) // added this line
+			if (IsHorizontal) // added this line
 			{
 				transform.localPosition -= new Vector3( (float) UIPartyPortraitBar.Instance.OffsetOnDrag, 0f, 0f); // MOD
 			}
@@ -233,7 +237,7 @@ namespace IEMod.Mods.PartyBar {
 			Dragging = false;
 			PlayerPrefs.SetInt ("dragging", 0);
 
-			if (PlayerPrefs.GetInt ("PartyBarToggled", 0) == 1) // ADDED THIS CONDITIONAL
+			if (mod_UIPartyPortrait.IsHorizontal) // ADDED THIS CONDITIONAL
 			{
 				float desiredYPosition = (UIPartyPortraitBar.Instance.PortraitWidth + 20) * (this.CurrentSlot * -1); // added this line
 				//if (base.transform.localPosition.x != desiredXPosition) // old line

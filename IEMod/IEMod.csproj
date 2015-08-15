@@ -73,6 +73,7 @@
     </Compile>
     <Compile Include="Helpers\DeadEndException.cs" />
     <Compile Include="Helpers\IEModException.cs" />
+    <Compile Include="Helpers\PathHelper.cs" />
     <Compile Include="Helpers\ReflectHelper.cs" />
     <Compile Include="IEModType.cs" />
     <Compile Include="Mods\AI\Mod_AI_PathToPosition.cs" />
@@ -86,31 +87,33 @@
     <Compile Include="Mods\CombatOnly\mod_GenericAbility.cs" />
     <Compile Include="Mods\ConsoleMod\Mod_CommandLine.cs" />
     <Compile Include="Mods\ConsoleMod\mod_UIConsole.cs" />
+    <Compile Include="Mods\DropButton\DropButton.cs" />
     <Compile Include="Mods\FastSneak\mod_PartyMemberAI.cs" />
     <Compile Include="Mods\NoEngagement\mod_Player.cs" />
-    <Compile Include="Mods\PartyBar\mod_UIPartyPortrait.cs" />
-    <Compile Include="Mods\PartyBar\mod_UIPortraitOnClick.cs" />
+    <Compile Include="Mods\UICustomization\PartyBar\mod_UIPartyPortrait.cs" />
+    <Compile Include="Mods\UICustomization\PartyBar\mod_UIPortraitOnClick.cs" />
     <Compile Include="Mods\SelectionCircles\mod_SelectionCircle.cs" />
     <Compile Include="Mods\Targeting\mod_AttackBase.cs" />
     <Compile Include="Mods\FastSneak\mod_PathingController.cs" />
     <Compile Include="Mods\Targeting\mod_AttackAOE.cs" />
     <Compile Include="Mods\BonusSpellsPerDay\mod_SpellMax.cs" />
     <Compile Include="Mods\GameStateMod\mod_GameState.cs" />
-    <Compile Include="Helpers\IEComboBoxChoice.cs" />
+    <Compile Include="Helpers\IEDropdownChoice.cs" />
     <Compile Include="Helpers\IEDebug.cs" />
     <Compile Include="Mods\StringTable\mod_StringTableManager.cs" />
     <Compile Include="Mods\StringTable\IEModString.cs" />
-    <Compile Include="Mods\Options\Definitions\IEModOptions.cs" />
+    <Compile Include="Mods\UICustomization\UICustomizer.cs" />
+    <Compile Include="Options\Definitions\IEModOptions.cs" />
     <Compile Include="Helpers\LabelAttribute.cs" />
     <Compile Include="Mods\StringTable\mod_StringTableType.cs" />
     <Compile Include="Helpers\PlayerPrefsHelper.cs" />
     <Compile Include="Mods\GameSpeed\mod_TimeController.cs" />
-    <Compile Include="Mods\Options\Definitions\mod_GameMode.cs" />
+    <Compile Include="Options\Definitions\mod_GameMode.cs" />
     <Compile Include="Helpers\IEControlFactory.cs" />
     <Compile Include="Mods\LootShuffler\mod_Loot.cs" />
     <Compile Include="Mods\Memorials\mod_MemorialContainer.cs" />
     <Compile Include="Mods\ObjectBrowser\Mod_OnGUI_Player.cs" />
-    <Compile Include="Mods\PartyBar\mod_UIPartyPortraitBar.cs" />
+    <Compile Include="Mods\UICustomization\PartyBar\mod_UIPartyPortraitBar.cs" />
     <Compile Include="Mods\PerEncounterSpells\mod_SpellMax.cs" />
     <Compile Include="Mods\RecoveryRate\mod_CharacterStats.cs" />
     <Compile Include="Mods\Religion\Mod_Religion.cs" />
@@ -124,8 +127,8 @@
     <Compile Include="Mods\Tooltips\mod_UIMapTooltip.cs" />
     <Compile Include="Mods\VersionNumber\mod_UIVersionNumber.cs" />
     <Compile Include="Mods\XPTable\mod_CharacterStats.cs" />
-    <Compile Include="Mods\Options\UI\mod_UIOptionsManager.cs" />
-    <Compile Include="Mods\Options\UI\mod_UIWindowManager.cs" />
+    <Compile Include="Options\UI\mod_UIOptionsManager.cs" />
+    <Compile Include="Options\UI\mod_UIWindowManager.cs" />
     <Compile Include="Helpers\UnityObjectDumper.cs" />
     <Compile Include="Helpers\UnityObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -136,6 +139,7 @@
       <Name>Patchwork.Attributes</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

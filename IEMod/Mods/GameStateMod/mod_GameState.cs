@@ -1,7 +1,9 @@
 using System;
 using System.IO;
 using IEMod.Mods.ConsoleMod;
+using IEMod.Mods.DropButtonMod;
 using IEMod.Mods.Options;
+using IEMod.Mods.UICustomization;
 using Patchwork.Attributes;
 using UnityEngine;
 
@@ -121,23 +123,16 @@ namespace IEMod.Mods.GameStateMod {
 			FatigueCamera.CreateCamera();
 			GammaCamera.CreateCamera();
 			WinCursor.Clip(true);
-
 			// in here you can place something like if (CurrentMap.SceneName == "AR_0011_Dyrford_Tavern_02") make_an_NPC; or change_NPC's_stats;
 			// added this code
-			mod_CommandLine.InjectDropInvButton();
-
-			if (PlayerPrefs.GetInt("UseCustomUi", 0) == 1 && PlayerPrefs.GetInt("AppliedCustomUi", 0) == 0)
+			DropButton.InjectDropInvButton();
+			
+			if (IEModOptions.Layout.UseCustomUI)
 			{
-				Debug.Log("P! start if block");
-				mod_CommandLine.CustomUiApplyOnce();
-				PlayerPrefs.SetInt("AppliedCustomUi", 1);
-				mod_CommandLine.RepositionUi();
+				UICustomizer.LoadLayout(IEModOptions.Layout);
 			}
 
-			if (IEModOptions.FixBackerNames)
-				mod_CommandLine.FixBackerNames(true);
-			else
-				mod_CommandLine.FixBackerNames(false);
+			mod_CommandLine.FixBackerNames(IEModOptions.FixBackerNames);
 			// end of added code
 		}
 	}

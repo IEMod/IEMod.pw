@@ -8,6 +8,7 @@ using IEMod.Mods.Options;
 using IEMod.Mods.StringTable;
 using Patchwork.Attributes;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace IEMod.Helpers {
 
@@ -18,21 +19,21 @@ namespace IEMod.Helpers {
 	public class IEControlFactory {
 
 
-		public GameObject ExampleCheckbox;
-		public GameObject ExampleComboBox;
+		public UIOptionsTag ExampleCheckbox;
+		public UIOptionsTag ExampleDropdown;
 		public Transform CurrentParent;
 		public GameObject ExamplePage;
-		
+		public GameObject ExampleButton;
 
-		private IEComboBoxChoice[] EnumToChoices(Type enumType) {
-			var list = new List<IEComboBoxChoice>();
+		private static IEDropdownChoice[] EnumToChoices(Type enumType) {
+			var list = new List<IEDropdownChoice>();
 
 			foreach (var value in Enum.GetValues(enumType)) {
 				var field = enumType.GetField(value.ToString());
 				var attr = field.GetCustomAttribute<DescriptionAttribute>();
 				var label = attr == null ? null : attr.Description;
 				label = label ??  value.ToString();
-				list.Add(new IEComboBoxChoice(value, label));
+				list.Add(new IEDropdownChoice(value, label));
 			}
 			return list.ToArray();
 		}
@@ -58,7 +59,7 @@ namespace IEMod.Helpers {
 		/// <returns></returns>
 		public GameObject Page(string name) {
 			if (ExamplePage == null) {
-				IEDebug.Exception(null, "You must initialize the ExamplePage to create a Page", null);
+				throw IEDebug.Exception(null, "You must initialize the ExamplePage to create a Page", null);
 			}
 			var newPage = new GameObject ();
 			newPage.transform.parent = ExamplePage.transform.parent;
@@ -70,101 +71,116 @@ namespace IEMod.Helpers {
 		}
 
 		/// <summary>
-		/// Creates a new dropdown/combo box bound to an enum-valued field or property. The enum part is important, as this is how the dropdown's options are generated. Labels are taken from attributes.
+		/// Creates a dropdown bound to a field or property. You need to supply a collection of dropdown choices.
 		/// </summary>
-		/// <typeparam name="T">The type of the field/property. MUST be an enum type.</typeparam>
-		/// <param name="enumMemberAccessExpr">A simple member access expression for accessing the property/field you want to bind this control to. For example, <c>() => IEModOptions.YourProperty</c></param>
-		/// <param name="width">The width of the dropdown. You have to specify it now because setting it is complicated.</param>
-		/// <param name="labelWidth">The width of the GUI label attached to the dropdown. If you set it to 0, there will be no label.</param>
-		/// <param name="localPos">The transform.localPosition of the dropdown. You can set this later.</param>
-		/// <returns></returns>
-		public GameObject EnumBoundDropdown<T>(Expression<Func<T>> enumMemberAccessExpr, int width, int labelWidth)
-		where T : struct, IConvertible, IFormattable, IComparable{
+		public GameObject Dropdown<T>(Expression<Func<T>> memberAccessExpr,
+			IEnumerable<IEDropdownChoice> choices,
+			int width, int labelWidth,
+			string label = null,
+			string tooltip = null
+			) {
+			#region Old code
+
 			/*
-			 *
 			//+ FOR REFERENCE:
 			const int nerfedXPTableWidth = 515;
 			UIDropdownMenu drop;
 			nerfedXPTableDropdown.transform.GetChild(1).GetChild(0).localScale = new Vector3(nerfedXPTableWidth, 32, 1); // width of combobox
 			nerfedXPTableDropdown.transform.GetChild(1).GetChild(3).localPosition = new Vector3(nerfedXPTableWidth - 27, 10, 0); // position of down arrow
 			nerfedXPTableDropdown.transform.GetChild(1).GetChild(2).GetChild(0).localScale = new Vector3(nerfedXPTableWidth, 37, 0); // width of dropdown
-			nerfedXPTableDropdown.transform.GetChild(1).GetComponent<UIDropdownMenu>().OptionRootText.lineWidth = nerfedXPTableWidth;
-			nerfedXPTableDropdown.transform.GetChild(1).GetComponent<UIDropdownMenu>().SelectedText.lineWidth = nerfedXPTableWidth;
-			nerfedXPTableDropdown.transform.GetChild(1).GetComponent<UIDropdownMenu>().OptionGrid.cellWidth = nerfedXPTableWidth;
-			nerfedXPTableDropdown.transform.GetChild(1).GetComponent<UIDropdownMenu>().Options = nerfedXPTableChoices;
-			//nerfedXPTableDropdown.transform.GetChild(1).GetComponent<UIDropdownMenu>().SelectedItem = nerfedXPTableChoices[PlayerPrefs.GetInt("NerfedXPTableSetting")];
-			//nerfedXPTableDropdown.transform.GetChild(1).GetComponent<UIDropdownMenu>().OnDropdownOptionChangedEvent += new UIDropdownMenu.DropdownOptionChanged(OnNerfedXPTableSettingChanged);
-			nerfedXPTableDropdown.transform.GetChild(0).GetComponent<UILabel>().lineWidth = 300;
-			nerfedXPTableDropdown.transform.GetChild(0).GetComponent<UILabel>().shrinkToFit = false;
-			nerfedXPTableDropdown.transform.GetChild(0).GetComponent<GUIStringLabel>().DatabaseString = new GUIDatabaseString(++StringId);
-			nerfedXPTableDropdown.GetComponent<UIOptionsTag>().TooltipString = new GUIDatabaseString(++StringId);
+			nerfedXPTableDropdown.transform.GetChild(1).Component<UIDropdownMenu>().OptionRootText.lineWidth = nerfedXPTableWidth;
+			nerfedXPTableDropdown.transform.GetChild(1).Component<UIDropdownMenu>().SelectedText.lineWidth = nerfedXPTableWidth;
+			nerfedXPTableDropdown.transform.GetChild(1).Component<UIDropdownMenu>().OptionGrid.cellWidth = nerfedXPTableWidth;
+			nerfedXPTableDropdown.transform.GetChild(1).Component<UIDropdownMenu>().Options = nerfedXPTableChoices;
+			//nerfedXPTableDropdown.transform.GetChild(1).Component<UIDropdownMenu>().SelectedItem = nerfedXPTableChoices[PlayerPrefs.GetInt("NerfedXPTableSetting")];
+			//nerfedXPTableDropdown.transform.GetChild(1).Component<UIDropdownMenu>().OnDropdownOptionChangedEvent += new UIDropdownMenu.DropdownOptionChanged(OnNerfedXPTableSettingChanged);
+			nerfedXPTableDropdown.transform.GetChild(0).Component<UILabel>().lineWidth = 300;
+			nerfedXPTableDropdown.transform.GetChild(0).Component<UILabel>().shrinkToFit = false;
+			nerfedXPTableDropdown.transform.GetChild(0).Component<GUIStringLabel>().DatabaseString = new GUIDatabaseString(++StringId);
+			nerfedXPTableDropdown.Component<UIOptionsTag>().TooltipString = new GUIDatabaseString(++StringId);
 			// end of adding dropdown
 			 */
-			if (!typeof (T).IsEnum) {
-				IEDebug.Exception(null, "Expected an enum type, but got {0}", typeof(T));
-			}
-			if (ExampleComboBox == null) {
-				IEDebug.Exception(null, "You must initialize the ExampleComboBox to create a combo box.", null);
+
+			#endregion
+
+			if (ExampleDropdown == null) {
+				throw IEDebug.Exception(null, "You must initialize the ExampleDropdown to create a dropdown.", null);
 			}
 			var pos = new Vector3(0, 0, 0);
-			var getter = ReflectHelper.CreateGetter(enumMemberAccessExpr);
-			var setter = ReflectHelper.CreateSetter(enumMemberAccessExpr);
-			var asMemberExpr = (MemberExpression) enumMemberAccessExpr.Body;
-			var comboBox = (GameObject) GameObject.Instantiate(ExampleComboBox);
-			comboBox.transform.parent = CurrentParent;	
+			var getter = ReflectHelper.CreateGetter(memberAccessExpr);
+			var setter = ReflectHelper.CreateSetter(memberAccessExpr);
+			var asMemberExpr = (MemberExpression) memberAccessExpr.Body;
+			var comboBox = (UIOptionsTag) Object.Instantiate(ExampleDropdown);
+			comboBox.transform.parent = CurrentParent;
 			//+ Basic setup
-					
+
 			comboBox.name = asMemberExpr.Member.Name;
 			//! You have to explicitly set localPosition and localScale to something after Instantiate!!!
 			//! Otherwise, the UI will broken, but no exception will be reported.
 			comboBox.transform.localPosition = pos;
 			comboBox.transform.localScale = new Vector3(1, 1, 1);
 
-			var dropdown = comboBox.transform.GetComponentsInChildren<UIDropdownMenu>(true).Single();
-			var label = GetLabel(asMemberExpr.Member);
-			var desc = GetDesc(asMemberExpr.Member);
-			
+			var dropdown = comboBox.transform.ComponentsInDescendants<UIDropdownMenu>(true).Single();
+			label = label ?? GetLabel(asMemberExpr.Member);
+			tooltip = tooltip ?? GetDesc(asMemberExpr.Member);
+
 			//+ Set the labels
 			//There are multiple things called Label in this visual tree, but only one with a GUIStringLabel component.
-			var guiLabel = comboBox.transform.GetComponentsInChildren<GUIStringLabel>(true).Single();
+			var guiLabel = comboBox.transform.ComponentsInDescendants<GUIStringLabel>(true).Single();
 			if (labelWidth > 0) {
 				guiLabel.DatabaseString = IEModString.Register(label);
-				var uiLabel = guiLabel.gameObject.GetComponent<UILabel>();
+				var uiLabel = guiLabel.gameObject.Component<UILabel>();
 				uiLabel.lineWidth = labelWidth;
 			} else {
 				guiLabel.DatabaseString = IEModString.Register("");
-				var uiLabel = guiLabel.gameObject.GetComponent<UILabel>();
+				var uiLabel = guiLabel.gameObject.Component<UILabel>();
 				uiLabel.lineWidth = labelWidth;
 			}
-			
-			var uiTag = comboBox.GetComponent<UIOptionsTag>();
-			uiTag.TooltipString = IEModString.Register(desc);
+
+			var uiTag = comboBox.Component<UIOptionsTag>();
+			uiTag.TooltipString = IEModString.Register(tooltip);
 
 			//+ set the choices and SelectedItem
-			var choices = EnumToChoices(typeof (T));
-			dropdown.Options = choices.Cast<object>().ToArray();
-			dropdown.SelectedItem = choices.SingleOrDefault(x => x.Value.Equals(getter())) ?? dropdown.Options[0];
+			var choicesArr = choices.ToArray();
+			dropdown.Options = choicesArr.ToArray();
+			dropdown.SelectedItem = choicesArr.SingleOrDefault(x => object.Equals(x.Value, getter())) ?? dropdown.Options[0];
 
 			//+ Set position and scale
 			//To get the names, I used the GetChild calls as reference, and dumped the comboBox to the log using UnityObjectDumper.
-			var comboBoxBackground = comboBox.GetDescendant("Background");
-			var oldWidth = comboBoxBackground.transform.localScale.x;
+			var comboBoxBackground = comboBox.Descendant("Background");
 			comboBoxBackground.transform.localScale = new Vector3(width, 32, 1); //this is the width of the combobox
-			
-			var arrowThing = comboBox.GetDescendant("ArrowPivot");
-			arrowThing.transform.localPosition = new Vector3(width - 27, 10, 0);
 
+			var arrowThing = comboBox.Descendant("ArrowPivot");
+			arrowThing.transform.localPosition = new Vector3(width - 27, 10, 0);
 			dropdown.OptionRootText.lineWidth = width;
 			dropdown.SelectedText.lineWidth = width;
 			dropdown.OptionGrid.cellWidth = width;
 			var optGrid = dropdown.OptionGrid;
 			//+ Set the default handler that binds the control to the member
 			dropdown.OnDropdownOptionChangedEvent += option => {
-				var asChoice = (IEComboBoxChoice) option;
+				var asChoice = (IEDropdownChoice) option;
 				setter((T) asChoice.Value);
 			};
-			
-			return comboBox;
+
+			return comboBox.gameObject;
+		}
+
+
+		/// <summary>
+		/// Creates a new dropdown/combo box bound to an enum-valued field or property. The enum part is important, as this is how the dropdown's options are generated. Labels are taken from attributes.
+		/// </summary>
+		/// <typeparam name="T">The type of the field/property. MUST be an enum type.</typeparam>
+		/// <param name="enumMemberAccessExpr">A simple member access expression for accessing the property/field you want to bind this control to. For example, <c>() => IEModOptions.YourProperty</c></param>
+		/// <param name="width">The width of the dropdown. You have to specify it now because setting it is complicated.</param>
+		/// <param name="labelWidth">The width of the GUI label attached to the dropdown. If you set it to 0, there will be no label.</param>
+		/// <returns></returns>
+		public GameObject EnumBoundDropdown<T>(Expression<Func<T>> enumMemberAccessExpr, int width, int labelWidth)
+		where T : struct, IConvertible, IFormattable, IComparable{
+
+			if (!typeof (T).IsEnum) {
+				throw IEDebug.Exception(null, "Expected an enum type, but got {0}", typeof(T));
+			}
+			return Dropdown<T>(enumMemberAccessExpr, EnumToChoices(typeof (T)), width, labelWidth);
 		}
 
 		/// <summary>
@@ -180,39 +196,64 @@ namespace IEMod.Helpers {
 			FixBackerNamesChbox.transform.localScale = new Vector3 (1, 1, 1);
 			FixBackerNamesChbox.transform.localPosition = new Vector3 (-210, 150, 0);
 			StringId++;
-			FixBackerNamesChbox.GetComponent<UIOptionsTag> ().CheckboxLabel = new GUIDatabaseString (StringId);
+			FixBackerNamesChbox.Component<UIOptionsTag> ().CheckboxLabel = new GUIDatabaseString (StringId);
 			StringId++;
-			FixBackerNamesChbox.GetComponent<UIOptionsTag> ().TooltipString = new GUIDatabaseString (StringId);
-			FixBackerNamesChbox.GetComponent<UIOptionsTag> ().Checkbox.startsChecked = PlayerPrefs.GetInt ("FixBackerNames", 0) > 0 ? true : false;
-			FixBackerNamesChbox.GetComponent<UIOptionsTag> ().Checkbox.onStateChange = (UICheckbox.OnStateChange) new UICheckbox.OnStateChange((test, state) => {
+			FixBackerNamesChbox.Component<UIOptionsTag> ().TooltipString = new GUIDatabaseString (StringId);
+			FixBackerNamesChbox.Component<UIOptionsTag> ().Checkbox.startsChecked = PlayerPrefs.GetInt ("FixBackerNames", 0) > 0 ? true : false;
+			FixBackerNamesChbox.Component<UIOptionsTag> ().Checkbox.onStateChange = (UICheckbox.OnStateChange) new UICheckbox.OnStateChange((test, state) => {
 		 */
 			if (ExampleCheckbox == null) {
-				IEDebug.Exception(null, "You must initialize the ExampleCheckbox to create a check box.", null);
+				throw IEDebug.Exception(null, "You must initialize the ExampleCheckbox to create a check box.", null);
 			}
 			var asMemberExpr = (MemberExpression) memberAccessExpr.Body;
 			var member = asMemberExpr.Member;
 			IEDebug.Log("Creating Checkbox : {0}", member.Name);
 			var setter = ReflectHelper.CreateSetter(memberAccessExpr);
-			var chBox = (GameObject) GameObject.Instantiate(ExampleCheckbox);
+			var chBox = (UIOptionsTag) Object.Instantiate(ExampleCheckbox);
 			
 			chBox.transform.parent = CurrentParent;
 			var getter = ReflectHelper.CreateGetter(memberAccessExpr);
 			chBox.name = asMemberExpr.Member.Name;
-			
-			var uiTag = chBox.GetComponent<UIOptionsTag>();
+
 			chBox.transform.localScale = new Vector3(1, 1, 1);
 			chBox.transform.localPosition = new Vector3(0, 0, 0);
 			var label = GetLabel(member);
 			var desc = GetDesc(member);
 
-			uiTag.CheckboxLabel = IEModString.Register(label);
-			uiTag.TooltipString = IEModString.Register(desc);
+			chBox.CheckboxLabel = IEModString.Register(label);
+			chBox.TooltipString = IEModString.Register(desc);
 
-			uiTag.Checkbox.startsChecked = getter();
-			uiTag.Checkbox.onStateChange += (sender, state) => setter(state);
+			chBox.Checkbox.startsChecked = getter();
+			chBox.Checkbox.onStateChange += (sender, state) => setter(state);
 			
 			IEDebug.Log("IEMod created: " + chBox.name);
-			return chBox;
+			return chBox.gameObject;
+		}
+		public GameObject Button(string caption, string name = null, Vector3? localPos = null) {
+			/* //+ Reference
+			 * 	DragBtn2 = GameObject.Instantiate(DragBtn1) as GameObject;
+				DragBtn2.name = "DragActionbarButton";
+				DragBtn2.transform.parent = DragBtn1.transform.parent;
+				DragBtn2.transform.localScale = new Vector3(1f, 1f, 1f);
+				DragBtn2.transform.localPosition = DragBtn1.transform.localPosition;
+				DragBtn2.transform.localPosition += new Vector3(0f, 50f, 0f);
+				DragBtn2.ComponentInChildren<UIDragObject>().target = _actionBarTrimB.transform;
+				DragBtn2.ComponentInChildren<UIMultiSpriteImageButton>().Label.Component<GUIStringLabel>().FormatString = "Drag Hud Bgr";
+			 */
+			
+			if (ExampleButton == null) {
+				throw IEDebug.Exception(null, "You must initialize ExampleButton to create one.");
+			}
+			var illegalCharsStr = " :\t\n\r/1#$%^&*().".ToCharArray().Select(char.ToString).ToArray();
+			name = name ?? caption.ReplaceAll("_", illegalCharsStr);
+			var newButton = (GameObject) Object.Instantiate(ExampleButton);
+			newButton.name = name;
+			newButton.transform.parent = CurrentParent;
+			newButton.transform.localScale = Vector3.one;
+			newButton.transform.localPosition = localPos ?? Vector3.zero;
+			newButton.ComponentInDescendants<UIMultiSpriteImageButton>().Label.Component<GUIStringLabel>().FormatString =
+				caption;
+			return newButton;
 		}
 	}
 

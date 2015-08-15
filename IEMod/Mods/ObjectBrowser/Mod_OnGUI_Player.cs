@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using IEMod.Mods.Options;
 using Patchwork.Attributes;
 using UnityEngine;
 
@@ -106,7 +107,6 @@ namespace IEMod.Mods.ObjectBrowser {
 			this.equipDefaultItems = true;
 			this.showModelViewer = false;
 
-			PlayerPrefs.SetInt ("AppliedCustomUi", 0);
 			// end of added
 
 			this.move_distance = 0.1f;

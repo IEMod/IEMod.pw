@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using Patchwork.Attributes;
 
 namespace IEMod.Mods.StringTable {
+
 	/// <summary>
 	///     Use this DatabaseString entry for IEMod strings.
 	/// </summary>
 	[NewType]
 	public class IEModString : GUIDatabaseString {
-		public static readonly Dictionary<int, string> IEModStringTable = new Dictionary<int, string>();
-		public static int LastId = 1;
+		private static readonly Dictionary<int, string> IeModStringTable = new Dictionary<int, string>();
+		private static int _lastId = 1;
 
 		private IEModString(int id)
 			: base(id) {
@@ -16,16 +17,20 @@ namespace IEMod.Mods.StringTable {
 		}
 
 		public static string GetString(int id) {
-			if (!IEModStringTable.ContainsKey(id)) {
+			if (!IeModStringTable.ContainsKey(id)) {
 				return string.Format("?? IEMod {0} ??", id);
 			}
-			return IEModStringTable[id];
+			return IeModStringTable[id];
+		}
+
+		public void Unregister() {
+			IeModStringTable.Remove(this.StringID);
 		}
 
 		public static IEModString Register(string str) {
-			var lastId = LastId;
-			LastId++;
-			IEModStringTable[lastId] = str;
+			var lastId = _lastId;
+			_lastId++;
+			IeModStringTable[lastId] = str;
 			return new IEModString(lastId);
 		}
 

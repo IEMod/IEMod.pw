@@ -2,11 +2,11 @@ using Patchwork.Attributes;
 
 namespace IEMod.Helpers {
 	[NewType]
-	public class IEComboBoxChoice {
+	public class IEDropdownChoice {
 		public string Label;
 		public object Value;
 
-		public IEComboBoxChoice(object value, string label) {
+		public IEDropdownChoice(object value, string label) {
 			Label = label;
 			Value = value;
 		}
