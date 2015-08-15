@@ -1,11 +1,11 @@
 # IEMod<sub>pw</sub> <a href="https://gitter.im/GregRos/Patchwork"><img style="float: right" src="https://badges.gitter.im/Join%20Chat.svg"/></a>
 
-**IEMod<sub>pw</sub> Version/Patchwork Version:** 0.7/0.5
+**IEMod<sub>pw</sub> Version/Patchwork Version:** 0.7.5/0.5
 
 
 *Also stylized __IEMod.pw__ in  places that don't support subscripts*.
-https://gitter.im/GregRos/IEMod.pw
-This is a **fork** of [IEMod](https://bitbucket.org/Bester/poe-modding-framework) mod for [Pillars of Eternity](http://eternity.obsidian.net/). I ported the mod to my new assembly modification framework, [Patchwork](https://github.com/GregRos/Patchwork). Originally I hoped to merge my fork into the original mod, but I couldn't contact any active developers, so I decided to continue development by myself for now.
+
+This is a **fork** of [IEMod](https://bitbucket.org/Bester/poe-modding-framework) mod for [Pillars of Eternity](http://eternity.obsidian.net/). I ported the mod to my new assembly modification framework, [Patchwork](https://github.com/GregRos/Patchwork). 
 
 I've transferred this project from [my old Bitbucket repository](https://bitbucket.org/GregRoss/patchwork-iemod).
 
@@ -14,22 +14,22 @@ I'll introduce IEMod myself at some point, but for now I'll just let the origina
 * [IEMod Nexus Page](http://www.nexusmods.com/pillarsofeternity/mods/1/?)
 * [IEMod Website](http://rien-ici.com/iemod/)
 
-My only modifications so far have been mostly to the implementation, and I've kept the user-visible parts completely unchanged, except for one small addition.
-
-I've focused on making further modding both convenient and expedient, so I've mainly only worked on parts that every modder would want to use: the code injection features (implemented in Patchwork) and the UI creation.
-
-I don't plan and I don't recommend modifying any other parts without good reason, as that code is really complicated, and changing it is error prone.
-
-The main reason I did all this work was to make modding easier. While I am going to contribute to it myself, I'd also welcome any contributions of yours, or even if you want to get permissions so you can work on the repo yourself.
-
 ## New Additions
 These are additional mods to the game, beyond the functionality of the original IEMod.
 
 ### Target Turned Enemies
 I've added an option called *"target turned enemies"* that makes enemies that have switched allegiance due to e.g. dominate, confusion, etc. to be considered hostile against your attacks. I always hated how being a little confused gave your enemies miraculous defensive benefits.
 
+### UI Customization
+There is a button on the upper right hand side of your screen that lets you customize the UI. Customizing the UI also allows you to drag this button somewhere else if you like.
+
+Changed the interface somewhat.
+
+Most of the code has been changed, though this isn't visible at this point. Largely changed the code so it's easier to fix later on, and it's also more readable. 
+
 ### Console
 1. `ShowMouseDebug` enables a basic debug display for what is under the cursor.
+2. `DeleteIEModSettings` deletes all of the current IEMod version's custom settings. In order to reset everything to default, you'll have to restart the game.
 
 ## Code Injection
 See the [Patchwork library](https://github.com/GregRos/Patchwork) for more information. Patchwork is made part of this repository as a sub-module (basically a kind of sub-project).
@@ -77,21 +77,21 @@ By the way, binding means that once the control is changed, the property/field i
 ## Debugging Tips
 Debugging mods like this one is hard. It's possible to debug Unity applications (attach a debugger to them, I mean), it's possible to debug modified assemblies, and it's possible to debug assemblies you don't have any debug symbols for. Unfortunately, there is no tool that allows you to debug all three, and I have no idea how to make one.
 
-If you were writing against framework version 4.5, you could at least use the `CallerMemberName`, `CallerLineNumber`, etc, attributes, so you can keep track of where the program failed. Unfortunately, the game is built against 3.5, and it doesn't work properly when you compile the patch against 4.5 instead.
-
 Debugging involves printouts and using the logs. The game's default debug log is in `PillarsOfEternity_Data\output_log.txt`. Crash reports, which include additional data like memory dumps, are filed in the main folder. The game only crashed when something really nasty happens, and most exceptions (including things like `NullReferenceException` and even `InvalidProgramException`) are just logged, and the show goes on. Usually, things like weird graphical glitches, disappearing text, and so on, indicate that an exception has been thrown.
 
-In addition to this, you can use `IEDebug.Log` to write to a special log dedicated for `IEMod` that this class creates. It appears in the main folder of the game. This method also writes to the standard debug log.
+In addition to this, you can use `IEDebug.Log` to write to a special log dedicated for `IEMod` that this class creates. It appears in the main folder of the game.
 
 Because debugging is so difficult, your best bet is to check things carefully. Check if things are `null`, if an expression is a valid type before casting, etc, and then throw an exception that tells you something about the problem. Handling exceptions, if only to rethrow more meaningful ones, is also a good idea. Assertions are also great.
 
+Nulls in particular are your worst enemy. Try to avoid using them as much as possible.
+
 It's best to throw `IEModException`, because you'll be able to find the exception in the log later, and it narrows down the place where it was thrown. Also, `IEDebug.Exception` creates a new `IEModException` and also logs it to the IE mod log, which is handy.
 
-You can use `UnityPrinter` to partially dump unity objects to file, including their Components and children. This is extremely helpful, especially when working with UI.
+You can use `UnityPrinter` to print unity object graphs. This is extremely helpful, especially when working with UI.
+
+When navigating the Component/GameObject graph, use the extension methods in `UnityObjectExtensions`. For example, instead of `GetComponent<T>` (provided by Unity), use `Component<T>`. This is because the `GetX` methods can easily return `null`, and leave you to figure out where the error occurred. Extension methods in `UnityObjectExtensions` don't return nulls and throw informative exceptions if an error has occurred.
 
 *More to come later*
-
-
 
 ## Modding Intro
 *Here I'll talk about how modding unity games works in general (what I've managed to figure out, anyway), and Pillars of Eternity in particular.*

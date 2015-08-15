@@ -159,9 +159,9 @@ namespace IEMod.Mods.UICustomization {
 		
 		private static GameObject
 			_actionBarTrimB;
+
 		#endregion
 
-	
 		private  static Texture DefaultActionBarAtlas;
 
 		public static string SelectedFrame;
@@ -271,7 +271,6 @@ namespace IEMod.Mods.UICustomization {
 			bx.AddComponent<UINoClick>().BlockClicking = true;
 			bx.AddComponent<UIEventListener>();
 			dpbImageButton.Label.Component<GUIStringLabel>().FormatString = "Customize UI";
-			bx.AddComponent<UIDragObject>().target = _customizeButton.transform;
 			_customizeButton.transform.localScale = new Vector3(0.7f, 0.7f, 1f);
 			_customizeButton.transform.localPosition = new Vector3(1742.5f, 1010.2f, -6.0f);
 			dpbImageButton.onClick += o => {
@@ -279,7 +278,6 @@ namespace IEMod.Mods.UICustomization {
 					SaveUi(IEModOptions.Layout);
 					dpbImageButton.Label.Component<GUIStringLabel>().FormatString = "Customize UI";
 					IEDebug.Log(_customizeButton.transform.localPosition);
-
 					IEDebug.Log(UnityPrinter.HierarchyPrinter.Print(_customizeButton));
 				} else {
 					ShowInterface();
@@ -508,7 +506,6 @@ namespace IEMod.Mods.UICustomization {
 					_bigMapTooltip.Component<UIAnchor>().pixelOffset = new Vector2(150f, -25f);
 			}
 		}
-
 
 		private static void SetButtonsBackgroundActive(bool? isInactive = null)
 		{		
