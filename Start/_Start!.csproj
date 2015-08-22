@@ -53,8 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\IEModVersion.cs">
-      <Link>Properties\IEModVersion.cs</Link>
+    <Compile Include="..\IEMod.SharedAttributes.cs">
+      <Link>Properties\IEMod.SharedAttributes.cs</Link>
     </Compile>
     <Compile Include="PathConsts.DoNotPush.cs" />
     <Compile Include="Program.cs" />

@@ -18,7 +18,7 @@ namespace Start {
 
 		static Program()
 		{
-			var log = new LoggerConfiguration().WriteTo.ColoredConsole().CreateLogger();
+			var log = new LoggerConfiguration().MinimumLevel.Verbose().WriteTo.ColoredConsole().CreateLogger();
 			Serilog.Log.Logger = log;
 		}
 		[STAThread]
@@ -106,10 +106,9 @@ namespace Start {
 
 			var log = 
 				new LoggerConfiguration()
-				.MinimumLevel.Information()
-				.WriteTo.ColoredConsole(LogEventLevel.Information)
+				.MinimumLevel.Debug()
+				.WriteTo.ColoredConsole(LogEventLevel.Debug)
 				.WriteTo.TextWriter(LogFile).CreateLogger();
-
 
 			//note: if you're going to be looking at this a lot, better set your console font to something snazzy
 			//(right click on titlebar, Default)
@@ -122,7 +121,7 @@ namespace Start {
 			var originalDllPath = Path.Combine(Paths.YourDllSourcesPath, "Assembly-CSharp.dll");
 
 			//+ Creating patcher
-			var patcher = new AssemblyPatcher(originalDllPath, ImplicitImportSetting.OnlyCompilerGenerated, Serilog.Log.Logger);
+			var patcher = new AssemblyPatcher(originalDllPath, ImplicitImportSetting.OnlyCompilerGenerated, Log);
 
 			//+ Patching assemblies
 			patcher.PatchAssembly(typeof (IEModType).Assembly.Location);
@@ -135,10 +134,9 @@ namespace Start {
 			patcher.WriteTo(copyToPath);
 			Console.WriteLine("Going to run PEVerify to check the IL for errors. Press ESC to cancel, or any other key to continue.");
 			if (Console.ReadKey().Key != ConsoleKey.Escape) {
-
-				
 				RunPEVerify(copyToPath);
 				//RunILSpy(copyToPath);
+				//RunILSpy(typeof (IEModType).Assembly.Location);
 			}
 		}
 
@@ -155,10 +153,15 @@ namespace Start {
 			//PEVerify checks both validity and verifiability. Verifiability is primarily a security matter
 			//it doesn't tell you which error is related to verifiability and which will just make the whole business fail to run.
 			//it is best practice to have as few verifiability errors as possible, even though the game is running at full trust.
+
+			//
 			var ignoreErrors = new string[] {
 				//Expected an ObjRef on the stack.(Error: 0x8013185E). 
-				//-a bunch of these are present in the original DLL. They are verifiability issues.
+				//-you can ignore the following. They are present in the original DLL. I'm not sure if they are actually errors.
 				"0x8013185E",
+				"0x801312BB",
+				"0x801312C2",
+				"0x80131274",
 				//The 'this' parameter to the call must be the calling method's 'this' parameter.(Error: 0x801318E1)
 				//-this isn't really an issue. PEV is just confused.
 				"0x801318E1",
@@ -173,14 +176,13 @@ namespace Start {
 				FileName = "cmd",
 				RedirectStandardOutput = true,
 				Arguments =
-					string.Format("/c \"\"{1}\" /il /verbose /hresult /ignore={2} \"{0}\"\"", path, Paths.PeVerifyPath,
+					string.Format("/c \"\"{1}\" /il /md /verbose /hresult /ignore={2} \"{0}\"\"", path, Paths.PeVerifyPath,
 						ignoreErrors.Join(","))
 			};
 			using (var process = Process.Start(info)) {
 				Log.Information("Running PEVerify.exe...");
 				Log.Information(process.StandardOutput.ReadToEnd());
 			}
-
 
 			Console.WriteLine("Press any key to close.");
 			Console.ReadKey();

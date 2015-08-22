@@ -2,6 +2,7 @@ using System;
 using System.CodeDom.Compiler;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Patchwork.Attributes;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
@@ -33,6 +34,7 @@ namespace IEMod.Helpers {
 			Log((object)string.Format(format, args));
 		}
 
+
 		public static IEModException Exception(Exception innerEx, string message, params object[] args) {
 			Log("!! EXCEPTION !!: " + message, args);
 			args = args ?? new object[] {};
@@ -57,7 +59,7 @@ namespace IEMod.Helpers {
 			}
 		}
 
-		private static void PrintException(IndentedTextWriter iWriter, Exception ex) {
+		private static void PrintExceptionWithoutTrace(IndentedTextWriter iWriter, Exception ex) {
 			if (ex == null) {
 				iWriter.WriteLine("(null)");
 				return;
@@ -76,24 +78,25 @@ namespace IEMod.Helpers {
 				}
 				iWriter.Indent--;
 			}
-			iWriter.WriteLine("Full Stack Trace:");
-			iWriter.Indent++;
-			PrintStackTrace(iWriter, new StackTrace(ex, true));
-			iWriter.Indent--;
 			iWriter.WriteLine("Inner Exception: ");
 			iWriter.Indent++;
-			PrintException(iWriter, ex.InnerException);
+			PrintExceptionWithoutTrace(iWriter, ex.InnerException);
 			iWriter.Indent--;
 		}
 
 		public static string PrintException(Exception ex) {
 			var strWriter = new StringWriter();
 			var indentedWriter = new IndentedTextWriter(strWriter);
-			PrintException(indentedWriter, ex);
-			indentedWriter.WriteLine(StackTraceUtility.ExtractStringFromException(ex));
+			PrintExceptionWithoutTrace(indentedWriter, ex);
+			indentedWriter.WriteLine("Unity Stack Trace:");
+			indentedWriter.Indent++;
+			var traceLines = StackTraceUtility.ExtractStringFromException(ex).Split(new[] {
+				"\r",
+				"\n"
+			}, StringSplitOptions.RemoveEmptyEntries);
+			traceLines.ToList().ForEach(indentedWriter.WriteLine);
 			indentedWriter.Flush();
 			strWriter.Flush();
-
 			return strWriter.ToString();
 		}
 

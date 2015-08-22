@@ -1,7 +1,7 @@
 ﻿using IEMod.Mods.Options;
 using Patchwork.Attributes;
 
-namespace IEMod.Mods.Religion {
+namespace IEMod.Mods.ReligionMod {
 	/// <summary>
 	/// Religion. Applies disposition-based bonuses to NPC Paladins (Faith and Conviction) and Priests (Holy Radiance)
 	/// </summary>
@@ -9,7 +9,7 @@ namespace IEMod.Mods.Religion {
 	public class mod_Religion : global::Religion
 	{
 		[ModifiesMember("GetCurrentBonusMultiplier")]
-		public float GetCurrentBonusMultiplierNew(global::CharacterStats stats, GenericAbility abilityOrigin)
+		public float GetCurrentBonusMultiplierNew(CharacterStats stats, GenericAbility abilityOrigin)
 		{
 			if (stats == null)
 			{

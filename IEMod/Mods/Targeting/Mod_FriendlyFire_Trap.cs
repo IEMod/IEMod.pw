@@ -1,3 +1,4 @@
+using IEMod.Mods.Options;
 using Patchwork.Attributes;
 using UnityEngine;
 
@@ -6,9 +7,8 @@ namespace IEMod.Mods.Targeting {
 	public class Mod_FriendlyFire_Trap : Trap
 	{
 		[ModifiesMember("CanActivate")]
-		private bool CanActivateNew(GameObject victim)
-		{
-			bool disableFriendlyFire = PlayerPrefs.GetInt("DisableFriendlyFire", 0) == 1;
+		private bool CanActivateNew(GameObject victim) {
+			bool disableFriendlyFire = IEModOptions.DisableFriendlyFire;
 
 			if (!this.m_trap_initialized)
 			{

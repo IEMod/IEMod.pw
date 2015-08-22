@@ -24,7 +24,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9E6FE0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{88191D81-6687-439B-A508-B5FDFC490339}"
 	ProjectSection(SolutionItems) = preProject
-		IEModVersion.cs = IEModVersion.cs
+		IEMod.SharedAttributes.cs = IEMod.SharedAttributes.cs
+		IEMod\Properties\IEMod.Version.cs = IEMod\Properties\IEMod.Version.cs
+		Patchwork\Patchwork.SharedAttributes.cs = Patchwork\Patchwork.SharedAttributes.cs
+		Patchwork\Patchwork.Attributes\Properties\Patchwork.Version.cs = Patchwork\Patchwork.Attributes\Properties\Patchwork.Version.cs
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patchwork.Tests.Patch", "Patchwork\Patchwork.Tests.Patch\Patchwork.Tests.Patch.csproj", "{9A1E9961-28B5-40B1-A04F-D46756746C88}"

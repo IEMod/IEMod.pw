@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Linq;
 using IEMod.Helpers;
+using IEMod.QuickControls;
+using IEMod.QuickControls.Controls;
 using Patchwork.Attributes;
 using UnityEngine;
 
@@ -33,48 +35,50 @@ namespace IEMod.Mods.Options {
 			public static bool ReadOnlyControls;
 		}
 		[NewMember]
-		private GameObject _blueCircles;
+		private QuickCheckbox _blueCircles;
 		[NewMember]
-		private GameObject _blueCirclesBg;
+		private QuickCheckbox _blueCirclesBg;
 		[NewMember]
-		private GameObject _alwaysShowCircles;
+		private QuickCheckbox _alwaysShowCircles;
 		[NewMember]
-		private GameObject _unlockCombatInv;
+		private QuickCheckbox _unlockCombatInv;
 		[NewMember]
-		private GameObject _fixBackerNames;
+		private QuickCheckbox _fixBackerNames;
 		[NewMember]
-		private GameObject _removeMovingRecovery;
+		private QuickCheckbox _removeMovingRecovery;
 		[NewMember]
-		private GameObject _fastSneak;
+		private QuickCheckbox _fastSneak;
 		[NewMember]
-		private GameObject _improvedAi;
+		private QuickCheckbox _improvedAi;
 		[NewMember]
-		private GameObject _disableFfCb;
+		private QuickCheckbox _disableFfCb;
 		[NewMember]
-		private GameObject _oneTooltip;
+		private QuickCheckbox _oneTooltip;
 		[NewMember]
-		private GameObject _disableEngagement;
+		private QuickCheckbox _disableEngagement;
 		[NewMember]
-		private GameObject _nerfedXpCmb;
+		private QuickDropdown<IEModOptions.NerfedXpTable> _nerfedXpCmb;
 		[NewMember]
-		private GameObject _lootShuffler;
+		private QuickCheckbox _lootShuffler;
 		[NewMember]
-		private GameObject _gameSpeed;
+		private QuickCheckbox _gameSpeed;
 		[NewMember]
-		private GameObject _combatOnly;
+		private QuickCheckbox _combatOnly;
 		[NewMember]
-		private GameObject _bonusSpellsPerDay;
+		private QuickCheckbox _bonusSpellsPerDay;
 		[NewMember]
-		private GameObject _targetTurnedEnemies;
+		private QuickCheckbox _targetTurnedEnemies;
 		[NewMember]
-		private GameObject _npcDispositionFix;
+		private QuickCheckbox _npcDispositionFix;
 		[NewMember]
-		private GameObject _perEncounterSpellsCmb;
+		private QuickDropdown<IEModOptions.PerEncounterSpells> _perEncounterSpellsCmb;
 		[NewMember]
-		private GameObject _extraGrimoireSpellsCmb;
+		private QuickDropdown<IEModOptions.ExtraSpellsInGrimoire> _extraGrimoireSpellsCmb;
 		[NewMember]
-		private GameObject _autosaveCmb;
+		private QuickDropdown<IEModOptions.AutoSaveSetting> _autosaveCmb;
 
+		[NewMember]
+		private QuickCheckbox _disableBackerDialog;
 		
 		[NewMember]
 		[DuplicatesBody("Start")]
@@ -89,21 +93,18 @@ namespace IEMod.Mods.Options {
 					opt => opt.Checkbox && opt.BoolSuboption == GameOption.BoolOption.SCREEN_EDGE_SCROLLING)
 					.transform;
 
-			var exampleDropdown = this.ResolutionDropdown.transform.parent;
+			Prefabs.QuickCheckbox = exampleCheckbox.Component<UIOptionsTag>();
+			Prefabs.QuickDropdown = ResolutionDropdown.transform.parent.gameObject;
+			Prefabs.QuickButton = UIOptionsManager.Instance.PageButtonPrefab.gameObject;
+			Prefabs.QuickPage = Pages[5];
+
 			var pageParent = Pages[5].transform.parent;
 
-			var controlFactory = new IEControlFactory {
-				ExampleCheckbox = exampleCheckbox.Component<UIOptionsTag>(),
-				ExamplePage = Pages[5],
-				CurrentParent = pageParent,
-				ExampleDropdown = exampleDropdown.Component<UIOptionsTag>()
-			};
-
-			var ieModOptions = controlFactory.Page("IEModOptions");
-			var ieModDisposition = controlFactory.Page("IEModOptions_Disposition");
+			var ieModOptions = new QuickPage(pageParent, "IEModOptions_Settings_Page");
+			var ieModDisposition = new QuickPage(pageParent, "IEModOptions_Disposition_Page");
 			Pages = Pages.Concat(new[] {
-				ieModOptions,
-				ieModDisposition
+				ieModOptions.GameObject,
+				ieModDisposition.GameObject
 			}).ToArray();
 
 			//don't touch this
@@ -113,93 +114,135 @@ namespace IEMod.Mods.Options {
 			this.LoadButton.onClick = (UIEventListener.VoidDelegate) Delegate.Combine(this.LoadButton.onClick, new UIEventListener.VoidDelegate(this.OnLoadClicked));
         
 			this.m_Options = this.ComponentsInDescendants<UIOptionsTag>(true);
+
+			var quickFactory = new QuickFactory() {
+				CurrentParent = Pages[7].transform
+			};
+
 			// end
 			//File.WriteAllText("ComboboxDump.txt", UnityObjectDumper.PrintUnityGameObject(exampleDropdown.gameObject, null, x => false));
-			controlFactory.CurrentParent = Pages[7].transform;
-			
+			quickFactory.CurrentParent = Pages[7].transform;
 			//The following are the controls that appear in the GUI of the mod.
-			_oneTooltip = controlFactory.Checkbox(() => IEModOptions.OneTooltip);
-			_oneTooltip.transform.localPosition = new Vector3(-210, 330, 0);
+			_oneTooltip = quickFactory.Checkbox(() => IEModOptions.OneTooltip);
+			_oneTooltip.Transform.localPosition = new Vector3(-210, 330, 0);
 
-			_disableEngagement = controlFactory.Checkbox(() => IEModOptions.DisableEngagement);
-			_disableEngagement.transform.localPosition = new Vector3(-210, 300, 0);
+			_disableEngagement = quickFactory.Checkbox(() => IEModOptions.DisableEngagement);
+			_disableEngagement.LocalPosition = new Vector3(-210, 300, 0);
 
-			_blueCircles = controlFactory.Checkbox(() => IEModOptions.BlueCircles);
-			_blueCircles.transform.localPosition = new Vector3(-210, 270, 0);
-		    
-			_blueCirclesBg = controlFactory.Checkbox(() => IEModOptions.BlueCirclesBG);
-			_blueCirclesBg.transform.localPosition = new Vector3(-180, 240, 0);
+			_blueCircles = quickFactory.Checkbox(() => IEModOptions.BlueCircles);
+			_blueCircles.Transform.localPosition = new Vector3(-210, 270, 0);
 
-			_alwaysShowCircles = controlFactory.Checkbox(() => IEModOptions.AlwaysShowCircles);
-			_alwaysShowCircles.transform.localPosition = new Vector3(-210, 210, 0);
+			_blueCirclesBg = quickFactory.Checkbox(() => IEModOptions.BlueCirclesBG);
+			_blueCirclesBg.Transform.localPosition = new Vector3(-180, 240, 0);
 
-			_unlockCombatInv = controlFactory.Checkbox(() => IEModOptions.UnlockCombatInv);
-			_unlockCombatInv.transform.localPosition = new Vector3(-210, 180, 0);
+			_blueCircles.IsChecked.HasChanged += x => {
+				if (x.Value) {
+					_blueCirclesBg.OptionsTagComponent.Enable();
+				} else {
+					_blueCirclesBg.IsChecked.Value = false;
+					_blueCirclesBg.OptionsTagComponent.Disable();
+				}
+			};
+			_blueCircles.IsChecked.NotifyChange();
 
-			_fixBackerNames = controlFactory.Checkbox(() => IEModOptions.FixBackerNames);
-			_fixBackerNames.transform.localPosition = new Vector3(-210, 150, 0);
+			_alwaysShowCircles = quickFactory.Checkbox(() => IEModOptions.AlwaysShowCircles);
+			_alwaysShowCircles.Transform.localPosition = new Vector3(-210, 210, 0);
 
-			_removeMovingRecovery = controlFactory.Checkbox(() => IEModOptions.RemoveMovingRecovery);
-			_removeMovingRecovery.transform.localPosition = new Vector3(-210, 120, 0);
+			_unlockCombatInv = quickFactory.Checkbox(() => IEModOptions.UnlockCombatInv);
+			_unlockCombatInv.Transform.localPosition = new Vector3(-210, 180, 0);
 
-			_fastSneak = controlFactory.Checkbox(() => IEModOptions.FastSneak);
-			_fastSneak.transform.localPosition = new Vector3(-210, 90, 0);
+			_disableBackerDialog = quickFactory.Checkbox(() => IEModOptions.DisableBackerDialogs);
+			_disableBackerDialog.Transform.localPosition = new Vector3(230, 120, 0);
 
-			_improvedAi = controlFactory.Checkbox(() => IEModOptions.ImprovedAI);
-			_improvedAi.transform.localPosition = new Vector3(-210, 60, 0);
+			_fixBackerNames = quickFactory.Checkbox(() => IEModOptions.FixBackerNames);
+			_fixBackerNames.IsChecked.OnChange(v => {
+				if (v.Value) {
+					_disableBackerDialog.OptionsTagComponent.Enable();
+				} else {
+					_disableBackerDialog.IsChecked.Value = false;
+					_disableBackerDialog.OptionsTagComponent.Disable();
+				}
+			});
+			_fixBackerNames.Transform.localPosition = new Vector3(210, 150, 0);
 
-			_disableFfCb = controlFactory.Checkbox(() => IEModOptions.DisableFriendlyFire);
-			_disableFfCb.transform.localPosition = new Vector3(-210, 30, 0);
 
-			_lootShuffler = controlFactory.Checkbox(() => IEModOptions.LootShuffler);
-			_lootShuffler.transform.localPosition = new Vector3(210, 300, 0);
 
-			_gameSpeed = controlFactory.Checkbox(() => IEModOptions.GameSpeedMod);
-			_gameSpeed.transform.localPosition = new Vector3(210, 270, 0);
+			_npcDispositionFix = quickFactory.Checkbox(() => IEModOptions.NPCDispositionFix);
+			_npcDispositionFix.Transform.localPosition = new Vector3(-210, 150, 0);
 
-			_combatOnly = controlFactory.Checkbox(() => IEModOptions.CombatOnlyMod);
-			_combatOnly.transform.localPosition = new Vector3(210, 240, 0);
+			_removeMovingRecovery = quickFactory.Checkbox(() => IEModOptions.RemoveMovingRecovery);
+			_removeMovingRecovery.Transform.localPosition = new Vector3(-210, 120, 0);
 
-			_bonusSpellsPerDay = controlFactory.Checkbox(() => IEModOptions.BonusSpellsPerDay);
-			_bonusSpellsPerDay.transform.localPosition = new Vector3(210, 210, 0);
+			_fastSneak = quickFactory.Checkbox(() => IEModOptions.FastSneak);
+			_fastSneak.Transform.localPosition = new Vector3(-210, 90, 0);
 
-			_targetTurnedEnemies = controlFactory.Checkbox(() => IEModOptions.TargetTurnedEnemies);
-			_targetTurnedEnemies.transform.localPosition = new Vector3(210, 180, 0);
+			_improvedAi = quickFactory.Checkbox(() => IEModOptions.ImprovedAI);
+			_improvedAi.Transform.localPosition = new Vector3(-210, 60, 0);
+
+			_disableFfCb = quickFactory.Checkbox(() => IEModOptions.DisableFriendlyFire);
+			_disableFfCb.Transform.localPosition = new Vector3(-210, 30, 0);
+
+			_lootShuffler = quickFactory.Checkbox(() => IEModOptions.LootShuffler);
+			_lootShuffler.Transform.localPosition = new Vector3(210, 300, 0);
+
+			_gameSpeed = quickFactory.Checkbox(() => IEModOptions.GameSpeedMod);
+			_gameSpeed.Transform.localPosition = new Vector3(210, 270, 0);
+
+			_combatOnly = quickFactory.Checkbox(() => IEModOptions.CombatOnlyMod);
+			_combatOnly.Transform.localPosition = new Vector3(210, 240, 0);
+
+			_bonusSpellsPerDay = quickFactory.Checkbox(() => IEModOptions.BonusSpellsPerDay);
+			_bonusSpellsPerDay.Transform.localPosition = new Vector3(210, 210, 0);
+
+			_targetTurnedEnemies = quickFactory.Checkbox(() => IEModOptions.TargetTurnedEnemies);
+			_targetTurnedEnemies.Transform.localPosition = new Vector3(210, 180, 0);
+		
 			
-			_npcDispositionFix = controlFactory.Checkbox(() => IEModOptions.NPCDispositionFix);
-			_npcDispositionFix.transform.localPosition = new Vector3(210, 150, 0);
-			
-			_nerfedXpCmb = controlFactory.EnumBoundDropdown(() => IEModOptions.NerfedXPTableSetting, 515, 300);
-			_nerfedXpCmb.transform.localPosition = new Vector3(-80, -70, 0);
+			_nerfedXpCmb = quickFactory.EnumDropdown(() => IEModOptions.NerfedXPTableSetting);
+			_nerfedXpCmb.Width = 515;
+			_nerfedXpCmb.LabelWidth = 300;
+			_nerfedXpCmb.LocalPosition = new Vector3(-80, -70, 0);
 
-			_perEncounterSpellsCmb = controlFactory.EnumBoundDropdown(() => IEModOptions.PerEncounterSpellsSetting, 515, 300);
-			_perEncounterSpellsCmb.transform.localPosition = new Vector3(-80, -110, 0);
+			_perEncounterSpellsCmb = quickFactory.EnumDropdown(() => IEModOptions.PerEncounterSpellsSetting);
+			_perEncounterSpellsCmb.LabelWidth = 300;
+			_perEncounterSpellsCmb.Width = 515;
+			_perEncounterSpellsCmb.LocalPosition = new Vector3(-80, -110, 0);
 
-			_extraGrimoireSpellsCmb = controlFactory.EnumBoundDropdown(() => IEModOptions.ExtraWizardSpells, 515, 300);
-			_extraGrimoireSpellsCmb.transform.localPosition = new Vector3(-80, -150, 0);
+			_extraGrimoireSpellsCmb = quickFactory.EnumDropdown(() => IEModOptions.ExtraWizardSpells);
+			_extraGrimoireSpellsCmb.Width = 515;
+			_extraGrimoireSpellsCmb.LabelWidth = 300;
+			_extraGrimoireSpellsCmb.Transform.localPosition = new Vector3(-80, -150, 0);
 
-			_autosaveCmb = controlFactory.EnumBoundDropdown(() => IEModOptions.AutosaveSetting, 515, 300);
-			_autosaveCmb.transform.localPosition = new Vector3(-80, -30, 0);
+			_autosaveCmb = quickFactory.EnumDropdown(() => IEModOptions.AutosaveSetting);
+			_autosaveCmb.Width = 515;
+			_autosaveCmb.LabelWidth = 300;
+			_autosaveCmb.Transform.localPosition = new Vector3(-80, -30, 0);
 
 			// add autosave settings
 			// end of adding checkbox
 
 			// Pallegina dispositions mod page
+			quickFactory.CurrentParent = ieModDisposition.Transform;
 
-			controlFactory.CurrentParent = ieModDisposition.transform;
-			var favoredDisposition1 = controlFactory.EnumBoundDropdown(() => IEModOptions.PalleginaFavored1,
-				150,
-				300);
-			favoredDisposition1.transform.localPosition = new Vector3(-60, 300, 0);
+			var favoredDisposition1 = quickFactory.EnumDropdown(() => IEModOptions.PalleginaFavored1);
+			favoredDisposition1.Width = 150;
+			favoredDisposition1.LabelWidth = 300;
+			favoredDisposition1.LocalPosition = new Vector3(-60, 300, 0);
 
-			var favoredDisposition2 = controlFactory.EnumBoundDropdown(() => IEModOptions.PalleginaFavored2, 150, 0);
-			favoredDisposition2.transform.localPosition = new Vector3(100, 300, 0);
+			var favoredDisposition2 = quickFactory.EnumDropdown(() => IEModOptions.PalleginaFavored2);
+			favoredDisposition2.LabelWidth = 0;
+			favoredDisposition2.Width = 150;
+			favoredDisposition2.LocalPosition = new Vector3(100, 300, 0);
 
-			var disDisposition1 = controlFactory.EnumBoundDropdown(() => IEModOptions.PalleginaDisfavored1,150, 300);
-			disDisposition1.transform.localPosition = new Vector3(-60, 250, 0);
+			var disDisposition1 = quickFactory.EnumDropdown(() => IEModOptions.PalleginaDisfavored1);
+			disDisposition1.Width = 150;
+			disDisposition1.LabelWidth = 300;
+			disDisposition1.LocalPosition = new Vector3(-60, 250, 0);
 
-			var disDisposition2 = controlFactory.EnumBoundDropdown(() => IEModOptions.PalleginaDisfavored2, 150, 0);
-			disDisposition2.transform.localPosition = new Vector3(100, 250, 0);
+			var disDisposition2 = quickFactory.EnumDropdown(() => IEModOptions.PalleginaDisfavored2);
+			disDisposition2.LocalPosition = new Vector3(100, 250, 0);
+			disDisposition2.LabelWidth = 0;
+			disDisposition2.Width = 150;
 			
 			//END OF CONTROL DEFINITIONS. The rest is built in stuff that needs to happen after creating all of our controls.
 			this.PageButtonGroup.OnRadioSelectionChangedEvent += new UIRadioButtonGroup.RadioSelectionChanged(this.OnChangePage); // changed to Event

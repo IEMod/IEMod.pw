@@ -33,11 +33,36 @@ namespace IEMod.Helpers {
 			if (asIEString != null) {
 				asIEString.Unregister();
 			}
-
 		}
+
 		public static Vector3 ScaleBy(this Vector3 self, float scalar) {
 			self.Set(self.x * scalar, self.y * scalar, self.z * scalar);
 			return self;
+		}
+
+		/// <summary>
+		/// Destroys components of the specified type, with the specified name.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="self"></param>
+		/// <param name="newState"></param>
+		public static void SetBehaviors<T>(this GameObject self, bool newState) where T : Behaviour {
+			var components = self.Components<T>().ToList();
+			if (components.Count == 0) {
+				IEDebug.Log(null, "WARNING: In GameObject {0}, told to set behaviors of type {1} to {2}, but no behaviors of this type were found.", self.name, typeof(T), newState);
+				return;
+			}
+			components.ForEach(x => x.enabled = newState);
+		}
+
+		public static void AddChild(this GameObject self, GameObject child) {
+			child.transform.parent = self.transform;
+		}
+
+		public static void AssertAlive(this GameObject o) {
+			if (o == null) {
+				throw IEDebug.Exception(null, "An attempt was made to access a GameObject, but it has been destroyed.");
+			}
 		}
 
 		/// <summary>
@@ -97,11 +122,11 @@ namespace IEMod.Helpers {
 		 
 		public static T Component<T>(this GameObject o) where T : Component {
 			if (o == null) {
-				throw IEDebug.Exception(null, "GameObject cannot be null.");
+				throw IEDebug.Exception(null, $"When trying to get component of type {typeof(T)}: GameObject cannot be null.");
 			}
 			var components = o.Components<T>();
 			if (components.Length > 1 || components.Length == 0) {
-				IEDebug.Log(UnityPrinter.ShallowPrinter.Print(o));
+				UnityPrinter.ShallowPrinter.Print(o);
 				throw IEDebug.Exception(null, "GameObject '{0}' has {1} components of type {2}, but told to pick exactly one.",
 					o.name, components.Length, typeof (T));
 			}
@@ -129,6 +154,13 @@ namespace IEMod.Helpers {
 			return o.GetComponentsInChildren<T>(inactive);
 		}
 
+		/// <summary>
+		/// Also returns components in Self.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="o"></param>
+		/// <param name="inactive"></param>
+		/// <returns></returns>
 		public static T ComponentInDescendants<T>(this GameObject o, bool inactive = true) where T : Component {
 			if (o == null) {
 				throw IEDebug.Exception(null, "GameObject cannot be null.");
@@ -158,6 +190,10 @@ namespace IEMod.Helpers {
 			return o.gameObject.Component<T>();
 		}
 
+		public static bool HasComponent<T>(this Component o) where T : Component {
+			return o.gameObject.HasComponent<T>();
+		}
+
 		/// <summary>
 		/// Returns a child with this name.
 		/// </summary>
@@ -166,6 +202,10 @@ namespace IEMod.Helpers {
 		/// <returns></returns>
 		public static GameObject Child(this Component c, string name) {
 			return c.gameObject.Child(name);
+		}
+
+		public static GameObject Child(this Component c, int n) {
+			return c.gameObject.Child(n);
 		}
 
 
@@ -181,7 +221,7 @@ namespace IEMod.Helpers {
 			}
 			var seq = o.Children().Where(x => x.gameObject.name == name).ToList();
 			if (seq.Count == 0 || seq.Count > 1) {
-				IEDebug.Log(UnityPrinter.ShallowPrinter.Print(o));
+				UnityPrinter.ShallowPrinter.Print(o);
 				throw IEDebug.Exception(null, 
 					"GameObject '{0}' has {1} children with the name '{2}', but told to pick exactly one.", o.name, seq.Count, name);
 			}

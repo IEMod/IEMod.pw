@@ -1,7 +1,6 @@
 # IEMod<sub>pw</sub> <a href="https://gitter.im/GregRos/Patchwork"><img style="float: right" src="https://badges.gitter.im/Join%20Chat.svg"/></a>
 
-**IEMod<sub>pw</sub> Version/Patchwork Version:** 0.7.5/0.5
-
+**IEMod<sub>pw</sub> Version/Patchwork Version:** 0.7.5/0.5.5
 
 *Also stylized __IEMod.pw__ in  places that don't support subscripts*.
 
@@ -20,24 +19,40 @@ These are additional mods to the game, beyond the functionality of the original 
 ### Target Turned Enemies
 I've added an option called *"target turned enemies"* that makes enemies that have switched allegiance due to e.g. dominate, confusion, etc. to be considered hostile against your attacks. I always hated how being a little confused gave your enemies miraculous defensive benefits.
 
+### Minimize Intrusive Backer Elements
+This is probably the most requested feature I've seen. Many people find some backer NPCs and Tombstones to be intrusive. I've provided a few options to fix that.
+
+1. **Disable Backer Dialogs:** If this option is chosen, you can no longer "talk" to backer NPCs (experience their backstory). This option existed in the mod before, but was kind of hidden. Also, backer NPCs will no longer have gold nameplates.
+
+
 ### UI Customization
-There is a button on the upper right hand side of your screen that lets you customize the UI. Customizing the UI also allows you to drag this button somewhere else if you like.
+1. You can access the UI customization from a button in the UI. This button is draggable as well in UI customization mode.
+3. Turned the frame selection feature into a dropdown instead of many separate buttons. Also easier to add your own frames, since no changes to the code are necessary (you just add the appropriate files to the `iemod/frames` folder, and that's it).
+2. Added a checkbox for enabling tooltip offset. This nudges the enemy tooltip that appears in the upper left hand corner to the right, so it's not blocked by other UI elements. It was an already present but somewhat hidden feature.
+4. Restoring defaults happens instantly. You don't leave the UI customization menu or need to reload.
+5. Fixed various small bugs people have had with the system. 
+6. A few other small changes.
 
-Changed the interface somewhat.
-
-Most of the code has been changed, though this isn't visible at this point. Largely changed the code so it's easier to fix later on, and it's also more readable. 
-
-### Console
-1. `ShowMouseDebug` enables a basic debug display for what is under the cursor.
-2. `DeleteIEModSettings` deletes all of the current IEMod version's custom settings. In order to reset everything to default, you'll have to restart the game.
+### Console Commands
+1. `ShowMouseDebug` toggles debug information for what's under the cursor (this is something that was already in the game's code). There isn't much information. I'll probably expand it later on. You can use it to get the IDs of characters instead of using `FindCharacter`.
+2. `ClearAllSettings true` clears all settings, including mod and game settings. 
 
 ## Code Injection
 See the [Patchwork library](https://github.com/GregRos/Patchwork) for more information. Patchwork is made part of this repository as a sub-module (basically a kind of sub-project).
 
 ## UI Creation
+UI Creation uses a system I call `QuickControls`. These are thin wrappers around the game's Unity controls (generally implemented as complicated `GameObjects`). I've implemented a checkbox, a dropdown, and a button. There are several reasons to use these controls:
+
+1. They let you 
+
+
 The options/settings of the mod are handled in the folder `IEMod\Mods\Options`.
 
 Previously, UI creation was pretty convoluted and involved *a lot* of repetition. It also involved working around rather inconvenient (for us) features, such as language-specific string tables, and a pretty confusing GameObject and Component hierarchy. 
+
+The new setup works using `QuickControls`. These are thin wrappers around the game's UI controls that are geared towards easy manipulation through code, rather than an editor. 
+
+They're called "quick" because you can use them with little effort on your part. Also, as is implied, they expose pretty limited functionality.
 
 Of course, some of that still happens, but somewhere far away from you.
 
@@ -74,7 +89,16 @@ The methods for creating controls take an `Expression` parameter. An expression 
 
 By the way, binding means that once the control is changed, the property/field is changed as well. Unfortunately, it doesn't work the other way around, at least not at this point.
 
-## Debugging Tips
+## Data Binding
+The UI toolkit supports a simple form of data binding. Data binding is when the values of two members are bound together, so that a change in one affects the other. Typically, it is used to bind properties of UI elements (such as a checkbox's `IsChecked` property) to application settings.
+
+Data binding makes use the of `Binder` abstract class, which supplies data binding services. 
+
+## Modding Tips
+
+### Debugging
+
+#### General Advice
 Debugging mods like this one is hard. It's possible to debug Unity applications (attach a debugger to them, I mean), it's possible to debug modified assemblies, and it's possible to debug assemblies you don't have any debug symbols for. Unfortunately, there is no tool that allows you to debug all three, and I have no idea how to make one.
 
 Debugging involves printouts and using the logs. The game's default debug log is in `PillarsOfEternity_Data\output_log.txt`. Crash reports, which include additional data like memory dumps, are filed in the main folder. The game only crashed when something really nasty happens, and most exceptions (including things like `NullReferenceException` and even `InvalidProgramException`) are just logged, and the show goes on. Usually, things like weird graphical glitches, disappearing text, and so on, indicate that an exception has been thrown.
@@ -85,11 +109,15 @@ Because debugging is so difficult, your best bet is to check things carefully. C
 
 Nulls in particular are your worst enemy. Try to avoid using them as much as possible.
 
+#### Features
+
 It's best to throw `IEModException`, because you'll be able to find the exception in the log later, and it narrows down the place where it was thrown. Also, `IEDebug.Exception` creates a new `IEModException` and also logs it to the IE mod log, which is handy.
 
 You can use `UnityPrinter` to print unity object graphs. This is extremely helpful, especially when working with UI.
 
 When navigating the Component/GameObject graph, use the extension methods in `UnityObjectExtensions`. For example, instead of `GetComponent<T>` (provided by Unity), use `Component<T>`. This is because the `GetX` methods can easily return `null`, and leave you to figure out where the error occurred. Extension methods in `UnityObjectExtensions` don't return nulls and throw informative exceptions if an error has occurred.
+
+Use the `QuickControl` system instead of working with raw GameObjects. These are thin wrappers around UI GameObjects that give you access to common components, as well as improved error detection.
 
 *More to come later*
 

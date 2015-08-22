@@ -1,13 +1,13 @@
 using System;
 using System.IO;
-using IEMod.Mods.ConsoleMod;
+using IEMod.Mods.BackerStuff;
 using IEMod.Mods.DropButtonMod;
 using IEMod.Mods.Options;
 using IEMod.Mods.UICustomization;
 using Patchwork.Attributes;
 using UnityEngine;
 
-namespace IEMod.Mods.GameStateMod {
+namespace IEMod.Mods.OnLevelLoad {
 	[ModifiesType]
 	public  class mod_GameState : global::GameState
 	{
@@ -132,7 +132,7 @@ namespace IEMod.Mods.GameStateMod {
 				UICustomizer.LoadLayout(IEModOptions.Layout);
 			}
 
-			mod_CommandLine.FixBackerNames(IEModOptions.FixBackerNames);
+			BackerNamesMod.FixBackerNames(IEModOptions.FixBackerNames);
 			// end of added code
 		}
 	}

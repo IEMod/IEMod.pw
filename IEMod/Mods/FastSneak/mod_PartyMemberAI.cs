@@ -11,23 +11,11 @@ namespace IEMod.Mods.FastSneak {
 	[ModifiesType]
 	public class mod_PartyMemberAI : PartyMemberAI
 	{
-		// Used to generate IL to call AIController.Update() without virtual dispatch
-		// (i.e. the equivalent of base.Update() from a subclass's overridden Update() method)
-		public class Mod_FastSneak_AIController_Dummy : AIController {
-			public override void Update() {
-				base.Update();
-			}
-
-			public override void InitAI() {
-				throw new NotImplementedException();
-			}
-		}
-
 		[NewMember]
-		[DuplicatesBody(methodName: "Update", sourceType: typeof(Mod_FastSneak_AIController_Dummy))]
+		[MemberAlias("Update", typeof(AIController), AliasCallMode.NonVirtual)]
 		private void BaseUpdate()
 		{
-			// will be filled with ModFastSneak03.Update() IL generated above
+			//A call to this method will be translated to a "base.Update()" call in the target assembly.
 		}
 
 		[ModifiesMember("Update")]

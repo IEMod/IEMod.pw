@@ -1,3 +1,4 @@
+using IEMod.Mods.Options;
 using Patchwork.Attributes;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ namespace IEMod.Mods.Targeting {
 		[ModifiesMember("AdjustDamageDealt")]
 		public void AdjustDamageDealtNew(GameObject enemy, ref DamageInfo damage)
 		{
-			bool disableFriendlyFire = PlayerPrefs.GetInt("DisableFriendlyFire", 0) == 1;
+			bool disableFriendlyFire = IEModOptions.DisableFriendlyFire;
 			float statDamageHealMultiplier = this.StatDamageHealMultiplier;
 			damage.DamageMult(statDamageHealMultiplier);
 			var z = this.OnPreDamageDealt;

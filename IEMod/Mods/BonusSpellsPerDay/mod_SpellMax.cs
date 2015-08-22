@@ -1,3 +1,4 @@
+using IEMod.Mods.Options;
 using Patchwork.Attributes;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace IEMod.Mods.BonusSpellsPerDay {
 		public int GetSpellCastMaxNew(GameObject caster, int spellLevel)
 		{
 			int num = 2147483647;
-			bool calcBonusSpells = PlayerPrefs.GetInt("BonusSpellsPerDay", 0) != 0;
+			bool calcBonusSpells = IEModOptions.BonusSpellsPerDay;
 
 			if (caster != null && spellLevel >= 1)
 			{

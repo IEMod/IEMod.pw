@@ -98,16 +98,18 @@ namespace IEMod.Helpers {
 					_writer.WriteLine("(null)");
 					return;
 				}
-				_writer.WriteLine("{0} : {1}", o.GetType(), o.name);
+				_writer.Write("{0} : {1}", o.GetType(), o.name);
 				if (_visited.ContainsKey(o)) {
-					_writer.Write(" (already dumped)");
+					_writer.WriteLine(" (already dumped)");
 					return;
 				}
 				if (recursionDepth >= _parent.MaxRecursionDepth) {
-					_writer.Write(" (recursion depth exceeded)");
+					_writer.WriteLine(" (recursion depth exceeded)");
 					return;
-				} 
+				}
+				_writer.WriteLine();
 				_writer.Indent++;
+				_writer.WriteLine($"Parent: {o.transform.parent?.name}");
 				_writer.WriteLine("Components:");
 				_writer.Indent++;
 
@@ -196,6 +198,15 @@ namespace IEMod.Helpers {
 		};
 
 		/// <summary>
+		/// Preconfigured printer that fully expands the object's components, but does not expand its children.
+		/// </summary>
+		public static readonly UnityPrinter ComponentPrinter = new UnityPrinter() {
+			ComponentFilter = x => true,
+			MaxRecursionDepth = 1,
+			MillisecondInterval = 1000
+		};
+
+		/// <summary>
 		/// Use the initializer syntax to set properties.
 		/// </summary>
 		public UnityPrinter() {
@@ -205,7 +216,11 @@ namespace IEMod.Helpers {
 			MillisecondInterval = 0;
 		}
 
-		public string Print(Object o) {
+		public void Print(Object o) {
+			IEDebug.Log(PrintString(o));
+		}
+
+		public string PrintString(Object o) {
 			var newTime = TimeSpan.FromTicks(Environment.TickCount).TotalMilliseconds;
 			if (_timestamps.ContainsKey(o)) {
 				var lastTime = _timestamps[o];

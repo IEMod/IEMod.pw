@@ -76,37 +76,6 @@ namespace IEMod.Mods.ConsoleMod {
 		[NewMember]
 		public  static UITexture GameBrowserBackground;
 
-		//_bottom.GetChild(4).GetChild(0).GetChild(0).GetChild(1).GetChild(0)
-		/* UICamera
-		 5. Overlay
-			2. MapTooltips
-		 *		1. BigTooltip
-		 6. HUD
-				12. Bottom
-					2. PartyBarWindow
-						1. PartyBar
-							0. PartyPortraitBar
-							x. PartyPortrait(Clone) [many of these]
-								?. StupidPanelBack [index changes] <-- this is the portrait highlight thing
-		 *	
-				4. ActionBarWindow
-					0. ActionBar
-						0. ButtonsLeft
-							1. "01.attack"
-								0. Icon
-						1. ButtonsRight
-		 *		
-							
-		
-		*/
-		//GetChild(6) = HUD
-			//GetChild(12) = Bottom
-				//
-		// ReSharper disable FieldCanBeMadeReadOnly.Local
-
-
-		//party portraits are contained here
-
 		[NewMember]
 		public  static void ExtractMemorials()
 		{
@@ -120,13 +89,13 @@ namespace IEMod.Mods.ConsoleMod {
 		[NewMember]
 		public  static void CC()
 		{
-			GameState.s_playerCharacter.Component<Mover>().UseWalkSpeed();
+			GameState.s_playerCharacter.GetComponent<Mover>().UseWalkSpeed();
 		}
 
 		[NewMember]
 		public  static void SetDefaultZoom(float value)
 		{
-			PlayerPrefs.SetFloat("DefaultZoom", value);
+			IEModOptions.Layout.DefaultZoom = value;
 			global::Console.AddMessage("Default zoom set to: " + value + ". Reminder: game's vanilla value is 1.");
 		}
 
@@ -134,11 +103,11 @@ namespace IEMod.Mods.ConsoleMod {
 		public  static void DisableBackerDialogues(bool state)
 		{
 			if (state) {
-				IEModOptions.DisableBackerDialog = true;
+				IEModOptions.DisableBackerDialogs = true;
 				global::Console.AddMessage("If you're using the \"Rename backers\" mod, backer dialogues will now be DISABLED as soon as you transition to another area or reload a save.");
 			}
 			else {
-				IEModOptions.DisableBackerDialog = false;
+				IEModOptions.DisableBackerDialogs = false;
 				global::Console.AddMessage("Backer dialogues will now be ENABLED as soon as you transition to another area or reload a save.");
 			}
 		}
@@ -179,7 +148,7 @@ namespace IEMod.Mods.ConsoleMod {
 
 			foreach (var partymember in PartyMemberAI.PartyMembers)
 			{
-				if (partymember != null && RemoveDiacritics(partymember.gameObject.Component<CharacterStats>().Name()).Contains(charname))
+				if (partymember != null && RemoveDiacritics(partymember.gameObject.GetComponent<CharacterStats>().Name()).Contains(charname))
 					npc = partymember.gameObject;
 			}
 
@@ -200,7 +169,7 @@ namespace IEMod.Mods.ConsoleMod {
 					object newclassobj = Enum.Parse(typeof(global::Religion.Deity), godname);
 					int newGodId = Convert.ToInt32(newclassobj);
 
-					npc.Component<CharacterStats>().Deity = (global::Religion.Deity)newGodId;
+					npc.GetComponent<CharacterStats>().Deity = (global::Religion.Deity)newGodId;
 
 					global::Console.AddMessage("Deity assigned.", Color.green);
 				}
@@ -216,7 +185,7 @@ namespace IEMod.Mods.ConsoleMod {
 
 			foreach (var partymember in PartyMemberAI.PartyMembers)
 			{
-				if (partymember != null && RemoveDiacritics(partymember.gameObject.Component<CharacterStats>().Name()).Contains(charname))
+				if (partymember != null && RemoveDiacritics(partymember.gameObject.GetComponent<CharacterStats>().Name()).Contains(charname))
 					npc = partymember.gameObject;
 			}
 
@@ -237,7 +206,7 @@ namespace IEMod.Mods.ConsoleMod {
 					object newclassobj = Enum.Parse(typeof(global::Religion.PaladinOrder), ordername);
 					int newOrderId = Convert.ToInt32(newclassobj);
 
-					npc.Component<CharacterStats>().PaladinOrder = (global::Religion.PaladinOrder)newOrderId;
+					npc.GetComponent<CharacterStats>().PaladinOrder = (global::Religion.PaladinOrder)newOrderId;
 
 					global::Console.AddMessage("Paladin order assigned.", Color.green);
 				}
@@ -272,7 +241,7 @@ namespace IEMod.Mods.ConsoleMod {
 
 			foreach (var partymember in PartyMemberAI.PartyMembers)
 			{
-				if (partymember != null && RemoveDiacritics(partymember.gameObject.Component<CharacterStats>().Name()).Contains(charname))
+				if (partymember != null && RemoveDiacritics(partymember.gameObject.GetComponent<CharacterStats>().Name()).Contains(charname))
 					npc = partymember.gameObject;
 			}
 
@@ -280,7 +249,7 @@ namespace IEMod.Mods.ConsoleMod {
 			{
 				bool removedSomething = false;
 
-				CharacterStats stats = npc.Component<CharacterStats>();
+				CharacterStats stats = npc.GetComponent<CharacterStats>();
 				for (int i = stats.ActiveTalents.Count - 1; i > -1; i--)
 				{
 					if (stats.ActiveTalents[i].gameObject.name.Contains(abilname))
@@ -370,17 +339,26 @@ namespace IEMod.Mods.ConsoleMod {
 			GameObject sagani = UnityEngine.GameObject.Find(guid);
 			if (sagani != null)
 			{
-				for (int i = sagani.Component<CharacterStats>().ActiveAbilities.Count - 1; i > -1; i--)
+				for (int i = sagani.GetComponent<CharacterStats>().ActiveAbilities.Count - 1; i > -1; i--)
 				{
-					if (sagani.Component<CharacterStats>().ActiveAbilities[i].gameObject.name.Contains("SummonCompanion") && !sagani.Component<CharacterStats>().ActiveAbilities[i].gameObject.name.Contains("ArcticFox"))
+					if (sagani.GetComponent<CharacterStats>().ActiveAbilities[i].gameObject.name.Contains("SummonCompanion") && !sagani.GetComponent<CharacterStats>().ActiveAbilities[i].gameObject.name.Contains("ArcticFox"))
 					{
-						sagani.Component<CharacterStats>().ActiveAbilities[i].ForceDeactivate(sagani);
-						AbilityProgressionTable.RemoveAbilityFromCharacter(sagani.Component<CharacterStats>().ActiveAbilities[i].gameObject, sagani.Component<CharacterStats>());
+						sagani.GetComponent<CharacterStats>().ActiveAbilities[i].ForceDeactivate(sagani);
+						AbilityProgressionTable.RemoveAbilityFromCharacter(sagani.GetComponent<CharacterStats>().ActiveAbilities[i].gameObject, sagani.GetComponent<CharacterStats>());
 					}
 				}
 			}
 			else
 				global::Console.AddMessage("Character not found.");
+		}
+
+		[NewMember]
+		public static void ClearAllPreferences(bool confirmation) {
+			if (!confirmation)
+				Console.AddMessage("You need to supply a 'true' argument if you're sure you want to clear all preferences.");
+
+			PlayerPrefs.DeleteAll();
+			Console.AddMessage("All preferences cleared. Please restart the game so that no errors occur.");
 		}
 
 		[NewMember]
@@ -390,7 +368,7 @@ namespace IEMod.Mods.ConsoleMod {
 			string charname = guid.Replace("_", " ");
 			foreach (var partymember in PartyMemberAI.PartyMembers)
 			{
-				if (partymember != null && RemoveDiacritics(partymember.gameObject.Component<CharacterStats>().Name()).Contains(charname))
+				if (partymember != null && RemoveDiacritics(partymember.gameObject.GetComponent<CharacterStats>().Name()).Contains(charname))
 					npc = partymember.gameObject;
 			}
 			if (npc == null)
@@ -438,7 +416,7 @@ namespace IEMod.Mods.ConsoleMod {
 					Innates.Add("Gift_from_the_Machine");
 					Innates.Add("Effigys_Resentment"); //should work for all types
 
-					if (npc.Component<CharacterStats>().name.Contains("Sagani"))
+					if (npc.GetComponent<CharacterStats>().name.Contains("Sagani"))
 					{
 						Innates.Add("SummonCompanionArcticFox");
 					}
@@ -447,7 +425,7 @@ namespace IEMod.Mods.ConsoleMod {
 					//REMOVE TALENTS
 					//==========================================================================
 					List<GenericTalent> talentRemoveList = new List<GenericTalent>();
-					foreach (GenericTalent activeTalent in npc.Component<CharacterStats>().ActiveTalents)
+					foreach (GenericTalent activeTalent in npc.GetComponent<CharacterStats>().ActiveTalents)
 					{
 						bool saveMe = false;
 						foreach (string innate in Innates)
@@ -462,10 +440,10 @@ namespace IEMod.Mods.ConsoleMod {
 							talentRemoveList.Add(activeTalent);
 					}
 					foreach (GenericTalent talentToRemove in talentRemoveList)
-						AbilityProgressionTable.RemoveAbilityFromCharacter(talentToRemove.gameObject, npc.Component<CharacterStats>());
+						AbilityProgressionTable.RemoveAbilityFromCharacter(talentToRemove.gameObject, npc.GetComponent<CharacterStats>());
 
 					talentRemoveList.Clear();
-					foreach (GenericTalent talent in npc.Component<CharacterStats>().Talents)
+					foreach (GenericTalent talent in npc.GetComponent<CharacterStats>().Talents)
 					{
 						bool saveMe = false;
 						foreach (string innate in Innates)
@@ -480,14 +458,14 @@ namespace IEMod.Mods.ConsoleMod {
 							talentRemoveList.Add(talent);
 					}
 					foreach (GenericTalent talentToRemove in talentRemoveList)
-						AbilityProgressionTable.RemoveAbilityFromCharacter(talentToRemove.gameObject, npc.Component<CharacterStats>());
+						AbilityProgressionTable.RemoveAbilityFromCharacter(talentToRemove.gameObject, npc.GetComponent<CharacterStats>());
 					//==========================================================================
 
 					//==========================================================================
 					//REMOVE ABILITIES
 					//==========================================================================
 					List<GenericAbility> abilRemoveList = new List<GenericAbility>();
-					foreach (GenericAbility activeAbility in npc.Component<CharacterStats>().ActiveAbilities)
+					foreach (GenericAbility activeAbility in npc.GetComponent<CharacterStats>().ActiveAbilities)
 					{
 						if (activeAbility.EffectType == GenericAbility.AbilityType.Racial)
 							continue;
@@ -506,10 +484,10 @@ namespace IEMod.Mods.ConsoleMod {
 					foreach (GenericAbility abilToRemove in abilRemoveList)
 					{
 						abilToRemove.ForceDeactivate(npc);
-						AbilityProgressionTable.RemoveAbilityFromCharacter(abilToRemove.gameObject, npc.Component<CharacterStats>());
+						AbilityProgressionTable.RemoveAbilityFromCharacter(abilToRemove.gameObject, npc.GetComponent<CharacterStats>());
 					}
 					abilRemoveList.Clear();
-					foreach (GenericAbility ability in npc.Component<CharacterStats>().Abilities)
+					foreach (GenericAbility ability in npc.GetComponent<CharacterStats>().Abilities)
 					{
 						if (ability.EffectType == GenericAbility.AbilityType.Racial)
 							continue;
@@ -528,72 +506,72 @@ namespace IEMod.Mods.ConsoleMod {
 					foreach (GenericAbility abilToRemove in abilRemoveList)
 					{
 						abilToRemove.ForceDeactivate(npc);
-						AbilityProgressionTable.RemoveAbilityFromCharacter(abilToRemove.gameObject, npc.Component<CharacterStats>());
+						AbilityProgressionTable.RemoveAbilityFromCharacter(abilToRemove.gameObject, npc.GetComponent<CharacterStats>());
 					}
 					//==========================================================================
 
 					// remove ranger's pet
-					if (npc.Component<CharacterStats>().CharacterClass == CharacterStats.Class.Ranger && !npc.Component<CharacterStats>().name.Contains("Sagani"))
+					if (npc.GetComponent<CharacterStats>().CharacterClass == CharacterStats.Class.Ranger && !npc.GetComponent<CharacterStats>().name.Contains("Sagani"))
 					{
-						foreach (var cre in npc.Component<AIController>().SummonedCreatureList)
+						foreach (var cre in npc.GetComponent<AIController>().SummonedCreatureList)
 						{
 							if (GameUtilities.IsAnimalCompanion(cre.gameObject))
 							{
-								PartyMemberAI.RemoveFromActiveParty(cre.Component<PartyMemberAI>(), true);
-								cre.Component<Persistence>().UnloadsBetweenLevels = true;
-								cre.Component<Health>().m_isAnimalCompanion = false;
-								cre.Component<Health>().ApplyDamageDirectly(1000);
-								cre.Component<Health>().ApplyDamageDirectly(1000);
-								global::Console.AddMessage(cre.Component<CharacterStats>().Name() + " is free from its bonds and returns to the wilds to be with its own kind.", Color.green);
+								PartyMemberAI.RemoveFromActiveParty(cre.GetComponent<PartyMemberAI>(), true);
+								cre.GetComponent<Persistence>().UnloadsBetweenLevels = true;
+								cre.GetComponent<Health>().m_isAnimalCompanion = false;
+								cre.GetComponent<Health>().ApplyDamageDirectly(1000);
+								cre.GetComponent<Health>().ApplyDamageDirectly(1000);
+								global::Console.AddMessage(cre.GetComponent<CharacterStats>().Name() + " is free from its bonds and returns to the wilds to be with its own kind.", Color.green);
 								cre.SetActive(false);
 							}
 						}
-						//npc.Component<AIController> ().SummonedCreatureList.Clear ();
+						//npc.GetComponent<AIController> ().SummonedCreatureList.Clear ();
 					}
 
 					// remove or give grimoire
-					if (npc.Component<CharacterStats>().CharacterClass != (CharacterStats.Class)newclassId)
+					if (npc.GetComponent<CharacterStats>().CharacterClass != (CharacterStats.Class)newclassId)
 					{
-						if (npc.Component<CharacterStats>().CharacterClass == CharacterStats.Class.Wizard)
+						if (npc.GetComponent<CharacterStats>().CharacterClass == CharacterStats.Class.Wizard)
 						{
-							npc.Component<Equipment>().UnEquip(Equippable.EquipmentSlot.Grimoire);
+							npc.GetComponent<Equipment>().UnEquip(Equippable.EquipmentSlot.Grimoire);
 						}
 
-						npc.Component<CharacterStats>().CharacterClass = (CharacterStats.Class)newclassId;
+						npc.GetComponent<CharacterStats>().CharacterClass = (CharacterStats.Class)newclassId;
 
-						if (npc.Component<CharacterStats>().CharacterClass == CharacterStats.Class.Wizard)
+						if (npc.GetComponent<CharacterStats>().CharacterClass == CharacterStats.Class.Wizard)
 						{
 							// equip an empty grimoire...?
 							Equippable grim = GameResources.LoadPrefab<Equippable>("empty_grimoire_01", true);
 							if (grim != null)
 							{
-								grim.Component<Grimoire>().PrimaryOwnerName = npc.Component<CharacterStats>().Name();
-								npc.Component<Equipment>().Equip(grim);
+								grim.GetComponent<Grimoire>().PrimaryOwnerName = npc.GetComponent<CharacterStats>().Name();
+								npc.GetComponent<Equipment>().Equip(grim);
 							}
 						}
 					}
 
 					//BaseDeflection,BaseFortitude,BaseReflexes,BaseWill,MeleeAccuracyBonus,RangedAccuracyBonus,MaxHealth,MaxStamina,HealthStaminaPerLevel,ClassHealthMultiplier
-					object comp = (object)npc.Component<CharacterStats>();
+					object comp = (object)npc.GetComponent<CharacterStats>();
 					DataManager.AdjustFromData(ref comp);
 
-					npc.Component<CharacterStats>().Level = 0;
+					npc.GetComponent<CharacterStats>().Level = 0;
 
-					npc.Component<CharacterStats>().StealthSkill = 0;
-					npc.Component<CharacterStats>().StealthBonus = 0;
-					npc.Component<CharacterStats>().AthleticsSkill = 0;
-					npc.Component<CharacterStats>().AthleticsBonus = 0;
-					npc.Component<CharacterStats>().LoreSkill = 0;
-					npc.Component<CharacterStats>().LoreBonus = 0;
-					npc.Component<CharacterStats>().MechanicsSkill = 0;
-					npc.Component<CharacterStats>().MechanicsBonus = 0;
-					npc.Component<CharacterStats>().SurvivalSkill = 0;
-					npc.Component<CharacterStats>().SurvivalBonus = 0;
+					npc.GetComponent<CharacterStats>().StealthSkill = 0;
+					npc.GetComponent<CharacterStats>().StealthBonus = 0;
+					npc.GetComponent<CharacterStats>().AthleticsSkill = 0;
+					npc.GetComponent<CharacterStats>().AthleticsBonus = 0;
+					npc.GetComponent<CharacterStats>().LoreSkill = 0;
+					npc.GetComponent<CharacterStats>().LoreBonus = 0;
+					npc.GetComponent<CharacterStats>().MechanicsSkill = 0;
+					npc.GetComponent<CharacterStats>().MechanicsBonus = 0;
+					npc.GetComponent<CharacterStats>().SurvivalSkill = 0;
+					npc.GetComponent<CharacterStats>().SurvivalBonus = 0;
 
-					npc.Component<CharacterStats>().RemainingSkillPoints = 0;
+					npc.GetComponent<CharacterStats>().RemainingSkillPoints = 0;
 
-					string HeOrShe = npc.Component<CharacterStats>().Gender.ToString();
-					global::Console.AddMessage(npc.Component<CharacterStats>().Name() + " has reformed into a " + charclass + ". " + (HeOrShe == "Male" ? "He" : "She") + " lost all " + (HeOrShe == "Male" ? "his" : "her") + " previous abilities and talents.", Color.green);
+					string HeOrShe = npc.GetComponent<CharacterStats>().Gender.ToString();
+					global::Console.AddMessage(npc.GetComponent<CharacterStats>().Name() + " has reformed into a " + charclass + ". " + (HeOrShe == "Male" ? "He" : "She") + " lost all " + (HeOrShe == "Male" ? "his" : "her") + " previous abilities and talents.", Color.green);
 				}
 			}
 			else
@@ -618,7 +596,7 @@ namespace IEMod.Mods.ConsoleMod {
 						Debug.Log("Skill: Error - player character not found.");
 						return;
 					}
-					component = GameState.s_playerCharacter.Component<CharacterStats>();
+					component = GameState.s_playerCharacter.GetComponent<CharacterStats>();
 				}
 				else
 				{
@@ -684,163 +662,8 @@ namespace IEMod.Mods.ConsoleMod {
 		public  static void RenameCreature(string guid, string newname)
 		{
 			GameObject npc = UnityEngine.GameObject.Find(guid);
-			if (npc != null && npc.Component<CharacterStats>() != null)
-				npc.Component<CharacterStats>().OverrideName = newname;
-		}
-
-		[NewMember]
-		public  static void AssignRandomName(int seed, ref string[] names, CharacterStats backer)
-		{
-			UnityEngine.Random.seed = seed;
-			int randomId = 0;
-			for (int i = 0; i < names.Length - 1; i++)
-			{
-				if (UnityEngine.Random.value > 0.5f) // UnityEngine.Random.value is between 0.0 and 1.0, it's based on Random.Seed
-					randomId++;
-			}
-			backer.OverrideName = names[randomId];
-			//Console.AddMessage ("Using seed " + seed + ", " + backer.DisplayName.ToString () + " rolled: " + randomId);
-		}
-
-		[NewMember]
-		public  static void FixBackerNames(bool state)
-		{
-			// finding all objects
-			GameObject[] allObjects = GameObject.FindObjectsOfType<GameObject>();
-
-			// finding all backer npcs
-			List<GameObject> allBackers = new List<GameObject>();
-			for (int i = allObjects.Length - 1; i > 0; i--)
-			{
-				if ((allObjects[i].name.StartsWith("NPC_BACKER") || allObjects[i].name.StartsWith("NPC_Visceris")) && allObjects[i].Component<CharacterStats>() != null)
-				{
-					allBackers.Add(allObjects[i]);
-				}
-			}
-
-			if (state)
-			{
-				string humanMalesPath = Path.Combine(Path.Combine(Application.dataPath, "Managed/iemod/names"), "human-males.txt");
-				string humanFemalesPath = Path.Combine(Path.Combine(Application.dataPath, "Managed/iemod/names"), "human-females.txt");
-
-				string dwarfMalesPath = Path.Combine(Path.Combine(Application.dataPath, "Managed/iemod/names"), "dwarf-males.txt");
-				string dwarfFemalesPath = Path.Combine(Path.Combine(Application.dataPath, "Managed/iemod/names"), "dwarf-females.txt");
-
-				string elfMalesPath = Path.Combine(Path.Combine(Application.dataPath, "Managed/iemod/names"), "elf-males.txt");
-				string elfFemalesPath = Path.Combine(Path.Combine(Application.dataPath, "Managed/iemod/names"), "elf-females.txt");
-
-				string orlanMalesPath = Path.Combine(Path.Combine(Application.dataPath, "Managed/iemod/names"), "orlan-males.txt");
-				string orlanFemalesPath = Path.Combine(Path.Combine(Application.dataPath, "Managed/iemod/names"), "orlan-females.txt");
-
-				string aumauaMalesPath = Path.Combine(Path.Combine(Application.dataPath, "Managed/iemod/names"), "aumaua-males.txt");
-				string aumauaFemalesPath = Path.Combine(Path.Combine(Application.dataPath, "Managed/iemod/names"), "aumaua-females.txt");
-
-
-				string[] humanMaleNames;
-				string[] humanFemaleNames;
-				string[] dwarfMaleNames;
-				string[] dwarfFemaleNames;
-				string[] elfMaleNames;
-				string[] elfFemaleNames;
-				string[] orlanMaleNames;
-				string[] orlanFemaleNames;
-				string[] aumauaMaleNames;
-				string[] aumauaFemaleNames;
-
-				if (File.Exists(humanMalesPath)
-					&& File.Exists(humanFemalesPath)
-					&& File.Exists(dwarfMalesPath)
-					&& File.Exists(dwarfFemalesPath)
-					&& File.Exists(elfMalesPath)
-					&& File.Exists(elfFemalesPath)
-					&& File.Exists(orlanMalesPath)
-					&& File.Exists(orlanFemalesPath)
-					&& File.Exists(aumauaMalesPath)
-					&& File.Exists(aumauaFemalesPath))
-				{
-					humanMaleNames = File.ReadAllLines(humanMalesPath);
-					humanFemaleNames = File.ReadAllLines(humanFemalesPath);
-					dwarfMaleNames = File.ReadAllLines(dwarfMalesPath);
-					dwarfFemaleNames = File.ReadAllLines(dwarfFemalesPath);
-					elfMaleNames = File.ReadAllLines(elfMalesPath);
-					elfFemaleNames = File.ReadAllLines(elfFemalesPath);
-					orlanMaleNames = File.ReadAllLines(orlanMalesPath);
-					orlanFemaleNames = File.ReadAllLines(orlanFemalesPath);
-					aumauaMaleNames = File.ReadAllLines(aumauaMalesPath);
-					aumauaFemaleNames = File.ReadAllLines(aumauaFemalesPath);
-
-					for (int z = 0; z < allBackers.Count; z++)
-					{
-						// disabling dialogues for backers
-						if (IEModOptions.DisableBackerDialog)
-							GameUtilities.Destroy(allBackers[z].Component<NPCDialogue>());
-
-						CharacterStats backer = allBackers[z].Component<CharacterStats>();
-
-						if (backer != null)
-						{
-							string originalName = backer.DisplayName.ToString();
-							int seedForThisNpc = originalName.GetHashCode();
-							if (backer.RacialBodyType == CharacterStats.Race.Human)
-							{
-								if (backer.Gender == Gender.Male)
-									AssignRandomName(seedForThisNpc, ref humanMaleNames, backer);
-								else if (backer.Gender == Gender.Female)
-									AssignRandomName(seedForThisNpc, ref humanFemaleNames, backer);
-							}
-							else if (backer.RacialBodyType == CharacterStats.Race.Dwarf)
-							{
-								if (backer.Gender == Gender.Male)
-									AssignRandomName(seedForThisNpc, ref dwarfMaleNames, backer);
-								else if (backer.Gender == Gender.Female)
-									AssignRandomName(seedForThisNpc, ref dwarfFemaleNames, backer);
-							}
-							else if (backer.RacialBodyType == CharacterStats.Race.Elf)
-							{
-								if (backer.Gender == Gender.Male)
-									AssignRandomName(seedForThisNpc, ref elfMaleNames, backer);
-								else if (backer.Gender == Gender.Female)
-									AssignRandomName(seedForThisNpc, ref elfFemaleNames, backer);
-							}
-							else if (backer.RacialBodyType == CharacterStats.Race.Aumaua)
-							{
-								if (backer.Gender == Gender.Male)
-									AssignRandomName(seedForThisNpc, ref aumauaMaleNames, backer);
-								else if (backer.Gender == Gender.Female)
-									AssignRandomName(seedForThisNpc, ref aumauaFemaleNames, backer);
-							}
-							else if (backer.RacialBodyType == CharacterStats.Race.Orlan)
-							{
-								if (backer.Gender == Gender.Male)
-									AssignRandomName(seedForThisNpc, ref orlanMaleNames, backer);
-								else if (backer.Gender == Gender.Female)
-									AssignRandomName(seedForThisNpc, ref orlanFemaleNames, backer);
-							}
-						}
-					}
-				}
-				else
-				{
-					global::Console.AddMessage("IEMod: At least one of the .txt files with backer names is missing at path: " + Path.Combine(Application.dataPath, "Managed/iemod/names"), Color.red);
-				}
-			}
-			else
-			{
-				for (int z = 0; z < allBackers.Count; z++)
-				{
-					GameObject npc = allBackers[z];
-
-					CharacterStats backer = npc.Component<CharacterStats>();
-					if (backer != null)
-					{
-						string originalName = backer.DisplayName.ToString();
-						if (backer.OverrideName != "" && backer.OverrideName != originalName)
-						{
-							backer.OverrideName = originalName;
-						}
-					}
-				}
-			}
+			if (npc != null && npc.GetComponent<CharacterStats>() != null)
+				npc.GetComponent<CharacterStats>().OverrideName = newname;
 		}
 
 
@@ -907,7 +730,7 @@ namespace IEMod.Mods.ConsoleMod {
 											GameObject obj2 = GameObject.Find(list[i + 1]);
 											if (obj2 != null)
 											{
-												InstanceID component = obj2.Component<InstanceID>();
+												InstanceID component = obj2.GetComponent<InstanceID>();
 												if (component != null)
 												{
 													objArray[i] = component.Guid;
@@ -1021,7 +844,7 @@ namespace IEMod.Mods.ConsoleMod {
 			GameObject container = GameObject.Find(objectGuid);
 			if (container != null)
 			{
-				Container chest = container.Component<Container>();
+				Container chest = container.GetComponent<Container>();
 				if (chest != null)
 					chest.Open(GameState.s_playerCharacter.gameObject, true);
 				else
@@ -1041,7 +864,7 @@ namespace IEMod.Mods.ConsoleMod {
 		{
 			if (GameCursor.CharacterUnderCursor)
 			{
-				var ai = GameCursor.CharacterUnderCursor.Component<AIController>();
+				var ai = GameCursor.CharacterUnderCursor.GetComponent<AIController>();
 				if (ai)
 				{
 					var stateManager = ai.StateManager;
@@ -1101,31 +924,31 @@ namespace IEMod.Mods.ConsoleMod {
 
 					if (isHostile == false)
 					{
-						if (besterCreature.Component<Faction>() != null)
+						if (besterCreature.GetComponent<Faction>() != null)
 						{
-							besterCreature.Component<Faction>().RelationshipToPlayer = Faction.Relationship.Neutral;
-							besterCreature.Component<Faction>().CurrentTeamInstance = Team.GetTeamByTag("player");
-							besterCreature.Component<Faction>().UnitHostileToPlayer = false;
+							besterCreature.GetComponent<Faction>().RelationshipToPlayer = Faction.Relationship.Neutral;
+							besterCreature.GetComponent<Faction>().CurrentTeamInstance = Team.GetTeamByTag("player");
+							besterCreature.GetComponent<Faction>().UnitHostileToPlayer = false;
 						}
-						if (besterCreature.Component<AIPackageController>() != null)
+						if (besterCreature.GetComponent<AIPackageController>() != null)
 						{
 							// some monsters might come without AI, which would make them always stand idly, so we give them DefaultAI
-							besterCreature.Component<AIPackageController>().ChangeBehavior(AIPackageController.PackageType.DefaultAI);
-							besterCreature.Component<AIPackageController>().InitAI();
+							besterCreature.GetComponent<AIPackageController>().ChangeBehavior(AIPackageController.PackageType.DefaultAI);
+							besterCreature.GetComponent<AIPackageController>().InitAI();
 						}
 					}
 					else
 					{
-						if (besterCreature.Component<Faction>() != null)
+						if (besterCreature.GetComponent<Faction>() != null)
 						{
-							besterCreature.Component<Faction>().CurrentTeamInstance = Team.GetTeamByTag("monster");
-							besterCreature.Component<Faction>().RelationshipToPlayer = Faction.Relationship.Hostile;
+							besterCreature.GetComponent<Faction>().CurrentTeamInstance = Team.GetTeamByTag("monster");
+							besterCreature.GetComponent<Faction>().RelationshipToPlayer = Faction.Relationship.Hostile;
 
 						}
-						if (besterCreature.Component<AIPackageController>() != null)
+						if (besterCreature.GetComponent<AIPackageController>() != null)
 						{
-							besterCreature.Component<AIPackageController>().ChangeBehavior(AIPackageController.PackageType.DefaultAI);
-							besterCreature.Component<AIPackageController>().InitAI();
+							besterCreature.GetComponent<AIPackageController>().ChangeBehavior(AIPackageController.PackageType.DefaultAI);
+							besterCreature.GetComponent<AIPackageController>().InitAI();
 						}
 					}
 					global::CameraControl.Instance.FocusOnPoint(besterCreature.transform.position);
@@ -1143,10 +966,10 @@ namespace IEMod.Mods.ConsoleMod {
 		[NewMember]
 		public  static void AdAb()
 		{
-			CharacterStats firstparam = GameState.s_playerCharacter.Component<CharacterStats>();
+			CharacterStats firstparam = GameState.s_playerCharacter.GetComponent<CharacterStats>();
 			AbilityProgressionTable wizardsProgressionTable = AbilityProgressionTable.LoadAbilityProgressionTable("Wizard");
 			global::Console.AddMessage("Wizard abilities in game: " + wizardsProgressionTable.AbilityUnlocks.Length);
-			global::Console.AddMessage("This wizard has abilities: " + GameState.s_playerCharacter.Component<CharacterStats>().GetCopyOfCoreData().KnownSkills.Count());
+			global::Console.AddMessage("This wizard has abilities: " + GameState.s_playerCharacter.GetComponent<CharacterStats>().GetCopyOfCoreData().KnownSkills.Count());
 			foreach (var abil in wizardsProgressionTable.AbilityUnlocks)
 			{
 				bool hasSpell = false;
@@ -1188,12 +1011,12 @@ namespace IEMod.Mods.ConsoleMod {
 			global::Console.AddMessage("Setting selection circle width to: " + width, Color.green);
 			InGameHUD.Instance.SelectionCircleWidth = width;
 			InGameHUD.Instance.EngagedCircleWidth = width;
-			PlayerPrefs.SetFloat("SelectCircWidth", width);
+			IEModOptions.Layout.SelectionCircleWidth = width;
 		}
 
 		[NewMember]
 		public static void BB() {
-			UICustomizer.ShowInterface();
+			UICustomizer.ShowInterface(true);
 		}
 
 		[NewMember]
@@ -1202,7 +1025,7 @@ namespace IEMod.Mods.ConsoleMod {
 			if (((Mod_OnGUI_Player)GameState.s_playerCharacter).showGameObjectBrowser == false)
 			{
 				if (((Mod_OnGUI_Player)GameState.s_playerCharacter).inspecting == null)
-					((Mod_OnGUI_Player)GameState.s_playerCharacter).inspecting = UICustomizer._uiCamera.transform;
+					((Mod_OnGUI_Player)GameState.s_playerCharacter).inspecting = UICustomizer.UiCamera.transform;
 
 				if (GameBrowserBackground == null)
 				{

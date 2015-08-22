@@ -5,6 +5,7 @@ using Patchwork.Attributes;
 using UnityEngine;
 
 namespace IEMod.Mods.BonusSpellsGrimoire {
+	
 	[ModifiesType()]
 	public class mod_Grimoire : Grimoire
 	{

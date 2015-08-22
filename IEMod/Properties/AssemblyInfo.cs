@@ -16,7 +16,6 @@ using Patchwork.Attributes;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("1aa27809-2295-4279-9b38-974cfd105ffa")]
-
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
@@ -31,11 +30,4 @@ using Patchwork.Attributes;
 [assembly: AssemblyDescription("A mod for Pillars of Eternity.")]
 
 namespace IEMod {
-	/// <summary>
-	/// Provides version information for IEMod.
-	/// </summary>
-	[NewType]
-	public static class IEModVersion {
-		public const string Version = "0.7.0.0";
-	}
 }

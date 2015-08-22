@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using IEMod.Mods.Options;
 using Patchwork.Attributes;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -37,7 +38,7 @@ namespace IEMod.Mods.RecoveryRate {
 			if (!this.HasStatusEffectThatPausesRecoveryTimer())
 			{
 				float num = 1f;
-				if (this.IsMoving && PlayerPrefs.GetInt("RemoveMovingRecovery", 0) == 0) //MOD
+				if (this.IsMoving && !IEModOptions.RemoveMovingRecovery) //MOD
 				{
 					num = AttackData.Instance.MovingRecoveryMult;
 					if (this.m_equipment != null && this.m_equipment.PrimaryAttack != null && this.m_equipment.PrimaryAttack is AttackRanged)

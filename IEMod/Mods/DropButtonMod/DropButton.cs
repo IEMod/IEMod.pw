@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using IEMod.Helpers;
 using IEMod.Mods.UICustomization;
+using IEMod.QuickControls;
 using Patchwork.Attributes;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -13,34 +14,26 @@ namespace IEMod.Mods.DropButtonMod {
 
 	[NewType]
 	public static class DropButton {
-
-		private static GameObject _invManager;
-
-		private static void Initialize() {
-			_invManager = UIInventoryManager.Instance.gameObject.ChildPath("InventoryWindow/UnlitContent/StuffBar");
-		}
+		private static QuickButton _dropButton;
 
 		internal static void InjectDropInvButton() {
-			Initialize();
-			if (_invManager.transform.childCount >= 5) { return; }
-			var craftButton = _invManager.Child("Craft").Component<UIMultiSpriteImageButton>();
+			var invManager = UIInventoryManager.Instance.gameObject.ChildPath("InventoryWindow/UnlitContent/StuffBar");
+			if (_dropButton.IsAlive()) return;
+			var craftButton = invManager.Child("Craft").Component<UIMultiSpriteImageButton>();
 			craftButton.transform.localPosition += new Vector3(0, 25, 0);
 			craftButton.transform.localScale = new Vector3(0.82f, 0.82f, 0.82f);
-			var cf = new IEControlFactory() {
-				ExampleButton = craftButton.gameObject,
-				CurrentParent = craftButton.transform.parent
-			};
-			GameObject myButton = cf.Button("Drop Items", "DropItems",
-				localPos: craftButton.transform.localPosition.Plus(y: -43f));
 
-			myButton.transform.localScale = craftButton.transform.localScale;
-			var uiMultiSpriteImageButton = myButton.Component<UIMultiSpriteImageButton>();
-			uiMultiSpriteImageButton.Label.multiLine = false;
-			uiMultiSpriteImageButton.Label.shrinkToFit = true;
-			uiMultiSpriteImageButton.onClick = DropInventory;
+			_dropButton = new QuickButton(craftButton.transform.parent, "DropButton", craftButton.gameObject, false) {
+				LocalScale = craftButton.transform.localScale,
+				LocalPosition = craftButton.transform.localPosition.Plus(y: -50f),
+				Caption = "Drop Items"
+			};
+			_dropButton.ButtonComponent.Label.multiLine = false;
+			_dropButton.ButtonComponent.Label.shrinkToFit = true;
+			_dropButton.Click += x => DropInventory();
 		}
 
-		private static void DropInventory(GameObject go)
+		private static void DropInventory()
 		{
 			PartyMemberAI selChar = UIInventoryManager.Instance.SelectedCharacter.gameObject.Component<PartyMemberAI>();
 

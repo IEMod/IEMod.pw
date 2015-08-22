@@ -68,8 +68,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\IEModVersion.cs">
-      <Link>Properties\IEModVersion.cs</Link>
+    <Compile Include="..\IEMod.SharedAttributes.cs">
+      <Link>Properties\IEMod.SharedAttributes.cs</Link>
     </Compile>
     <Compile Include="Helpers\DeadEndException.cs" />
     <Compile Include="Helpers\IEModException.cs" />
@@ -78,6 +78,7 @@
     <Compile Include="IEModType.cs" />
     <Compile Include="Mods\AI\Mod_AI_PathToPosition.cs" />
     <Compile Include="Mods\AlwaysShowCircles\Mod_AlwaysShowSelectionCircles_Faction.cs" />
+    <Compile Include="Mods\BackerStuff\BackerNamesMod.cs" />
     <Compile Include="Mods\BonusSpellsGrimoire\mod_UIGrimoireInSpellRow.cs" />
     <Compile Include="Mods\BonusSpellsGrimoire\mod_Grimoire.cs" />
     <Compile Include="Mods\CameraControlMod\Mod_CameraControl.cs" />
@@ -87,7 +88,7 @@
     <Compile Include="Mods\CombatOnly\mod_GenericAbility.cs" />
     <Compile Include="Mods\ConsoleMod\Mod_CommandLine.cs" />
     <Compile Include="Mods\ConsoleMod\mod_UIConsole.cs" />
-    <Compile Include="Mods\DropButton\DropButton.cs" />
+    <Compile Include="Mods\DropButtonMod\DropButton.cs" />
     <Compile Include="Mods\FastSneak\mod_PartyMemberAI.cs" />
     <Compile Include="Mods\NoEngagement\mod_Player.cs" />
     <Compile Include="Mods\UICustomization\PartyBar\mod_UIPartyPortrait.cs" />
@@ -97,7 +98,7 @@
     <Compile Include="Mods\FastSneak\mod_PathingController.cs" />
     <Compile Include="Mods\Targeting\mod_AttackAOE.cs" />
     <Compile Include="Mods\BonusSpellsPerDay\mod_SpellMax.cs" />
-    <Compile Include="Mods\GameStateMod\mod_GameState.cs" />
+    <Compile Include="Mods\OnLevelLoad\mod_GameState.cs" />
     <Compile Include="Helpers\IEDropdownChoice.cs" />
     <Compile Include="Helpers\IEDebug.cs" />
     <Compile Include="Mods\StringTable\mod_StringTableManager.cs" />
@@ -116,15 +117,15 @@
     <Compile Include="Mods\UICustomization\PartyBar\mod_UIPartyPortraitBar.cs" />
     <Compile Include="Mods\PerEncounterSpells\mod_SpellMax.cs" />
     <Compile Include="Mods\RecoveryRate\mod_CharacterStats.cs" />
-    <Compile Include="Mods\Religion\Mod_Religion.cs" />
+    <Compile Include="Mods\ReligionMod\Mod_Religion.cs" />
     <Compile Include="Mods\SaveXML\Mod_SaveRawXML.cs" />
     <Compile Include="Mods\SelectionCircles\mod_InGameHUD.cs" />
     <Compile Include="Mods\Targeting\Mod_FriendlyFire_CharacterStats.cs" />
     <Compile Include="Mods\Targeting\Mod_FriendlyFire_Trap.cs" />
-    <Compile Include="Mods\Tooltips\mod_UIMapTooltipManager.cs" />
-    <Compile Include="Mods\Tooltips\mod_UIActionBarTooltip.cs" />
-    <Compile Include="Mods\Tooltips\mod_UICamera.cs" />
-    <Compile Include="Mods\Tooltips\mod_UIMapTooltip.cs" />
+    <Compile Include="Mods\UICustomization\Tooltips\mod_UIMapTooltipManager.cs" />
+    <Compile Include="Mods\UICustomization\Tooltips\mod_UIActionBarTooltip.cs" />
+    <Compile Include="Mods\UICustomization\Tooltips\mod_UICamera.cs" />
+    <Compile Include="Mods\UICustomization\Tooltips\mod_UIMapTooltip.cs" />
     <Compile Include="Mods\VersionNumber\mod_UIVersionNumber.cs" />
     <Compile Include="Mods\XPTable\mod_CharacterStats.cs" />
     <Compile Include="Options\UI\mod_UIOptionsManager.cs" />
@@ -132,6 +133,22 @@
     <Compile Include="Helpers\UnityObjectDumper.cs" />
     <Compile Include="Helpers\UnityObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\IEMod.Version.cs" />
+    <Compile Include="QuickControls\Behaviors\BlockClicking.cs" />
+    <Compile Include="QuickControls\Binding\Bindable.cs" />
+    <Compile Include="QuickControls\Binding\Binding.cs" />
+    <Compile Include="QuickControls\Binding\BindingMode.cs" />
+    <Compile Include="QuickControls\Binding\BindingValue.cs" />
+    <Compile Include="QuickControls\Binding\Extensions.cs" />
+    <Compile Include="QuickControls\Controls\DropdownChoice.cs" />
+    <Compile Include="QuickControls\Controls\IGameObjectWrapper.cs" />
+    <Compile Include="QuickControls\Controls\Prefabs.cs" />
+    <Compile Include="QuickControls\Controls\QuickButton.cs" />
+    <Compile Include="QuickControls\Controls\QuickCheckBox.cs" />
+    <Compile Include="QuickControls\Controls\QuickControl.cs" />
+    <Compile Include="QuickControls\Controls\QuickDropdown.cs" />
+    <Compile Include="QuickControls\Controls\QuickPage.cs" />
+    <Compile Include="QuickControls\QuickFactory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Patchwork\Patchwork.Attributes\Patchwork.Attributes.csproj">

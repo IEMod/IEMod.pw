@@ -1,4 +1,5 @@
-﻿using Patchwork.Attributes;
+﻿using IEMod.Mods.Options;
+using Patchwork.Attributes;
 using UnityEngine;
 
 namespace IEMod.Mods.Tooltips {
@@ -15,7 +16,7 @@ namespace IEMod.Mods.Tooltips {
 		public UIMapTooltip ShowNew(GameObject target, bool byMouse, bool byAttack)
 		{
 			// this mod makes it that only the tooltip for a hovered character is shown when TAB is pressed
-			bool showOnlyOneTooltip = PlayerPrefs.GetInt ("OneTooltip", 0) == 1;
+			bool showOnlyOneTooltip = IEModOptions.OneTooltip;
 			bool npcUnderCursor = GameCursor.ObjectUnderCursor == target; // added this line
 
 			if ((npcUnderCursor && showOnlyOneTooltip) || !showOnlyOneTooltip) // added this line

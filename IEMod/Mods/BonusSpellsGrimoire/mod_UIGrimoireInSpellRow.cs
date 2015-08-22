@@ -5,8 +5,8 @@ using Patchwork.Attributes;
 using UnityEngine;
 
 namespace IEMod.Mods.BonusSpellsGrimoire {
-
-		[ModifiesType]
+	
+	[ModifiesType]
 	public class mod_UIGrimoireSpellsInRow : UIGrimoireInSpellRow
 	{
 
@@ -17,9 +17,10 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 			{
 				return;
 			}
-        
-			this.m_Spells = new List<UIGrimoireSpell>();
-			this.m_Spells.Add(this.RootSpell);
+
+			this.m_Spells = new List<UIGrimoireSpell> {
+				this.RootSpell
+			};
 
 
 

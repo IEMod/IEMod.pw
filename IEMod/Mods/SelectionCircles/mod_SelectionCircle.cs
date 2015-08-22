@@ -38,7 +38,7 @@ namespace IEMod.Mods.SelectionCircles {
 			}
 			if (this.m_TargetedEngageRenderer != null)
 			{
-				this.m_TargetedEngageRenderer.enabled = this.OwnerEngaged && (flag || flag2) && (PlayerPrefs.GetInt ("DisableEngagement", 0) == 0); // added && (PlayerPrefs.GetInt ("DisableEngagement", 0) == 0)
+				this.m_TargetedEngageRenderer.enabled = this.OwnerEngaged && (flag || flag2) && !IEModOptions.DisableEngagement; // added && (PlayerPrefs.GetInt ("DisableEngagement", 0) == 0)
 			}
 			if ((this.m_Circle != null) && (this.m_Circle.renderer != null))
 			{
@@ -56,7 +56,7 @@ namespace IEMod.Mods.SelectionCircles {
 			}
 			if (this.m_EngageRenderer != null)
 			{
-				this.m_EngageRenderer.enabled = this.OwnerEngaged && flag2 && (PlayerPrefs.GetInt ("DisableEngagement", 0) == 0); // added && (PlayerPrefs.GetInt ("DisableEngagement", 0) == 0)
+				this.m_EngageRenderer.enabled = this.OwnerEngaged && flag2 && !IEModOptions.DisableEngagement; // added && (PlayerPrefs.GetInt ("DisableEngagement", 0) == 0)
 			}
 		}
 

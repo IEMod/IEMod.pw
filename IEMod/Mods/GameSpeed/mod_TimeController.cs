@@ -9,28 +9,12 @@ namespace IEMod.Mods.GameSpeed {
 		[ModifiesMember("ToggleFast")]
 		public void ToggleFastNew()
 		{
-			if (GameInput.GetControlkey() && IEModOptions.GameSpeedMod)
-			{
-				if (this.TimeScale == 5.0f)
-				{
-					this.TimeScale = this.NormalTime;
-				}
-				else
-				{
-					this.TimeScale = 5.0f;
-				}
+			if (GameInput.GetControlkey() && IEModOptions.GameSpeedMod) {
+				this.TimeScale = this.TimeScale == 5.0f ? this.NormalTime : 5.0f;
 				this.UpdateTimeScale();
-			}
-			else if (!GameInput.GetControlkey()) //default behavior is that ctrl+d does not trigger fast mode toggle
+			} else if (!GameInput.GetControlkey()) //default behavior is that ctrl+d does not trigger fast mode toggle
 			{
-				if (this.TimeScale == this.FastTime)
-				{
-					this.TimeScale = this.NormalTime;
-				}
-				else
-				{
-					this.TimeScale = this.FastTime;
-				}
+				this.TimeScale = this.TimeScale == this.FastTime ? this.NormalTime : this.FastTime;
 				this.UpdateTimeScale();
 			}
 		}

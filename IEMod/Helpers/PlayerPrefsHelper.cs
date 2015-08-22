@@ -51,7 +51,7 @@ namespace IEMod.Helpers {
 			} else if (realType == typeof (string)) {
 				value = PlayerPrefs.GetString(name, "");
 			} else if (realType == typeof (float)) {
-				value = PlayerPrefs.GetFloat(name, 0.0f);
+				value = (double) PlayerPrefs.GetFloat(name, 0.0f);
 			} else {
 				IEDebug.Log("Going to try to deserialize PlayerPref {0} as XML", name);
 				return GetXmlObject(name, type);

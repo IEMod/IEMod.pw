@@ -16,6 +16,7 @@ namespace IEMod.Helpers {
 	/// This class allows you to construct standard controls quickly and easily, obscuring any ugliness the task involves.
 	/// </summary>
 	[NewType]
+	[Obsolete("Use QuickFactory instead.")]
 	public class IEControlFactory {
 
 
@@ -36,20 +37,6 @@ namespace IEMod.Helpers {
 				list.Add(new IEDropdownChoice(value, label));
 			}
 			return list.ToArray();
-		}
-
-		private string GetLabel(MemberInfo provider) {
-			var labelAttr = provider.GetCustomAttribute<LabelAttribute>();
-			var label = labelAttr == null ? null : labelAttr.Label;
-			label = label ?? provider.Name;
-			return label;
-		}
-
-		private string GetDesc(MemberInfo provider) {
-			var descAttr = provider.GetCustomAttribute<DescriptionAttribute>();
-			var desc = descAttr == null ? null : descAttr.Description;
-			desc = desc ?? provider.Name;
-			return desc;
 		}
 
 		/// <summary>
@@ -121,8 +108,8 @@ namespace IEMod.Helpers {
 			comboBox.transform.localScale = new Vector3(1, 1, 1);
 
 			var dropdown = comboBox.transform.ComponentsInDescendants<UIDropdownMenu>(true).Single();
-			label = label ?? GetLabel(asMemberExpr.Member);
-			tooltip = tooltip ?? GetDesc(asMemberExpr.Member);
+			label = label ?? ReflectHelper.GetLabelInfo(asMemberExpr.Member);
+			tooltip = tooltip ?? ReflectHelper.GetDescriptionInfo(asMemberExpr.Member);
 
 			//+ Set the labels
 			//There are multiple things called Label in this visual tree, but only one with a GUIStringLabel component.
@@ -217,8 +204,8 @@ namespace IEMod.Helpers {
 
 			chBox.transform.localScale = new Vector3(1, 1, 1);
 			chBox.transform.localPosition = new Vector3(0, 0, 0);
-			var label = GetLabel(member);
-			var desc = GetDesc(member);
+			var label = ReflectHelper.GetLabelInfo(member);
+			var desc = ReflectHelper.GetDescriptionInfo(member);
 
 			chBox.CheckboxLabel = IEModString.Register(label);
 			chBox.TooltipString = IEModString.Register(desc);

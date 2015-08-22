@@ -1,3 +1,4 @@
+using IEMod.Mods.PartyBar;
 using Patchwork.Attributes;
 using UnityEngine;
 
@@ -55,7 +56,7 @@ namespace IEMod.Mods.Tooltips {
 				// above or under the portrait depending on the portrait bar position on the screen.
 				// Same principle is applied to the vertical alignment - the tooltip on the left if the partybar is in the right part
 				// of the screen, and vice versa.
-				if (PlayerPrefs.GetInt ("PartyBarToggled", 0) == 1) // if we're using vertical party bar alignment
+				if (mod_UIPartyPortrait.IsVertical) // if we're using vertical party bar alignment
 				{
 					if (UIPartyPortraitBar.Instance.transform.localPosition.x < Screen.width / 2) // if left side of the screen
 					{

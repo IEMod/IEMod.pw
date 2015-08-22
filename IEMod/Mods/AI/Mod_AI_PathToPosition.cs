@@ -27,16 +27,14 @@ namespace IEMod.Mods.AIMod {
 		public bool DeprioritizeCurrentTarget;
 	}
 
-
-
 	[ModifiesType]
 	public class Mod_AI_PathToPosition : PathToPosition
 	{
 		[NewMember]
-		[DuplicatesBody(methodName:"Update", sourceType:typeof(Mod_AIGameAIState))]
+		[MemberAlias("Update", typeof(GameAIState), AliasCallMode.NonVirtual)]
 		private void GameAIStateUpdate()
 		{
-			// will be filled with Mod_AIGameAIState.Update() IL generated below
+			//this will be translated to a non-virtual base.Update() call
 		}
 
 		[NewMember]
@@ -143,16 +141,6 @@ namespace IEMod.Mods.AIMod {
 				base.Manager.PopCurrentState();
 			}
 			this.m_pathingController.UpdatePreviousPosition();
-		}
-	}
-
-// Used to generate IL to call GameAIState.Update() without virtual dispatch
-// (i.e. the equivalent of base.Update() from a subclass's overridden Update() method)
-	public class Mod_AIGameAIState : GameAIState
-	{
-		public override void Update()
-		{
-			base.Update();
 		}
 	}
 
@@ -475,9 +463,4 @@ namespace IEMod.Mods.AIMod {
 			}
 		}
 	}
-
-
-// Used to generate IL to call GameAIState.Update() without virtual dispatch
-// (i.e. the equivalent of base.Update() from a subclass's overridden Update() method)
-
 }

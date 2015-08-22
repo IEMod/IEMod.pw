@@ -121,7 +121,7 @@ namespace IEMod.Mods.ObjectBrowser {
 
 			if (InGameHUD.Instance != null)
 			{
-				float width = PlayerPrefs.GetFloat ("SelectCircWidth", 0.03f);
+				float width = IEModOptions.Layout.SelectionCircleWidth;
 				InGameHUD.Instance.SelectionCircleWidth = width;
 				InGameHUD.Instance.EngagedCircleWidth = width;
 			}
@@ -340,7 +340,7 @@ namespace IEMod.Mods.ObjectBrowser {
 					int properties = 0;
 
 					int g = 0;
-					foreach (var prop in insComp.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly))
+					foreach (var prop in insComp.GetType().GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
 					{
 						if (properties < 1000)
 						{

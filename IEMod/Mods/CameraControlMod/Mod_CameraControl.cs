@@ -1,4 +1,5 @@
-﻿using Patchwork.Attributes;
+﻿using IEMod.Mods.Options;
+using Patchwork.Attributes;
 using UnityEngine;
 
 namespace IEMod.Mods.CameraControlMod {
