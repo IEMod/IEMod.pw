@@ -1,8 +1,10 @@
 # IEMod<sub>pw</sub> <a href="https://gitter.im/GregRos/Patchwork"><img style="float: right" src="https://badges.gitter.im/Join%20Chat.svg"/></a>
 
-**IEMod<sub>pw</sub> Version/Patchwork Version:** 0.7.5/0.5.5
+**IEMod<sub>pw</sub> Version/Patchwork Version:** 0.7.6/0.6.0
 
 *Also stylized __IEMod.pw__ in  places that don't support subscripts*.
+
+#### *This readme is outdated.*
 
 This is a **fork** of [IEMod](https://bitbucket.org/Bester/poe-modding-framework) mod for [Pillars of Eternity](http://eternity.obsidian.net/). I ported the mod to my new assembly modification framework, [Patchwork](https://github.com/GregRos/Patchwork). 
 
@@ -41,11 +43,6 @@ This is probably the most requested feature I've seen. Many people find some bac
 See the [Patchwork library](https://github.com/GregRos/Patchwork) for more information. Patchwork is made part of this repository as a sub-module (basically a kind of sub-project).
 
 ## UI Creation
-UI Creation uses a system I call `QuickControls`. These are thin wrappers around the game's Unity controls (generally implemented as complicated `GameObjects`). I've implemented a checkbox, a dropdown, and a button. There are several reasons to use these controls:
-
-1. They let you 
-
-
 The options/settings of the mod are handled in the folder `IEMod\Mods\Options`.
 
 Previously, UI creation was pretty convoluted and involved *a lot* of repetition. It also involved working around rather inconvenient (for us) features, such as language-specific string tables, and a pretty confusing GameObject and Component hierarchy. 
@@ -88,11 +85,6 @@ The UI is created in the file `mod_UIOptionsManager`. Here is an example of how 
 The methods for creating controls take an `Expression` parameter. An expression is a bit like a lambda, but you can freely inspect it, so I just pull the  property/field you want to bind to the control from the lambda you write there. It's extremely convenient.
 
 By the way, binding means that once the control is changed, the property/field is changed as well. Unfortunately, it doesn't work the other way around, at least not at this point.
-
-## Data Binding
-The UI toolkit supports a simple form of data binding. Data binding is when the values of two members are bound together, so that a change in one affects the other. Typically, it is used to bind properties of UI elements (such as a checkbox's `IsChecked` property) to application settings.
-
-Data binding makes use the of `Binder` abstract class, which supplies data binding services. 
 
 ## Modding Tips
 
