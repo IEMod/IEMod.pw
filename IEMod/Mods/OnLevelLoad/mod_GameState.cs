@@ -126,12 +126,11 @@ namespace IEMod.Mods.OnLevelLoad {
 			// in here you can place something like if (CurrentMap.SceneName == "AR_0011_Dyrford_Tavern_02") make_an_NPC; or change_NPC's_stats;
 			// added this code
 			DropButton.InjectDropInvButton();
+			if (IEModOptions.EnableCustomUI) {
+				UICustomizer.LoadLayout(IEModOptions.Layout);	
+			} 
 			
-			if (IEModOptions.Layout.UseCustomUI)
-			{
-				UICustomizer.LoadLayout(IEModOptions.Layout);
-			}
-
+			
 			BackerNamesMod.FixBackerNames(IEModOptions.FixBackerNames);
 			// end of added code
 		}

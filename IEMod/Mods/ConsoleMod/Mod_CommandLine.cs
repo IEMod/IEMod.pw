@@ -95,7 +95,7 @@ namespace IEMod.Mods.ConsoleMod {
 		[NewMember]
 		public  static void SetDefaultZoom(float value)
 		{
-			IEModOptions.Layout.DefaultZoom = value;
+			IEModOptions.DefaultZoom = value;
 			global::Console.AddMessage("Default zoom set to: " + value + ". Reminder: game's vanilla value is 1.");
 		}
 
@@ -358,8 +358,6 @@ namespace IEMod.Mods.ConsoleMod {
 				Console.AddMessage("You need to supply a 'true' argument if you're sure you want to clear all preferences.");
 				return;
 			}
-				
-
 			PlayerPrefs.DeleteAll();
 			Console.AddMessage("All preferences cleared. Please restart the game so that no errors occur.");
 		}
@@ -1014,7 +1012,7 @@ namespace IEMod.Mods.ConsoleMod {
 			global::Console.AddMessage("Setting selection circle width to: " + width, Color.green);
 			InGameHUD.Instance.SelectionCircleWidth = width;
 			InGameHUD.Instance.EngagedCircleWidth = width;
-			IEModOptions.Layout.SelectionCircleWidth = width;
+			IEModOptions.SelectionCircleWidth = width;
 		}
 
 		[NewMember]

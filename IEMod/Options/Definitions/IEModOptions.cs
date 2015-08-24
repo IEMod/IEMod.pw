@@ -55,18 +55,21 @@ namespace IEMod.Mods.Options {
 
 			public bool PortraitHighlightsDisabled;
 
-			public bool UseCustomUI;
-
 			public bool PartyBarHorizontal;
 
 			public bool TooltipOffset;
 
 			public string FramePath;
-
-			public float SelectionCircleWidth;
-
-			public float DefaultZoom;
 		}
+
+		[Save]
+		[Label("UI Customization")]
+		[Description("Enables the UI customization interface. This option is applied on an area transition.")]
+		public static bool EnableCustomUI;
+
+		public static float? SelectionCircleWidth;
+
+		public static  float DefaultZoom;
 
 		[Save]
 		public static LayoutOptions Layout = new LayoutOptions();
@@ -181,8 +184,8 @@ namespace IEMod.Mods.Options {
 		public static Disposition.Axis PalleginaFavored2;
 
 		[Save]
-		[Label("Minimize Backer NPC Interaction")]
-		[Description("Enables additional changes that minimize the visibility and interaction with backer NPCs.")]
+		[Label("Disable Backer Dialogs")]
+		[Description("Disables talking to backer NPCs.")]
 		public static bool DisableBackerDialogs;
 
 		[Save]
