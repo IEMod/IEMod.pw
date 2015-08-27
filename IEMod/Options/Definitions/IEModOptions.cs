@@ -100,6 +100,7 @@ namespace IEMod.Mods.Options {
 		[Description("Enables the UI customization interface. This option is applied on an area transition.")]
 		public static bool EnableCustomUI;
 
+		//GR 28/8/15 - this was out of good intentions, but... yeah... it doesn't work. I hadn't noticed on my machine circumstances made it seem like it did.
 		[Save]
 		public static float? SelectionCircleWidth;
 

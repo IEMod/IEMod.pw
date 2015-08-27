@@ -3,6 +3,7 @@ using System.IO;
 using IEMod.Mods.BackerStuff;
 using IEMod.Mods.DropButtonMod;
 using IEMod.Mods.Options;
+using IEMod.Mods.UICustomization;
 //using IEMod.Mods.UICustomization;
 using Patchwork.Attributes;
 using UnityEngine;
@@ -128,7 +129,7 @@ namespace IEMod.Mods.OnLevelLoad {
 			// added this code
 			DropButton.InjectDropInvButton();
 			if (IEModOptions.EnableCustomUI) {
-				//UICustomizer.LoadLayout(IEModOptions.Layout);	
+				UICustomizer.LoadLayout(IEModOptions.Layout);	
 			} 
 			
 			

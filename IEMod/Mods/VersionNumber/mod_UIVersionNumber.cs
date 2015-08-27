@@ -20,7 +20,7 @@ namespace IEMod.Mods.VersionNumber {
 			MonoBehavior_ctor();
 			var ieModVersion = IEMod.IEModVersion.Version;
 			var pwVersion = PatchworkVersion.Version;
-			this.FormatString = string.Format("v1.0.6.{{0}} {{1}} - IEMod.pw {0} - pw {1}", ieModVersion, pwVersion);
+			this.FormatString = string.Format("[Game Version].{{0}} {{1}} - IEMod.pw {0} - pw {1}", ieModVersion, pwVersion);
 			this.m_stringBuilder = new StringBuilder();
 		}
 	}
