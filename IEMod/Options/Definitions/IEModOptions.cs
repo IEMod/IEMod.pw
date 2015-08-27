@@ -89,7 +89,7 @@ namespace IEMod.Mods.Options {
                     this.PortraitHighlightsDisabled == other.PortraitHighlightsDisabled &&
                     this.RightHudBarPosition == other.RightHudBarPosition &&
                     this.TooltipOffset == other.TooltipOffset &&
-                    this.UsingCustomTextures == other.UsingCustomTextures
+                    this.UsingCustomTextures == other.UsingCustomTextures;
             }
         }
 
