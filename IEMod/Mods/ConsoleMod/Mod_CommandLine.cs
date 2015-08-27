@@ -8,14 +8,14 @@ using System.Text;
 using IEMod.Helpers;
 using IEMod.Mods.ObjectBrowser;
 using IEMod.Mods.Options;
-using IEMod.Mods.UICustomization;
+//using IEMod.Mods.UICustomization;
 using Patchwork.Attributes;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace IEMod.Mods.ConsoleMod {
-	[ModifiesType()]
-	public class mod_CommandLine : CommandLine
+    [ModifiesType("CommandLine")]
+    public class mod_CommandLine 
 	{
 		[ModifiesType()]
 		public class Mod5_GameState : GameState {
@@ -578,87 +578,62 @@ namespace IEMod.Mods.ConsoleMod {
 				global::Console.AddMessage("Couldn't find: " + guid, Color.yellow);
 		}
 
-		[ModifiesMember("Skill")]
-		public  static void SkillNew(string name, string skillScore, string value)
-		{
-			int num;
-			if (!int.TryParse(value, out num))
-			{
-				Debug.Log("Skill: ERROR - value not in integer format.");
-			}
-			else
-			{
-				CharacterStats component = null;
-				if (name.ToLower() == "player")
-				{
-					if (GameState.s_playerCharacter == null)
-					{
-						Debug.Log("Skill: Error - player character not found.");
-						return;
-					}
-					component = GameState.s_playerCharacter.GetComponent<CharacterStats>();
-				}
-				else
-				{
-					CharacterStats[] statsArray = UnityEngine.Object.FindObjectsOfType<CharacterStats>();
-					for (int i = 0; i < statsArray.Length; i++)
-					{
-						if (statsArray[i].gameObject.name.ToLower().Contains(name.ToLower()))
-						{
-							component = statsArray[i];
-							break;
-						}
-					}
-				}
-				if (component == null)
-				{
-					Debug.Log("Skill: Error - stats component not found for " + name);
-				}
-				else
-				{
-					skillScore = skillScore.ToUpper();
-					int length = Enum.GetNames(typeof(CharacterStats.SkillType)).Length;
-					for (int j = 0; j < length; j++)
-					{
-						if (!(skillScore == Enum.GetNames(typeof(CharacterStats.SkillType))[j].ToUpper()))
-						{
-							continue;
-						}
-						switch (((CharacterStats.SkillType)j))
-						{
-							case CharacterStats.SkillType.Stealth:
-								component.StealthSkill = num;
-								break;
+        /// <summary>
+        /// This method fixes a bug in the original Skill command (that only applied the new value as your current bonus,
+        ///     not actually replacing the score). This bug was still present in v2.0 of PoE.
+        /// </summary>
+        /// <param name="character">The character to modify. The Guid will be filled in by CommandLineRun before we get here</param>
+        /// <param name="skill">The skill to modify. This will be converted from string to Enum by CommandLineRun</param>
+        /// <param name="score">The new score value to assign. This will be validated as a number by CommandLineRun. Note
+        ///     that this is NOT the actual score, it's the "points invested" in score. Thus to attain a score of 9, you
+        ///     would need to pass in 45 (the sum of 1 to 9). </param>
+        [ModifiesMember("Skill")]
+        public static void Skill(Guid character, CharacterStats.SkillType skill, int score)
+        {
+            CharacterStats characterStatsComponent = Scripts.GetCharacterStatsComponent(character);
+            if (characterStatsComponent == null)
+            {
+                Debug.Log(string.Concat("Skill: Error - stats component not found for '", character, "'."));
+                return;
+            }
+            switch (skill)
+            {
+                case CharacterStats.SkillType.Stealth:
+                    {
+                        characterStatsComponent.StealthSkill = score;
+                        break;
+                    }
+                case CharacterStats.SkillType.Athletics:
+                    {
+                        characterStatsComponent.AthleticsSkill = score;
+                        break;
+                    }
+                case CharacterStats.SkillType.Lore:
+                    {
+                        characterStatsComponent.LoreSkill = score;
+                        break;
+                    }
+                case CharacterStats.SkillType.Mechanics:
+                    {
+                        characterStatsComponent.MechanicsSkill = score;
+                        break;
+                    }
+                case CharacterStats.SkillType.Survival:
+                    {
+                        characterStatsComponent.SurvivalSkill = score;
+                        break;
+                    }
+                case CharacterStats.SkillType.Crafting:
+                    {
+                        characterStatsComponent.CraftingSkill = score;
+                        break;
+                    }
+            }
+            Console.AddMessage(string.Concat(new object[] { characterStatsComponent.name, "'s ", skill, " is now ", score.ToString() }));
+        }
 
-							case CharacterStats.SkillType.Athletics:
-								component.AthleticsSkill = num;
-								break;
 
-							case CharacterStats.SkillType.Lore:
-								component.LoreSkill = num;
-								break;
-
-							case CharacterStats.SkillType.Mechanics:
-								component.MechanicsSkill = num;
-								break;
-
-							case CharacterStats.SkillType.Survival:
-								component.SurvivalSkill = num;
-								break;
-
-							case CharacterStats.SkillType.Crafting:
-								component.CraftingSkill = num;
-								break;
-						}
-						global::Console.AddMessage(name + "'s " + skillScore + " is now " + value.ToString());
-						return;
-					}
-					Debug.Log("Skill Score: Error - could not find skill " + skillScore);
-				}
-			}
-		}
-
-		[NewMember]
+        [NewMember]
 		public  static void RenameCreature(string guid, string newname)
 		{
 			GameObject npc = UnityEngine.GameObject.Find(guid);
@@ -673,6 +648,7 @@ namespace IEMod.Mods.ConsoleMod {
 			GameCursor.ShowDebug = !GameCursor.ShowDebug;
 		}
 
+        /* * * TJH 8/26/2015 - Removed. CommandLine no longer contains RunCommand, it's been moved to CommandLineRun. 
 		// makes it possible to use some console commands without having to type in "IRoll20s" first
 		[ModifiesMember("RunCommand")]
 		public  static void RunCommandNew(string command)
@@ -822,7 +798,7 @@ namespace IEMod.Mods.ConsoleMod {
 				global::Console.AddMessage(string.Concat(new object[] { "No command or script '", list[0], "' accepting ", list.Count - 1, " parameters exists." }), Color.yellow);
 			}
 		}
-
+        */
 
 
 		[NewMember]
@@ -962,37 +938,29 @@ namespace IEMod.Mods.ConsoleMod {
 	
 		
 
-		// this method gives your maincharacter all existing mage spells... it was just to test something, but someone might want to use some bits of it
-		[NewMember]
-		public  static void AdAb()
-		{
-			CharacterStats firstparam = GameState.s_playerCharacter.GetComponent<CharacterStats>();
-			AbilityProgressionTable wizardsProgressionTable = AbilityProgressionTable.LoadAbilityProgressionTable("Wizard");
-			global::Console.AddMessage("Wizard abilities in game: " + wizardsProgressionTable.AbilityUnlocks.Length);
-			global::Console.AddMessage("This wizard has abilities: " + GameState.s_playerCharacter.GetComponent<CharacterStats>().GetCopyOfCoreData().KnownSkills.Count());
-			foreach (var abil in wizardsProgressionTable.AbilityUnlocks)
-			{
-				bool hasSpell = false;
+		//// this method gives your maincharacter all existing mage spells... it was just to test something, but someone might want to use some bits of it
+		//[NewMember]
+		//public  static void AdAb()
+		//{
+		//	CharacterStats firstparam = GameState.s_playerCharacter.GetComponent<CharacterStats>();
+		//	AbilityProgressionTable wizardsProgressionTable = AbilityProgressionTable.LoadAbilityProgressionTable("Wizard");
+		//	global::Console.AddMessage("Wizard abilities in game: " + wizardsProgressionTable.AbilityUnlocks.Length);
+		//	global::Console.AddMessage("This wizard has abilities: " + GameState.s_playerCharacter.GetComponent<CharacterStats>().GetCopyOfCoreData().KnownSkills.Count());
+		//	foreach (var abil in wizardsProgressionTable.AbilityUnlocks)
+		//	{
+		//		bool hasSpell = false;
 
-				foreach (var spell in firstparam.GetCopyOfCoreData().KnownSkills)
-					if (abil.Ability.name == spell.name.Replace("(Clone)", ""))
-						hasSpell = true;
+		//		foreach (var spell in firstparam.GetCopyOfCoreData().KnownSkills)
+		//			if (abil.Ability.name == spell.name.Replace("(Clone)", ""))
+		//				hasSpell = true;
 
-				if (hasSpell)
-					global::Console.AddMessage("The wizard already knows: " + abil.Ability.name);
-				else
-					CommandLine.AddAbility(firstparam, abil.Ability.name);
-			}
-		}
-		[ModifiesMember(".cctor")]
-		private void ConstructorNew()
-		{
-			// added code
-			modelViewerBackground = null;
-			GameBrowserBackground = null;
-			// end of added code
-			s_ScriptAttributeTypes = new object[] { typeof(ScriptParam0Attribute), typeof(ScriptParam1Attribute), typeof(ScriptParam2Attribute), typeof(ScriptParam3Attribute), typeof(ScriptParam4Attribute), typeof(ScriptParam5Attribute), typeof(ScriptParam6Attribute), typeof(ScriptParam7Attribute) };
-		}
+		//		if (hasSpell)
+		//			global::Console.AddMessage("The wizard already knows: " + abil.Ability.name);
+		//		else
+		//			CommandLine.AddAbility(firstparam, abil.Ability.name);
+		//	}
+		//}
+
 
 		[NewMember]
 		public static void DeleteIEModSettings(bool areYouSure) {
@@ -1014,58 +982,58 @@ namespace IEMod.Mods.ConsoleMod {
 			IEModOptions.Layout.SelectionCircleWidth = width;
 		}
 
-		[NewMember]
-		public static void BB() {
-			UICustomizer.ShowInterface(true);
-		}
+		//[NewMember]
+		//public static void BB() {
+		//	UICustomizer.ShowInterface(true);
+		//}
 
-		[NewMember]
-		public  static void TT()
-		{
-			if (((Mod_OnGUI_Player)GameState.s_playerCharacter).showGameObjectBrowser == false)
-			{
-				if (((Mod_OnGUI_Player)GameState.s_playerCharacter).inspecting == null)
-					((Mod_OnGUI_Player)GameState.s_playerCharacter).inspecting = UICustomizer.UiCamera.transform;
+		//[NewMember]
+		//public  static void TT()
+		//{
+		//	if (((Mod_OnGUI_Player)GameState.s_playerCharacter).showGameObjectBrowser == false)
+		//	{
+		//		if (((Mod_OnGUI_Player)GameState.s_playerCharacter).inspecting == null)
+		//			((Mod_OnGUI_Player)GameState.s_playerCharacter).inspecting = UICustomizer.UiCamera.transform;
 
-				if (GameBrowserBackground == null)
-				{
-					UIMultiSpriteImageButton portraitLast = null;
+		//		if (GameBrowserBackground == null)
+		//		{
+		//			UIMultiSpriteImageButton portraitLast = null;
 
-					foreach (UIMultiSpriteImageButton btn in UnityEngine.Object.FindObjectsOfType<UIMultiSpriteImageButton>())
-						if (btn.ToString() == "PartyPortrait(Clone) (UIMultiSpriteImageButton)" && portraitLast == null)
-							portraitLast = btn;
+		//			foreach (UIMultiSpriteImageButton btn in UnityEngine.Object.FindObjectsOfType<UIMultiSpriteImageButton>())
+		//				if (btn.ToString() == "PartyPortrait(Clone) (UIMultiSpriteImageButton)" && portraitLast == null)
+		//					portraitLast = btn;
 
-					GameBrowserBackground = NGUITools.AddWidget<UITexture>(portraitLast.transform.parent.parent.gameObject);
-					GameBrowserBackground.mainTexture = new Texture2D(500, 500);
+		//			GameBrowserBackground = NGUITools.AddWidget<UITexture>(portraitLast.transform.parent.parent.gameObject);
+		//			GameBrowserBackground.mainTexture = new Texture2D(500, 500);
 
-					GameBrowserBackground.transform.localScale = new Vector3(1100f, 600f, 1f); // those values are for 1920*1080...
-					//GameBrowserBackground.transform.localScale = new Vector3 (1600f, 800f, 1f); // those values are for 1280*1024
+		//			GameBrowserBackground.transform.localScale = new Vector3(1100f, 600f, 1f); // those values are for 1920*1080...
+		//			//GameBrowserBackground.transform.localScale = new Vector3 (1600f, 800f, 1f); // those values are for 1280*1024
 
-					// rescaler
-					if (Screen.width != 1920)
-					{
-						float addwidth = (1920 - Screen.width) * 0.78f;
-						float addheight = (1080 - Screen.height) * 0.55f;
-						GameBrowserBackground.transform.localScale += new Vector3(addwidth, addheight, 0f);
-					}
+		//			// rescaler
+		//			if (Screen.width != 1920)
+		//			{
+		//				float addwidth = (1920 - Screen.width) * 0.78f;
+		//				float addheight = (1080 - Screen.height) * 0.55f;
+		//				GameBrowserBackground.transform.localScale += new Vector3(addwidth, addheight, 0f);
+		//			}
 
-					BoxCollider boxColl = NGUITools.AddWidgetCollider(GameBrowserBackground.gameObject); // adding a box collider, it's required for the UINoClick component
-					boxColl.gameObject.AddComponent<UINoClick>(); // this prevents clicks from going through the U-frame
-					UIAnchor ank = GameBrowserBackground.gameObject.AddComponent<UIAnchor>();
-					ank.side = UIAnchor.Side.Center;
+		//			BoxCollider boxColl = NGUITools.AddWidgetCollider(GameBrowserBackground.gameObject); // adding a box collider, it's required for the UINoClick component
+		//			boxColl.gameObject.AddComponent<UINoClick>(); // this prevents clicks from going through the U-frame
+		//			UIAnchor ank = GameBrowserBackground.gameObject.AddComponent<UIAnchor>();
+		//			ank.side = UIAnchor.Side.Center;
 
-				}
-				else
-					GameBrowserBackground.gameObject.SetActive(true);
+		//		}
+		//		else
+		//			GameBrowserBackground.gameObject.SetActive(true);
 
-				((Mod_OnGUI_Player)GameState.s_playerCharacter).showGameObjectBrowser = true; // temporarily turned off
-			}
-			else
-			{
-				GameBrowserBackground.gameObject.SetActive(false);
-				((Mod_OnGUI_Player)GameState.s_playerCharacter).showGameObjectBrowser = false;
-			}
-		}
+		//		((Mod_OnGUI_Player)GameState.s_playerCharacter).showGameObjectBrowser = true; // temporarily turned off
+		//	}
+		//	else
+		//	{
+		//		GameBrowserBackground.gameObject.SetActive(false);
+		//		((Mod_OnGUI_Player)GameState.s_playerCharacter).showGameObjectBrowser = false;
+		//	}
+		//}
 
 		[NewMember]
 		public  static void ShowModelViewer()
@@ -1128,7 +1096,32 @@ namespace IEMod.Mods.ConsoleMod {
 			}
 		}
 
-
 	}
+
+    [ModifiesType("CommandLineRun")]
+    public class mod_CommandLineRun
+    {
+        /* * * TJH 8/26/2015 - It's no longer necessary to override RunCommand. We can just make sure all methods are always
+            available and not treated as cheats * * */
+
+        [ModifiesMember("GetNonCheatMethods")]
+        public static IEnumerable<MethodInfo> GetNonCheatMethodsNew()
+        {
+            return CommandLineRun.GetAllMethods();
+        }
+
+        [ModifiesMember("GetAvailableMethods")]
+        public static IEnumerable<MethodInfo> GetAvailableMethodsNew()
+        {
+            return CommandLineRun.GetAllMethods();
+        }
+
+        [ModifiesMember("GetCheatMethods")]
+        public static IEnumerable<MethodInfo> GetCheatMethodsNew()
+        {
+            return new List<MethodInfo>();
+        }
+
+    }
 
 }
