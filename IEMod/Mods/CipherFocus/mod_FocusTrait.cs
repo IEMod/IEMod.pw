@@ -6,7 +6,7 @@ using IEMod.Mods.Options;
 using Patchwork.Attributes;
 using UnityEngine;
 
-namespace IEMod.Mods.CipherRestoration
+namespace IEMod.Mods.CipherFocus
 {
     /// <summary>
     /// Restores the Cipher's base focus to 1/2 max focus instead of 1/4.
