@@ -89,7 +89,7 @@ namespace IEMod.Mods.Options {
                     this.PortraitHighlightsDisabled == other.PortraitHighlightsDisabled &&
                     this.RightHudBarPosition == other.RightHudBarPosition &&
                     this.TooltipOffset == other.TooltipOffset &&
-                    this.UsingCustomTextures == other.UsingCustomTextures;
+                    this.UsingCustomTextures == other.UsingCustomTextures
             }
         }
 
@@ -203,7 +203,15 @@ namespace IEMod.Mods.Options {
 			"Modifies which levels of Wizard, Priest and Druid spells are treated as per-encounter.")]
 		public static PerEncounterSpells PerEncounterSpellsSetting;
 
-		[Save]
+        [Save]
+        [Label("Cipher Base Focus")]
+        [Description(
+            "Modifies the amount of Focus Ciphers begin combat with.")]
+        public static CipherStartingFocus CipherStartingFocusSetting;
+
+
+
+        [Save]
 		[Label("NPC Disposition Fix")]
 		[Description(
 			"Applies disposition-based bonuses to NPC paladins and priests. Patches in favored and disfavored dispositions for Pallegina's order."
@@ -383,7 +391,26 @@ namespace IEMod.Mods.Options {
 			AllPerRest
 		}
 
-		[NewType]
+        [NewType]
+        public enum CipherStartingFocus
+        {
+            [Description("No Change (1/4 Max Focus)")]
+            Quarter,
+
+            [Description("1/2 Max Focus")]
+            Half,
+
+            [Description("3/4 Max Focus")]
+            ThreeQuarter,
+
+            [Description("Max Focus")]
+            Max,
+
+            [Description("No Focus")]
+            None
+        }
+
+        [NewType]
 		public enum ExtraSpellsInGrimoire {
 			[Description("No extra preparation slots.")]
 			None = 0,

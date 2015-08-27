@@ -72,7 +72,9 @@ namespace IEMod.Mods.Options {
 		private QuickCheckbox _npcDispositionFix;
 		[NewMember]
 		private QuickDropdown<IEModOptions.PerEncounterSpells> _perEncounterSpellsCmb;
-		[NewMember]
+        [NewMember]
+        private QuickDropdown<IEModOptions.CipherStartingFocus> _cipherStartingFocusCmb;
+        [NewMember]
 		private QuickDropdown<IEModOptions.ExtraSpellsInGrimoire> _extraGrimoireSpellsCmb;
 		[NewMember]
 		private QuickDropdown<IEModOptions.AutoSaveSetting> _autosaveCmb;
@@ -229,10 +231,15 @@ namespace IEMod.Mods.Options {
 			_extraGrimoireSpellsCmb.LabelWidth = cmbLabelWidth;
 			_extraGrimoireSpellsCmb.Transform.localPosition = centerCmbTop.Plus(y:-60);
 
-			_autosaveCmb = quickFactory.EnumDropdown(() => IEModOptions.AutosaveSetting);
+            _cipherStartingFocusCmb = quickFactory.EnumDropdown(() => IEModOptions.CipherStartingFocusSetting);
+            _cipherStartingFocusCmb.LabelWidth = cmbLabelWidth;
+            _cipherStartingFocusCmb.Width = cmbWidth;
+            _cipherStartingFocusCmb.LocalPosition = centerCmbTop.Plus(y: -90);
+
+            _autosaveCmb = quickFactory.EnumDropdown(() => IEModOptions.AutosaveSetting);
 			_autosaveCmb.Width = cmbWidth;
 			_autosaveCmb.LabelWidth = cmbLabelWidth;
-			_autosaveCmb.Transform.localPosition = centerCmbTop.Plus(y:-90);
+			_autosaveCmb.Transform.localPosition = centerCmbTop.Plus(y:-120);
 
 			// Pallegina dispositions mod page
 			quickFactory.CurrentParent = ieModDisposition.Transform;
