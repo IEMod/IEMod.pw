@@ -75,7 +75,6 @@ namespace IEMod.Mods.Options {
                     this.ButtonsBackground == other.ButtonsBackground &&
                     this.ClockPosition == other.ClockPosition &&
                     this.CustomizeButtonPosition == other.CustomizeButtonPosition &&
-                    this.DefaultZoom == other.DefaultZoom &&
                     this.FormationPosition == other.FormationPosition &&
                     this.FramePath == other.FramePath &&
                     this.HudHorizontal == other.HudHorizontal &&
@@ -89,9 +88,7 @@ namespace IEMod.Mods.Options {
                     this.PartySolidHudPosition == other.PartySolidHudPosition &&
                     this.PortraitHighlightsDisabled == other.PortraitHighlightsDisabled &&
                     this.RightHudBarPosition == other.RightHudBarPosition &&
-                    this.SelectionCircleWidth == other.SelectionCircleWidth &&
                     this.TooltipOffset == other.TooltipOffset &&
-                    this.UseCustomUI == other.UseCustomUI &&
                     this.UsingCustomTextures == other.UsingCustomTextures;
             }
         }

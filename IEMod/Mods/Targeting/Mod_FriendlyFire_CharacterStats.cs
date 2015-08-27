@@ -37,11 +37,13 @@ namespace IEMod.Mods.Targeting {
 			if (damage.DefendedBy != CharacterStats.DefenseType.None)
 			{
 				int hitValue = num + num2 - num3;
-				this.ComputeHitAdjustment(hitValue, component, ref damage);
+				//GR 27/8 - computeHitAdjustment used to be passed with ref, but this was changed in 2.0
+				this.ComputeHitAdjustment(hitValue, component, damage);
 
 				if (disableFriendlyFire)
 				{
-					if (enemy.GetComponent<Faction>().IsFriendly(base.gameObject) && base.m_isPartyMember)
+
+					if (enemy.GetComponent<Faction>().IsFriendly(base.gameObject) && base.IsPartyMember)
 					{
 						damage.IsCriticalHit = false;
 						damage.Interrupts = false;
@@ -126,12 +128,12 @@ namespace IEMod.Mods.Targeting {
 								}
 							}
 						}
-						component3.ApplyItemModDamageProcs(ref damage);
+						component3.ApplyItemModDamageProcs(damage);
 					}
 				}
 			}
-			this.ComputeInterrupt(component, ref damage);
-			if (this.m_isPartyMember)
+			this.ComputeInterrupt(component, damage);
+			if (this.IsPartyMember)
 			{
 				if (component)
 				{

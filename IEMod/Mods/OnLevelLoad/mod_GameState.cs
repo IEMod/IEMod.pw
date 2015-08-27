@@ -48,7 +48,8 @@ namespace IEMod.Mods.OnLevelLoad {
 							}
 							rai.StateManager.AbortStateStack();
 						}
-						rai.ClearAllSuspicion();
+						//ClearAllSuspicion has been removed in 2.0
+						//rai.ClearAllSuspicion();
 					}
 				}
 				StartPoint.s_ChosenStartPoint = null;
@@ -127,7 +128,7 @@ namespace IEMod.Mods.OnLevelLoad {
 			// added this code
 			DropButton.InjectDropInvButton();
 			if (IEModOptions.EnableCustomUI) {
-				UICustomizer.LoadLayout(IEModOptions.Layout);	
+				//UICustomizer.LoadLayout(IEModOptions.Layout);	
 			} 
 			
 			

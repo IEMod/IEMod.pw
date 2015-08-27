@@ -203,7 +203,7 @@ namespace IEMod.Mods.RecoveryRate {
 			{
 				this.m_statusEffects[n].Update();
 			}
-			if (this.m_isPartyMember && GameCursor.CharacterUnderCursor && this.m_equipment)
+			if (this.IsPartyMember && GameCursor.CharacterUnderCursor && this.m_equipment)
 			{
 				PartyMemberAI component2 = base.GetComponent<PartyMemberAI>();
 				if (component2 && component2.Selected)

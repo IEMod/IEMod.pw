@@ -3,16 +3,19 @@ using Patchwork.Attributes;
 using UnityEngine;
 
 namespace IEMod.Mods.SelectionCircles {
+
+	//GT 27/8/15 - a lot of these members have disappeared :(
 	[ModifiesType]
 	public class mod_SelectionCircle : SelectionCircle
 	{
+		/*
 		[ModifiesMember("UpdateVisibility")]
 		// disables spikes in the selection circles during combat if the "no engagement" mod is on
 		private void UpdateVisibilityNew()
 		{
 			float alpha = 1f;
-			bool flag = this.m_Mode == Mode.TARGETED;
-			bool flag2 = this.m_Mode != Mode.TARGETED;
+			bool flag = this.CurrentMode == Mode.Targeted;
+			bool flag2 = this.CurrentMode != Mode.targ;
 			if (this.m_Owner != null)
 			{
 				AlphaControl component = this.m_Owner.GetComponent<AlphaControl>();
@@ -150,5 +153,6 @@ namespace IEMod.Mods.SelectionCircles {
 				}
 			}
 		}
+		*/
 	}
 }
