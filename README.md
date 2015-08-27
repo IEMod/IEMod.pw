@@ -24,8 +24,7 @@ I've added an option called *"target turned enemies"* that makes enemies that ha
 ### Minimize Intrusive Backer Elements
 This is probably the most requested feature I've seen. Many people find some backer NPCs and Tombstones to be intrusive. I've provided a few options to fix that.
 
-1. **Disable Backer Dialogs:** If this option is chosen, you can no longer "talk" to backer NPCs (experience their backstory). This option existed in the mod before, but was kind of hidden. Also, backer NPCs will no longer have gold nameplates.
-
+1. **Disable Backer Dialogs:** If this option is chosen, you can no longer "talk" to backer NPCs (experience their backstory). This option existed in the mod before, but was kind of hidden.
 
 ### UI Customization
 1. You can access the UI customization from a button in the UI. This button is draggable as well in UI customization mode.
@@ -37,7 +36,7 @@ This is probably the most requested feature I've seen. Many people find some bac
 
 ### Console Commands
 1. `ShowMouseDebug` toggles debug information for what's under the cursor (this is something that was already in the game's code). There isn't much information. I'll probably expand it later on. You can use it to get the IDs of characters instead of using `FindCharacter`.
-2. `ClearAllSettings true` clears all settings, including mod and game settings. 
+2. `ClearAllPreferences true` clears all preferences, including mod settings and some game settings.
 
 ## Code Injection
 See the [Patchwork library](https://github.com/GregRos/Patchwork) for more information. Patchwork is made part of this repository as a sub-module (basically a kind of sub-project).
@@ -107,9 +106,11 @@ It's best to throw `IEModException`, because you'll be able to find the exceptio
 
 You can use `UnityPrinter` to print unity object graphs. This is extremely helpful, especially when working with UI.
 
-When navigating the Component/GameObject graph, use the extension methods in `UnityObjectExtensions`. For example, instead of `GetComponent<T>` (provided by Unity), use `Component<T>`. This is because the `GetX` methods can easily return `null`, and leave you to figure out where the error occurred. Extension methods in `UnityObjectExtensions` don't return nulls and throw informative exceptions if an error has occurred.
+When navigating the Component/GameObject graph, use the extension methods in `UnityObjectExtensions`. For example, instead of `GetComponent<T>` (provided by Unity), use `Component<T>`. This is because the `GetX` methods can easily return `null`, and leave you to figure out where the error occurred. Extension methods in `UnityObjectExtensions` don't return nulls and throw informative exceptions if an error has occurred, including the names of the objects involved, etc. 
 
-Use the `QuickControl` system instead of working with raw GameObjects. These are thin wrappers around UI GameObjects that give you access to common components, as well as improved error detection.
+Seriously, avoid nulls *at all costs*. 
+
+Use the `QuickControl` system instead of working with raw GameObjects, where this is possible. These are thin wrappers around UI GameObjects that give you access to common components, as well as improved error detection and data binding.
 
 *More to come later*
 

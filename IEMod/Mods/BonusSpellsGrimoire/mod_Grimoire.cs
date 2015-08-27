@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace IEMod.Mods.BonusSpellsGrimoire {
 	
+	//this needs some more work
 	[ModifiesType()]
 	public class mod_Grimoire : Grimoire
 	{
@@ -18,7 +19,6 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 		[ModifiesMember("IsLevelFull")]
 		public bool IsLevelFullNew(int level)
 		{
-        
 			level--;
 
 			if (level >= this.Spells.Length)
@@ -39,13 +39,13 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 		[ModifiesMember("Start")]
 		private void StartNew()
 		{
-			if (this.Spells.Length != 6)
+			if (this.Spells.Length != 8)
 			{
-				if (this.Spells.Length > 6)
+				if (this.Spells.Length > 8)
 				{
 					Debug.LogError("Too many spell levels in grimoire '" + base.name + "': some will be dropped!");
 				}
-				Grimoire.SpellChapter[] array = new Grimoire.SpellChapter[6];
+				Grimoire.SpellChapter[] array = new Grimoire.SpellChapter[8];
 				this.Spells.CopyTo(array, 0);
 				this.Spells = array;
             

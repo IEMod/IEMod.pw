@@ -20,7 +20,7 @@ namespace IEMod.Mods.CombatLooting {
 		public void CtorNew() {
 			MonoBehavior_ctor();
 			// Note: this type is marked as 'beforefieldinit'.
-			UIInventoryGridItem.s_TooltipRepeatTime = 0f;
+			//UIInventoryGridItem.s_TooltipRepeatTime = 0f;
 			UIInventoryGridItem.s_TooltipRepeatLast = Vector2.zero;
 			UIInventoryGridItem.s_BlockRefresh = false;
 

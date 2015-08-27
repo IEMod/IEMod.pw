@@ -14,23 +14,23 @@ namespace IEMod.Mods.Tooltips {
 			{
 				this.Initialize();
 			}
-			if (this.m_Target != target)
+			if (this.Target != target)
 			{
 				this.Reset();
 			}
-			if (target != this.m_Target)
+			if (target != this.Target)
 			{
-				this.m_Target = target;
-				this.m_Stats = this.m_Target.GetComponent<CharacterStats>();
+				this.Target = target;
+				this.m_Stats = this.Target.GetComponent<CharacterStats>();
 				if (this.OnSelectedCharacterChanged != null)
 				{
 					this.OnSelectedCharacterChanged(this.SelectedCharacter);
 				}
 			}
-			this.m_PartyAI = this.m_Target.GetComponent<PartyMemberAI>();
-			this.m_Health = this.m_Target.GetComponent<Health>();
-			this.m_Faction = this.m_Target.GetComponent<Faction>();
-			this.m_BackerContent = this.m_Target.GetComponent<BackerContent>();
+			this.m_PartyAI = this.Target.GetComponent<PartyMemberAI>();
+			this.m_Health = this.Target.GetComponent<Health>();
+			this.m_Faction = this.Target.GetComponent<Faction>();
+			this.m_BackerContent = this.Target.GetComponent<BackerContent>();
 			if (this.PointerAnchor != null)
 			{
 				this.PointerAnchor.relativeOffset = new Vector2(0f, this.PointerAnchor.relativeOffset.y);

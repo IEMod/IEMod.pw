@@ -55,18 +55,12 @@ namespace IEMod.Mods.Options {
 
 			public bool PortraitHighlightsDisabled;
 
-			public bool UseCustomUI;
-
 			public bool PartyBarHorizontal;
 
 			public bool TooltipOffset;
 
 			public string FramePath;
-
-			public float SelectionCircleWidth;
-
-			public float DefaultZoom;
-
+			
             public override bool Equals(object obj)
             {
                 if (!(obj is LayoutOptions))
@@ -81,7 +75,6 @@ namespace IEMod.Mods.Options {
                     this.ButtonsBackground == other.ButtonsBackground &&
                     this.ClockPosition == other.ClockPosition &&
                     this.CustomizeButtonPosition == other.CustomizeButtonPosition &&
-                    this.DefaultZoom == other.DefaultZoom &&
                     this.FormationPosition == other.FormationPosition &&
                     this.FramePath == other.FramePath &&
                     this.HudHorizontal == other.HudHorizontal &&
@@ -95,15 +88,24 @@ namespace IEMod.Mods.Options {
                     this.PartySolidHudPosition == other.PartySolidHudPosition &&
                     this.PortraitHighlightsDisabled == other.PortraitHighlightsDisabled &&
                     this.RightHudBarPosition == other.RightHudBarPosition &&
-                    this.SelectionCircleWidth == other.SelectionCircleWidth &&
                     this.TooltipOffset == other.TooltipOffset &&
-                    this.UseCustomUI == other.UseCustomUI &&
                     this.UsingCustomTextures == other.UsingCustomTextures;
             }
         }
 
 
 
+		[Save]
+		[Label("UI Customization")]
+		[Description("Enables the UI customization interface. This option is applied on an area transition.")]
+		public static bool EnableCustomUI;
+
+		[Save]
+		public static float? SelectionCircleWidth;
+
+		[Save]
+		public static  float DefaultZoom;
+        
 		[Save]
 		public static LayoutOptions Layout = new LayoutOptions();
 
@@ -217,8 +219,8 @@ namespace IEMod.Mods.Options {
 		public static Disposition.Axis PalleginaFavored2;
 
 		[Save]
-		[Label("Minimize Backer NPC Interaction")]
-		[Description("Enables additional changes that minimize the visibility and interaction with backer NPCs.")]
+		[Label("Disable Backer Dialogs")]
+		[Description("Disables talking to backer NPCs.")]
 		public static bool DisableBackerDialogs;
 
 		[Save]

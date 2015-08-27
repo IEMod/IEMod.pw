@@ -16,7 +16,7 @@ namespace IEMod.Mods.Targeting {
 			bool disableFriendlyFire = IEModOptions.DisableFriendlyFire;
 			;
 			bool confusedArentFriends = IEModOptions.TargetTurnedEnemies;
-			List<GameObject> list = new List<GameObject>();
+			var list = new List<GameObject>();
 			float blastRadius = AdjustedBlastRadius;
 			//note that ajdBlastRadius is the wider blast radius.
 			float adjBlastRadius = blastRadius;
@@ -51,19 +51,21 @@ namespace IEMod.Mods.Targeting {
 				var isValidForHostile = IsValidTarget(current.gameObject, caster, TargetType.Hostile);
 				var isValidTarget = IsValidTarget(current.gameObject, caster);
 				var isCurrentFriendly = (current.isPartyMember || casterFaction.IsFriendly(current));
-				var aiController = GameUtilities.FindActiveAIController(current.gameObject);
-				var relationshipToCasterFaction = aiController?.GetOriginalTeam()?.GetRelationship(casterFaction.CurrentTeam);
+
+				//I tried organizing the code by setting the whole FindActiveAIController thing into a variable, but in some situations it throws NullReferenceExceptions.
+				//these situations seem to be avoided by doing it like this.
 				if ((ValidTargets == TargetType.Friendly || ValidTargets == TargetType.FriendlyIncludingCharmed)
 					&& !isValidForHostile
 					&& isValidTarget) {
-					if (!confusedArentFriends || relationshipToCasterFaction != Faction.Relationship.Hostile) {
+					if (!confusedArentFriends || (GameUtilities.FindActiveAIController(current.gameObject) ? GameUtilities.FindActiveAIController(current.gameObject).GetOriginalTeam()?.GetRelationship(casterFaction.CurrentTeam) : null) != Faction.Relationship.Hostile) {
 						list.Add(current.gameObject);
 					}
 				} else if (
 					(ValidTargets == TargetType.Hostile && !isValidTarget)
 						|| (!isWithinPureRadius && ValidTargets == TargetType.All
 							&& !isValidForHostile)) {
-					if (IsValidTarget(current.gameObject, caster, TargetType.All) && confusedArentFriends && relationshipToCasterFaction == Faction.Relationship.Hostile) {
+						
+					if (IsValidTarget(current.gameObject, caster, TargetType.All) && confusedArentFriends && (GameUtilities.FindActiveAIController(current.gameObject) ? GameUtilities.FindActiveAIController(current.gameObject).GetOriginalTeam()?.GetRelationship(casterFaction.CurrentTeam) : null) == Faction.Relationship.Hostile) {
 						list.Add(current.gameObject);
 					}
 				} else if (ValidTargets == TargetType.All && isValidForHostile) {

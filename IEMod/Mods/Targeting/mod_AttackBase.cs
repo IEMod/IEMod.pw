@@ -13,8 +13,8 @@ namespace IEMod.Mods.Targeting {
 		[NewMember]
 		public static string OnImpactDebugRegister;
 
-		[ModifiesMember]
-		[PatchworkDebugRegister(nameof(OnImpactDebugRegister))]
+		//[ModifiesMember]
+		//[PatchworkDebugRegister(nameof(OnImpactDebugRegister))]
 		private new GameObject CheckRedirect(GameObject enemy) {
 			try {
 				if (this is AttackMelee && enemy.GetComponent<CharacterStats>().RedirectMeleeAttacks) {
@@ -105,15 +105,16 @@ namespace IEMod.Mods.Targeting {
 						attackerDTBypass1.AttackerDTBypass = attackerDTBypass1.AttackerDTBypass + component.MeleeDTBypass;
 					}
 				}
+				
 				if (component != null) {
 					if (!dTBypass.IsMiss) {
-						component.TriggerWhenHits(enemy, ref dTBypass);
+						component.TriggerWhenHits(enemy, dTBypass);
 					} else {
-						component.TriggerWhenMisses(enemy, ref dTBypass);
+						component.TriggerWhenMisses(enemy, dTBypass);
 					}
 				}
 				if (!dTBypass.IsMiss && characterStat) {
-					characterStat.TriggerWhenHit(owner, ref dTBypass);
+					characterStat.TriggerWhenHit(owner, dTBypass);
 				}
 				if (!dTBypass.IsMiss) {
 					this.PushEnemy(enemy, this.PushDistance, null, dTBypass);

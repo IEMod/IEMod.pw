@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Patchwork.Attributes;
 using UnityEngine;
 
@@ -36,23 +37,25 @@ namespace IEMod.Mods.PartyBar {
 			}
 			if (this.m_partyMemberAI.Selected)
 			{
-				this.Glow.alpha = 1f;
+				//GT 27/8/15 - Glow member has been removed :(
+				//this.Glow.alpha = 1f;
 				this.Border.spriteName = "portSelected";
 			}
 			else
 			{
-				this.Glow.alpha = 0f;
+				//GT 27/8/15 - Glow member has been removed :(
+				//this.Glow.alpha = 0f;
 				this.Border.spriteName = "portSelectedNot";
 			}
 			this.m_EnduranceValues.LineBreak = this.Minion.gameObject.activeSelf;
 			this.UpdateLevelTalkGrid();
-			if (this.m_ClassCounterType == UIPartyPortrait.ClassCounterType.FOCUS)
+			if (this.m_ClassCounterType == UIPartyPortrait.ClassCounterType.Focus)
 			{
 				this.ClassCount = Mathf.FloorToInt(this.m_characterStats.Focus);
 			}
 			else
 			{
-				if (this.m_ClassCounterType == UIPartyPortrait.ClassCounterType.PHRASES)
+				if (this.m_ClassCounterType == UIPartyPortrait.ClassCounterType.Phrases)
 				{
 					if (!this.m_characterChanter)
 					{
@@ -81,8 +84,8 @@ namespace IEMod.Mods.PartyBar {
 				arg_1DD_0.alpha = alpha;
 			}
 			int num2 = 0;
-			StatusEffect[] activeStatusEffects = this.m_characterStats.ActiveStatusEffects;
-			for (int i = 0; i < activeStatusEffects.Length; i++)
+			IList<StatusEffect> activeStatusEffects = this.m_characterStats.ActiveStatusEffects;
+			for (int i = 0; i < activeStatusEffects.Count; i++)
 			{
 				StatusEffect statusEffect = activeStatusEffects[i];
 				num2 += -Mathf.RoundToInt(statusEffect.DotExpectedDamage(this.m_partyMemberAI.gameObject));

@@ -1,4 +1,4 @@
-﻿namespace PrepareEnvironment {
+﻿namespace ModdingEnvironment {
 	public class Paths {
 		/// <summary>
 		///     Path to your Pillars of Eternity game folder.
