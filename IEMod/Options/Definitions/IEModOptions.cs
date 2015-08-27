@@ -311,7 +311,6 @@ namespace IEMod.Mods.Options {
 				var myValue = field.GetValue(null);
 				var prefValue = PlayerPrefsHelper.GetObject(GetSettingName(field.Name), field.FieldType);
 				if (!Equals(myValue, prefValue)) {
-                    Console.AddMessage(string.Format("Field {0} - Old: {1}, New {2}", field.Name, myValue.ToString(), prefValue.ToString()));
                     return false;
 				}
 			}
