@@ -66,7 +66,43 @@ namespace IEMod.Mods.Options {
 			public float SelectionCircleWidth;
 
 			public float DefaultZoom;
-		}
+
+            public override bool Equals(object obj)
+            {
+                if (!(obj is LayoutOptions))
+                {
+                    return false;
+                }
+
+                LayoutOptions other = obj as LayoutOptions;
+
+                return this.AbilitiesBarPosition == other.AbilitiesBarPosition &&
+                    this.BuffsSideLeft == other.BuffsSideLeft &&
+                    this.ButtonsBackground == other.ButtonsBackground &&
+                    this.ClockPosition == other.ClockPosition &&
+                    this.CustomizeButtonPosition == other.CustomizeButtonPosition &&
+                    this.DefaultZoom == other.DefaultZoom &&
+                    this.FormationPosition == other.FormationPosition &&
+                    this.FramePath == other.FramePath &&
+                    this.HudHorizontal == other.HudHorizontal &&
+                    this.HudPosition == other.HudPosition &&
+                    this.HudTextureHidden == other.HudTextureHidden &&
+                    this.LeftHudBarPosition == other.LeftHudBarPosition &&
+                    this.LogButtonsLeft == other.LogButtonsLeft &&
+                    this.LogPosition == other.LogPosition &&
+                    this.PartyBarHorizontal == other.PartyBarHorizontal &&
+                    this.PartyBarPosition == other.PartyBarPosition &&
+                    this.PartySolidHudPosition == other.PartySolidHudPosition &&
+                    this.PortraitHighlightsDisabled == other.PortraitHighlightsDisabled &&
+                    this.RightHudBarPosition == other.RightHudBarPosition &&
+                    this.SelectionCircleWidth == other.SelectionCircleWidth &&
+                    this.TooltipOffset == other.TooltipOffset &&
+                    this.UseCustomUI == other.UseCustomUI &&
+                    this.UsingCustomTextures == other.UsingCustomTextures;
+            }
+        }
+
+
 
 		[Save]
 		public static LayoutOptions Layout = new LayoutOptions();
@@ -275,7 +311,8 @@ namespace IEMod.Mods.Options {
 				var myValue = field.GetValue(null);
 				var prefValue = PlayerPrefsHelper.GetObject(GetSettingName(field.Name), field.FieldType);
 				if (!Equals(myValue, prefValue)) {
-					return false;
+                    Console.AddMessage(string.Format("Field {0} - Old: {1}, New {2}", field.Name, myValue.ToString(), prefValue.ToString()));
+                    return false;
 				}
 			}
 			return true;
