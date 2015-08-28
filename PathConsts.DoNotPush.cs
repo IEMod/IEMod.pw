@@ -32,6 +32,6 @@
 		public const string PeVerifyPath = @"C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\PEVerify.exe";
 
 		public const string ILSpyPath =
-			@"C:\Users\lifeg_000\AppData\Local\Microsoft\VisualStudio\12.0\Extensions\bicaz2ty.1dn\ILSpy.exe";
+			@"..\..\..\Start\Decompiler\ILSpy.exe";
 	}
 }
