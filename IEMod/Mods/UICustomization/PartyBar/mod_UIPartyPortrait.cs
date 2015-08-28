@@ -37,13 +37,13 @@ namespace IEMod.Mods.PartyBar {
 			}
 			if (this.m_partyMemberAI.Selected)
 			{
-				//GT 27/8/15 - Glow member has been removed :(
+				//GR 27/8/15 - Glow member has been removed :(
 				//this.Glow.alpha = 1f;
 				this.Border.spriteName = "portSelected";
 			}
 			else
 			{
-				//GT 27/8/15 - Glow member has been removed :(
+				//GR 27/8/15 - Glow member has been removed :(
 				//this.Glow.alpha = 0f;
 				this.Border.spriteName = "portSelectedNot";
 			}
@@ -84,11 +84,9 @@ namespace IEMod.Mods.PartyBar {
 				arg_1DD_0.alpha = alpha;
 			}
 			int num2 = 0;
-			IList<StatusEffect> activeStatusEffects = this.m_characterStats.ActiveStatusEffects;
-			for (int i = 0; i < activeStatusEffects.Count; i++)
+			foreach (StatusEffect current in this.m_characterStats.ActiveStatusEffects)
 			{
-				StatusEffect statusEffect = activeStatusEffects[i];
-				num2 += -Mathf.RoundToInt(statusEffect.DotExpectedDamage(this.m_partyMemberAI.gameObject));
+				num2 += -Mathf.RoundToInt(current.DotExpectedDamage(this.m_partyMemberAI.gameObject));
 			}
 
 			//BEGINNING OF MOD CODE:

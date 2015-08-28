@@ -68,6 +68,17 @@ namespace IEMod.Mods.CameraControlMod {
 						this.OrthoSettings.SetZoomLevel(PlayerPrefs.GetFloat("DefaultZoom", 1f), false); // changed this line
 						this.ResetAtEdges();
 					}
+					if (GameInput.GetControlUp(MappedControl.FOLLOW_CAM))
+					{
+						this.m_FollowingUnits.Clear();
+						for (int i = 0; i < PartyMemberAI.SelectedPartyMembers.Length; i++)
+						{
+							if (PartyMemberAI.SelectedPartyMembers[i])
+							{
+								this.m_FollowingUnits.Add(PartyMemberAI.SelectedPartyMembers[i]);
+							}
+						}
+					}
 					if (GameInput.GetControlDown(MappedControl.PAN_CAMERA))
 					{
 						this.m_mouseDrag_lastMousePos = GameInput.MousePosition;
@@ -82,6 +93,7 @@ namespace IEMod.Mods.CameraControlMod {
 					}
 					else if (GameInput.GetControl(MappedControl.PAN_CAMERA))
 					{
+						this.CancelFollow();
 						Vector3 vector4 = GameInput.MousePosition - this.m_mouseDrag_lastMousePos;
 						this.m_mouseDrag_lastMousePos = GameInput.MousePosition;
 						if (vector4.x < 0f)
@@ -142,6 +154,7 @@ namespace IEMod.Mods.CameraControlMod {
 						bool flag3 = (GameInput.MousePosition.y > (0f + this.m_mouseScrollBufferOuter)) && (GameInput.MousePosition.y < (Screen.height - this.m_mouseScrollBufferOuter));
 						if (GameInput.GetControl(MappedControl.PAN_CAMERA_LEFT) || ((flag3 && option) && ((GameInput.MousePosition.x < this.m_mouseScrollBuffer) && (GameInput.MousePosition.x > this.m_mouseScrollBufferOuter))))
 						{
+							this.CancelFollow();
 							this.m_atRight = false;
 							if (!this.m_atLeft)
 							{
@@ -151,6 +164,7 @@ namespace IEMod.Mods.CameraControlMod {
 						}
 						else if (GameInput.GetControl(MappedControl.PAN_CAMERA_RIGHT) || ((flag3 && option) && ((GameInput.MousePosition.x > (Screen.width - this.m_mouseScrollBuffer)) && (GameInput.MousePosition.x < (Screen.width - this.m_mouseScrollBufferOuter)))))
 						{
+							this.CancelFollow();
 							this.m_atLeft = false;
 							if (!this.m_atRight)
 							{
@@ -160,6 +174,7 @@ namespace IEMod.Mods.CameraControlMod {
 						}
 						if (GameInput.GetControl(MappedControl.PAN_CAMERA_DOWN) || ((flag2 && option) && ((GameInput.MousePosition.y < this.m_mouseScrollBuffer) && (GameInput.MousePosition.y > this.m_mouseScrollBufferOuter))))
 						{
+							this.CancelFollow();
 							this.m_atTop = false;
 							if (!this.m_atBottom)
 							{
@@ -169,6 +184,7 @@ namespace IEMod.Mods.CameraControlMod {
 						}
 						else if (GameInput.GetControl(MappedControl.PAN_CAMERA_UP) || ((flag2 && option) && ((GameInput.MousePosition.y > (Screen.height - this.m_mouseScrollBuffer)) && (GameInput.MousePosition.y < (Screen.height - this.m_mouseScrollBufferOuter)))))
 						{
+							this.CancelFollow();
 							this.m_atBottom = false;
 							if (!this.m_atTop)
 							{
@@ -176,6 +192,23 @@ namespace IEMod.Mods.CameraControlMod {
 								this.m_testTop = true;
 							}
 						}
+					}
+				}
+				if (this.m_FollowingUnits.Count > 0 && CameraControl.GetDeltaTime() > 0f)
+				{
+					Vector3 a2 = Vector3.zero;
+					int num3 = 0;
+					for (int j = this.m_FollowingUnits.Count - 1; j >= 0; j--)
+					{
+						if (this.m_FollowingUnits[j])
+						{
+							a2 += this.m_FollowingUnits[j].transform.position;
+							num3++;
+						}
+					}
+					if (num3 > 0)
+					{
+						this.FocusOnPoint(a2 / (float)num3);
 					}
 				}
 				if (this.InterpolatingToTarget)

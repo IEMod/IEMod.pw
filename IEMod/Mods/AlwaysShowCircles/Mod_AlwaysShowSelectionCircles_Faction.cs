@@ -13,19 +13,13 @@ namespace IEMod.Mods.AlwaysShowCircles {
 
 		[ModifiesMember("ShowSelectionCircle")]	
 		public bool ShowSelectionCircleNew(bool elevate) {
-		if (InGameHUD.Instance == null) {
-			return false;
-		}
-		//fine
-		
-		Health component = base.GetComponent<Health>();
-		bool flag = this.DrawSelectionCircle && InGameHUD.Instance.ShowHUD;
-		bool flag2 = ((component == null) || !component.ShowDead) || GameInput.SelectDead;
-		
-		bool flag3 = !GameState.Option.GetOption(GameOption.BoolOption.HIDE_CIRCLES) || GameState.Paused;
-		//fine
-		
-		bool flag4 = ((this.RelationshipToPlayer == Relationship.Hostile) || this.isPartyMember) || elevate;
+			if (InGameHUD.Instance == null)
+				return false;
+			}
+			bool flag = this.DrawSelectionCircle && InGameHUD.Instance.ShowHUD;
+			bool flag2 = this.healthComponent == null || !this.healthComponent.ShowDead || GameInput.SelectDead;
+			bool flag3 = !GameState.Option.GetOption(GameOption.BoolOption.HIDE_CIRCLES) || GameState.Paused;
+			bool flag4 = this.RelationshipToPlayer == Faction.Relationship.Hostile || this.isPartyMember || elevate;
 
 		
 		bool alwaysShow = IEModOptions.AlwaysShowCircles; // added this line

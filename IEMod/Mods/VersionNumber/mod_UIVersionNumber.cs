@@ -17,6 +17,8 @@ namespace IEMod.Mods.VersionNumber {
 
 		[ModifiesMember(".ctor")]
 		public void CtorNew() {
+			//TODO: GR 29/8 - set the FormatString correctly. Is there a const for the current version? I suspect there is.
+			//Also, get rid of the PW version. It's really unnecessary. 
 			MonoBehavior_ctor();
 			var ieModVersion = IEMod.IEModVersion.Version;
 			var pwVersion = PatchworkVersion.Version;

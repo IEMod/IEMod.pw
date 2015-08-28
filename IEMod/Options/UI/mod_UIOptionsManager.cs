@@ -339,14 +339,15 @@ namespace IEMod.Mods.Options {
 
 		[ModifiesMember(".ctor")]
 		public void CtorNew() {
+			//GR 29/8 - paged order was slightly changed to match 2.0
 			MonoBehavior_ctor();
 			PageOrder = new[] {
 				0,
-				3,
 				1,
+				3,
+				2,
 				4,
 				5,
-				2,
 				6,
 				7,
 				8

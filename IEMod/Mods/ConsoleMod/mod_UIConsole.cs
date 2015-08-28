@@ -27,6 +27,7 @@ namespace IEMod.Mods.ConsoleMod {
 			{
 				delta.y /= num2;
 			}
+			//TODO: GR 29/9 - manually check if this block is compatible with 2.0 block
 			Transform transform = this.CornerHandle.gameObject.transform;
 			transform.localPosition += new Vector3(delta.x, delta.y, 0f);  //GameUtilities.V2ToV3(delta); <-- using V2ToV3 doesn't work, for some reason.. caused a bug
 			//float vecX = (this.ScreenBR.transform.localPosition.x - (this.LeftMarkerPosition.x + 28f)) - this.MaxMargins.x; // original code but it wasn't exactly written like that
