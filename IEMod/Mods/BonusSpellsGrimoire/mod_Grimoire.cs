@@ -84,7 +84,7 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 			if (spell != null)
 			{
 				int num = spell.SpellLevel - 1;
-				if (num >= 0 && num < 6)
+				if (num >= 0 && num < 8)
 				{
 					for (int i = 0; i < 4 + (int)IEModOptions.ExtraWizardSpells; i++)
 					{
@@ -110,7 +110,7 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 				return null;
 			}
 			List<GenericSpell> list = new List<GenericSpell>();
-			int num = 6;
+			int num = 8;
 			if (max_spell_level < num)
 			{
 				num = max_spell_level;
