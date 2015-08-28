@@ -13,7 +13,7 @@ namespace IEMod.Mods.AlwaysShowCircles {
 
 		[ModifiesMember("ShowSelectionCircle")]	
 		public bool ShowSelectionCircleNew(bool elevate) {
-			if (InGameHUD.Instance == null)
+			if (InGameHUD.Instance == null) {
 				return false;
 			}
 			bool flag = this.DrawSelectionCircle && InGameHUD.Instance.ShowHUD;

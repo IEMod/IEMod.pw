@@ -33,7 +33,7 @@ namespace IEMod.Mods.OnLevelLoad {
 			if (IEModOptions.SaveBeforeTransition) // added this block
 			{
 				//AutosaveIfAllowed();
-				GameState.AutoSave();
+				GameState.Autosave();
 			}
 			try
 			{
@@ -50,7 +50,7 @@ namespace IEMod.Mods.OnLevelLoad {
 							}
 							rai.StateManager.AbortStateStack();
 						}
-						Stealth component = partyMemberAI.GetComponent<Stealth>();
+						Stealth component = rai.GetComponent<Stealth>();
 						if (component)
 						{
 							component.ClearAllSuspicion();
