@@ -26,7 +26,15 @@ namespace IEMod.Helpers {
 			if (String.IsNullOrEmpty(content)) {
 				return Activator.CreateInstance(type);
 			}
-			var obj = xmlSerializer.Deserialize(new StringReader(content));
+			object obj = null;
+			try {
+				obj = xmlSerializer.Deserialize(new StringReader(content));
+			}
+			catch (Exception ) {
+				IEDebug.Log($"Error when deserializing: {name}");
+			}
+			
+			
 			if (obj == null) {
 				return Activator.CreateInstance(type);
 			}

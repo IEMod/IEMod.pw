@@ -81,6 +81,7 @@
     <Compile Include="Mods\BonusSpellsGrimoire\mod_UIGrimoireInSpellRow.cs" />
     <Compile Include="Mods\BonusSpellsGrimoire\mod_Grimoire.cs" />
     <Compile Include="Mods\CameraControlMod\Mod_CameraControl.cs" />
+    <Compile Include="Mods\CipherFocus\mod_FocusTrait.cs" />
     <Compile Include="Mods\ConsoleMod\Mod_CommandLine.cs" />
     <Compile Include="Mods\ConsoleMod\mod_UIConsole.cs" />
     <Compile Include="Mods\DropButtonMod\DropButton.cs" />
