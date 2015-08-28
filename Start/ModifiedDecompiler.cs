@@ -92,7 +92,7 @@ namespace Start {
 					linkedList.RemoveRange(startNode, endNode);
 					linkedList.AddAfterRange(preStart, decompiledSource);
 				}
-				//File.WriteAllText(newName, new string(linkedList.ToArray()));
+				File.WriteAllText(newName, new string(linkedList.ToArray()));
 			}
 		}
 	}
