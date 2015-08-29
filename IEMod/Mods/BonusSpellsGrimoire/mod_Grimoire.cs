@@ -10,9 +10,6 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 	[ModifiesType()]
 	public class mod_Grimoire : Grimoire
 	{
-		[ModifiesMember]
-		new public const int MaxSpellsPerLevel = 7;
-
 		[NewMember]
 		public new List<string> SerializedSpellNames;
 
@@ -39,13 +36,13 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 		[ModifiesMember("Start")]
 		private void StartNew()
 		{
-			if (this.Spells.Length != 8)
+			if (this.Spells.Length != MaxSpellLevel)
 			{
-				if (this.Spells.Length > 8)
+				if (this.Spells.Length > MaxSpellLevel)
 				{
 					Debug.LogError("Too many spell levels in grimoire '" + base.name + "': some will be dropped!");
 				}
-				Grimoire.SpellChapter[] array = new Grimoire.SpellChapter[8];
+				Grimoire.SpellChapter[] array = new Grimoire.SpellChapter[MaxSpellLevel];
 				this.Spells.CopyTo(array, 0);
 				this.Spells = array;
             
@@ -56,9 +53,9 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 				{
 					this.Spells[i] = new Grimoire.SpellChapter();
 				}
-				else if (this.Spells[i].SpellData.Length != (4 + (int)IEModOptions.ExtraWizardSpells))
+				else if (this.Spells[i].SpellData.Length != MaxSpellsPerLevel + (int)IEModOptions.ExtraWizardSpells)
 				{
-					if (this.Spells[i].SpellData.Length > (4 + (int)IEModOptions.ExtraWizardSpells))
+					if (this.Spells[i].SpellData.Length > MaxSpellsPerLevel + (int)IEModOptions.ExtraWizardSpells)
 					{
 						Debug.LogError(string.Concat(new object[]
 						{
@@ -69,7 +66,7 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 							": some will be dropped!"
 						}));
 					}
-					GenericSpell[] array2 = new GenericSpell[(4 + (int)IEModOptions.ExtraWizardSpells)];
+					GenericSpell[] array2 = new GenericSpell[(MaxSpellsPerLevel + (int)IEModOptions.ExtraWizardSpells)];
 					for (int j = 0; j < Mathf.Min(array2.Length, this.Spells[i].SpellData.Length); j++)
 					{
 						array2[j] = this.Spells[i].SpellData[j];
@@ -84,9 +81,9 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 			if (spell != null)
 			{
 				int num = spell.SpellLevel - 1;
-				if (num >= 0 && num < 8)
+				if (num >= 0 && num < MaxSpellLevel)
 				{
-					for (int i = 0; i < 4 + (int)IEModOptions.ExtraWizardSpells; i++)
+					for (int i = 0; i < MaxSpellsPerLevel + (int)IEModOptions.ExtraWizardSpells; i++)
 					{
 						if (this.Spells[num].SpellData[i] != null && this.Spells[num].SpellData[i].DisplayName.StringID == spell.DisplayName.StringID)
 						{
@@ -110,14 +107,14 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 				return null;
 			}
 			List<GenericSpell> list = new List<GenericSpell>();
-			int num = 8;
+			int num = MaxSpellLevel;
 			if (max_spell_level < num)
 			{
 				num = max_spell_level;
 			}
 			for (int i = 0; i < num; i++)
 			{
-				for (int j = 0; j < 4 + (int)IEModOptions.ExtraWizardSpells; j++)
+				for (int j = 0; j < MaxSpellsPerLevel + (int)IEModOptions.ExtraWizardSpells; j++)
 				{
 					if (this.Spells[i].SpellData[j] != null)
 					{
