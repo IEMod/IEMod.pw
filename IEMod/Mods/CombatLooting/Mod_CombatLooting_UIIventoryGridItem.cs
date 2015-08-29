@@ -48,15 +48,14 @@ namespace IEMod.Mods.CombatLooting {
 
 		[NewMember]
 		[DuplicatesBody("ItemTransferValid")]
-		public static bool ItemTransferValidOrig(InventoryItem invitem, UIInventoryGridItem from, UIInventoryItemZone to, out string error) {
+		public static bool ItemTransferValidOrig(InventoryItem invitem, UIInventoryGridItem from, UIInventoryItemZone to, out string error, bool alreadyHeld = false) {
 			throw new DeadEndException("ItemTransferValidOrig");
 		}
 
 		//! Signature change!
 		[ModifiesMember("ItemTransferValid")]
-		public static bool ItemTransferValidNew(InventoryItem invitem, UIInventoryGridItem from, UIInventoryItemZone to, out string error)
+		public static bool ItemTransferValidNew(InventoryItem invitem, UIInventoryGridItem from, UIInventoryItemZone to, out string error, bool alreadyHeld = false)
 		{
-			
 			// this is to disallow items "FROM"...
 			// added this code
 			if (IEModOptions.UnlockCombatInv && GameState.InCombat && (from.EquipmentSlot == Equippable.EquipmentSlot.Armor || ForbiddenToMoveItems.Contains(invitem.BaseItem.Name)))
@@ -70,7 +69,7 @@ namespace IEMod.Mods.CombatLooting {
 
 		//! Signature change!
 		[ModifiesMember("ItemTransferValid")]
-		public static bool ItemTransferValidNew(InventoryItem invitem, UIInventoryGridItem from, UIInventoryGridItem to, out string error)
+		public static bool ItemTransferValidNew(InventoryItem invitem, UIInventoryGridItem from, UIInventoryGridItem to, out string error, bool alreadyHeld = false)
 		{
 			error = string.Empty;
 			if ((invitem == null) || (invitem.baseItem == null)) { return true; }

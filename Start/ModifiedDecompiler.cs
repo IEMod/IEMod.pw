@@ -70,6 +70,9 @@ namespace Start {
 				var fileChanges = byFile.OrderBy(x => x.Start.StartLine).ToList();
 
 				for (int index = 0; index < fileChanges.Count; index++) {
+					//basically, we're selecting all of the text from the first method instruction to the last
+					//and replacing it with the decompiled text of the original method. We exactly preserves the structure
+					//(even the brace style and indentation), so the diff tools will know exactly what to compare with what.
 					var change = fileChanges[index];
 					var startNode = lineNodes[change.Start.StartLine - 1].Skip(change.Start.StartColumn - 1);
 					var preStart = startNode.Previous;
