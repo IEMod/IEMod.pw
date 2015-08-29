@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace IEMod.Mods.CombatLooting {
 	//! Signature change!
-	//[ModifiesType]
+	[ModifiesType]
 	public class Mod_CombatLooting_UIIventoryGridItem : UIInventoryGridItem
 	{
 		[NewMember]

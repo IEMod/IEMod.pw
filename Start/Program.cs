@@ -76,6 +76,7 @@ namespace Start {
 
 			//add more lines to patch more things
 
+			//ModifiedDecompiler.ReplaceCodeWithOriginal(patcher.BodyChanges, true);
 			//+ End
 
 			patcher.WriteTo(copyToPath);
