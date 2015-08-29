@@ -13,6 +13,7 @@ namespace IEMod.Mods.Targeting {
 		[NewMember]
 		public static string OnImpactDebugRegister;
 
+		//GR 29/8 - these don't seem necessary anymore and cause problems.
 		//[ModifiesMember]
 		//[PatchworkDebugRegister(nameof(OnImpactDebugRegister))]
 		private new GameObject CheckRedirect(GameObject enemy) {
@@ -34,8 +35,9 @@ namespace IEMod.Mods.Targeting {
 			}
 		}
 
-		[ModifiesMember]
-		[PatchworkDebugRegister(nameof(OnImpactDebugRegister))]
+		//GR 29/8 - these don't seem necessary anymore and cause problems.
+		//[ModifiesMember]
+		//[PatchworkDebugRegister(nameof(OnImpactDebugRegister))]
 		public new virtual void OnImpact(GameObject self, GameObject enemy, bool isMainTarget) {
 			try {
 				DamageInfo dTBypass;

@@ -5,10 +5,12 @@ using Patchwork.Attributes;
 using UnityEngine;
 
 namespace IEMod.Mods.CombatLooting {
+	
 	//! Signature change!
 	[ModifiesType]
 	public class Mod_CombatLooting_UIIventoryGridItem : UIInventoryGridItem
 	{
+		//TODO: GR 29/8: this class will have to be integrated with 2.0 manually in an IDE, as the changes are complex. 
 		[NewMember]
 		static List<string> ForbiddenToMoveItems;
 
