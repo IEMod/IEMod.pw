@@ -167,7 +167,7 @@ namespace IEMod.Mods.Options {
 		[Description(
 			"This mod makes Scouting Mode move at normal running speed (instead of walking speed).  Note: when enemies are visible, your scouting movement speed is reduced to walking speed"
 			)]
-		public static bool FastSneak;
+		public static FastSneakOptions FastSneak;
 
 		[Save]
 		[Label("Improved AI")]
@@ -425,5 +425,18 @@ namespace IEMod.Mods.Options {
 			[Description("Three (3) extra preparation slots.")]
 			Three = 3
 		}
+
+        [NewType]
+        public enum FastSneakOptions
+        {
+            [Description("Normal")]
+            Normal = 0,
+
+            [Description("Fast Scouting, Party LoS")]
+            FastScoutingAllLOS = 1,
+
+            [Description("Fast Scouting, Individual LoS")]
+            FastScoutingSingleLOS = 2
+        }
 	}
 }
