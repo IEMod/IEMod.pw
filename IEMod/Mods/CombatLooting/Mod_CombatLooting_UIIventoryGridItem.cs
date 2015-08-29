@@ -5,7 +5,8 @@ using Patchwork.Attributes;
 using UnityEngine;
 
 namespace IEMod.Mods.CombatLooting {
-	[ModifiesType]
+	//! Signature change!
+	//[ModifiesType]
 	public class Mod_CombatLooting_UIIventoryGridItem : UIInventoryGridItem
 	{
 		[NewMember]
@@ -51,9 +52,11 @@ namespace IEMod.Mods.CombatLooting {
 			throw new DeadEndException("ItemTransferValidOrig");
 		}
 
+		//! Signature change!
 		[ModifiesMember("ItemTransferValid")]
 		public static bool ItemTransferValidNew(InventoryItem invitem, UIInventoryGridItem from, UIInventoryItemZone to, out string error)
 		{
+			
 			// this is to disallow items "FROM"...
 			// added this code
 			if (IEModOptions.UnlockCombatInv && GameState.InCombat && (from.EquipmentSlot == Equippable.EquipmentSlot.Armor || ForbiddenToMoveItems.Contains(invitem.BaseItem.Name)))
@@ -65,6 +68,7 @@ namespace IEMod.Mods.CombatLooting {
 			return ItemTransferValidOrig(invitem, from, to, out error);
 		}
 
+		//! Signature change!
 		[ModifiesMember("ItemTransferValid")]
 		public static bool ItemTransferValidNew(InventoryItem invitem, UIInventoryGridItem from, UIInventoryGridItem to, out string error)
 		{

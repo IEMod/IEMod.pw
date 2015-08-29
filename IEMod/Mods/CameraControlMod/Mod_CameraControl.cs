@@ -65,7 +65,8 @@ namespace IEMod.Mods.CameraControlMod {
 					}
 					if (GameInput.GetControlDown(MappedControl.RESET_ZOOM))
 					{
-						this.OrthoSettings.SetZoomLevel(PlayerPrefs.GetFloat("DefaultZoom", 1f), false); // changed this line
+						
+						this.OrthoSettings.SetZoomLevel(IEModOptions.DefaultZoom, false); // changed this line
 						this.ResetAtEdges();
 					}
 					if (GameInput.GetControlUp(MappedControl.FOLLOW_CAM))

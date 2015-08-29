@@ -82,6 +82,10 @@
     <Compile Include="Mods\BonusSpellsGrimoire\mod_Grimoire.cs" />
     <Compile Include="Mods\CameraControlMod\Mod_CameraControl.cs" />
     <Compile Include="Mods\CipherFocus\mod_FocusTrait.cs" />
+    <Compile Include="Mods\CombatLooting\Mod_CombatLooting_Container.cs" />
+    <Compile Include="Mods\CombatLooting\Mod_CombatLooting_UIIventoryGridItem.cs" />
+    <Compile Include="Mods\CombatLooting\mod_UIInventoryItemZone.cs" />
+    <Compile Include="Mods\CombatOnly\mod_GenericAbility.cs" />
     <Compile Include="Mods\ConsoleMod\Mod_CommandLine.cs" />
     <Compile Include="Mods\ConsoleMod\mod_UIConsole.cs" />
     <Compile Include="Mods\DropButtonMod\DropButton.cs" />

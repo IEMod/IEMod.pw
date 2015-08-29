@@ -50,7 +50,7 @@ namespace IEMod.Mods.Tooltips {
 			uIMapTooltip2.RevealedByMouse = (byMouse || this.m_ActiveTips[target].RevealedByMouse);
 			uIMapTooltip2.RevealedByAttackCursor = (byAttack || this.m_ActiveTips[target].RevealedByAttackCursor);
 			uIMapTooltip2.NotifyShown();
-				return this.m_ActiveTips[target];
+				return uIMapTooltip2;
 			} 
 			else
 				return null;
