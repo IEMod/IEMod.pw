@@ -91,8 +91,11 @@
     <Compile Include="Mods\ConsoleMod\mod_UIConsole.cs" />
     <Compile Include="Mods\DropButtonMod\DropButton.cs" />
     <Compile Include="Mods\FastSneak\mod_PartyMemberAI.cs" />
-    <Compile Include="Mods\FastSneak\mod_PathingController.cs" />
-    <Compile Include="Mods\NoEngagement\mod_Player.cs" />
+    <Compile Include="Mods\NoEngagement\Mod_NoEngagement_HudEngagementIndicator.cs" />
+    <Compile Include="Mods\ToggleWalking\mod_Player.cs" />
+    <Compile Include="Mods\ToggleWalking\mod_UIChantEditor.cs" />
+    <Compile Include="Mods\ToggleWalking\mod_PathingController.cs" />
+    <Compile Include="Mods\NoEngagement\Mod_NoEngagement_AIController.cs" />
     <Compile Include="Mods\SaveXML\Mod_SaveRawXML.cs" />
     <Compile Include="Mods\UICustomization\PartyBar\mod_UIPartyPortrait.cs" />
     <Compile Include="Mods\UICustomization\PartyBar\mod_UIPortraitOnClick.cs" />

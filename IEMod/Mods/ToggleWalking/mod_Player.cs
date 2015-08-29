@@ -1,131 +1,9 @@
-using System;
-using System.Linq;
-using IEMod.Helpers;
-using IEMod.Mods.Options;
 using Patchwork.Attributes;
 using UnityEngine;
 
-namespace IEMod.Mods.NoEngagement {
+namespace IEMod.Mods.ToggleWalking {
 	[ModifiesType]
-	public abstract class Mod_NoEngagement_AIController : AIController
-	{
-		[ModifiesMember("EngageEnemy")]
-		public void EngageEnemyNew(GameObject enemy)
-		{
-			AIController component = enemy.GetComponent<AIController>();
-			if (!component || component == this)
-			{
-				return;
-			}
-			if (!this.EngagedEnemies.Contains(enemy))
-			{
-				this.EngagedEnemies.Add(enemy);
-			}
-			GameObject owner = this.StateManager.CurrentState.Owner;
-			CharacterStats component2 = owner.GetComponent<CharacterStats>();
-			if (component2 != null)
-			{
-				component2.NotifyEngagement(enemy);
-			}
-			GameEventArgs gameEventArgs = new GameEventArgs();
-			gameEventArgs.Type = GameEventType.MeleeEngaged;
-			gameEventArgs.GameObjectData = new GameObject[1];
-			gameEventArgs.GameObjectData[0] = owner;
-			component.OnEvent(gameEventArgs);
-			if (FogOfWar.Instance.PointVisible(owner.transform.position) && (!IEModOptions.DisableEngagement)) // added && ((Mod_GameOptions_GameMode)GameState.Mode).DisableEngagement == 0
-			{
-				Console.AddMessage(Console.Format(GUIUtils.GetTextWithLinks(100), new object[]
-				{
-					CharacterStats.NameColored(owner),
-					CharacterStats.NameColored(enemy)
-				}));
-			}
-			GameState.AutoPause(AutoPauseOptions.PauseEvent.CharacterAttacked, enemy, owner, null);
-			component.AddEngagedBy(owner);
-		}
-
-		[ModifiesMember("DisengageEnemy")]
-		public void DisengageEnemyNew(GameObject enemy, AttackBase attack)
-		{
-			CharacterStats component = enemy.GetComponent<CharacterStats>();
-			if ((component != null) && !component.ImmuneToEngagement && !IEModOptions.DisableEngagement) // added && (Mod_GameOptions_GameMode)GameState.Mode).DisableEngagement == 0
-			{
-				attack.IsDisengagementAttack = true;
-				attack.Launch(enemy, -1);
-			}
-			GameObject owner = this.StateManager.CurrentState.Owner;
-			this.m_disengagementTrackers.Add(new DisengagementTracker(enemy, false));
-			this.StopEnagagement(enemy);
-			if (this.m_stats != null)
-			{
-				this.m_stats.NotifyEngagementBreak(enemy);
-			}
-			this.EnemyBreaksEngagement(enemy);
-			AIController controller = enemy.GetComponent<AIController>();
-			if (controller != null)
-			{
-				GameEventArgs args = new GameEventArgs
-				{
-					Type = GameEventType.MeleeEngageBroken,
-					GameObjectData = new GameObject[] { owner }
-				};
-				controller.OnEvent(args);
-				controller.EnemyBreaksEngagement(owner);
-			}
-		}
-	}
-
-	[ModifiesType]
-	public class Mod_NoEngagement_HudEngagementIndicator : HudEngagementIndicator
-	{
-		[ModifiesMember("Update")]
-		protected void UpdateNew()
-		{
-			if (!this.Target || !this.Source)
-			{
-				return;
-			}
-			this.LineRenderer.renderer.enabled = (GameState.Paused || GameCursor.CharacterUnderCursor == this.m_Source || GameCursor.CharacterUnderCursor == this.m_Target);
-			this.LineRenderer.renderer.enabled &= InGameHUD.Instance.ShowHUD;
-			this.LineRenderer.renderer.enabled &= IEModOptions.DisableEngagement; // added this line
-			if (!this.LineRenderer.renderer.enabled)
-			{
-				return;
-			}
-			Vector3 vector = this.Target.transform.position - this.Source.transform.position;
-			vector.y = 0f;
-			base.transform.rotation = Quaternion.FromToRotation(Vector3.forward, vector.normalized);
-			float vertScale = HudEngagementManager.Instance.ArrowScaleY;
-			if (vector.sqrMagnitude > HudEngagementManager.Instance.ArrowMaxRange)
-			{
-				vertScale = HudEngagementManager.Instance.ArrowScaleY + (1f - HudEngagementManager.Instance.ArrowScaleY) * (vector.magnitude / HudEngagementManager.Instance.ArrowMaxRange);
-			}
-			float num = vector.magnitude - (this.m_SourceFaction.Mover.Radius + this.m_TargetFaction.Mover.Radius) / 3f;
-			this.m_xrot += HudEngagementManager.Instance.ArrowRotSpeed * TimeController.sUnscaledDelta / num;
-			this.GenerateVertexData(this.m_Mesh, num, vertScale, 0.0174532924f * this.m_xrot);
-			base.transform.position = (this.Source.transform.position + this.Target.transform.position) / 2f;
-			base.transform.position += new Vector3(0f, HudEngagementManager.Instance.ArrowElevation, 0f);
-			if (this.TwoWay)
-			{
-				Quaternion rotation = base.transform.rotation * Quaternion.AngleAxis(90f, Vector3.up);
-				base.transform.position += rotation * (Vector3.forward * HudEngagementManager.Instance.TwoWayOffset);
-			}
-			this.UpdateMaterial();
-		}
-	}
-
-	[ModifiesType]
-	public class Mod_NoEngagement_UIChantEditor : UIChantEditor
-	{
-		[ModifiesMember("Awake")]
-		private void AwakeNew()
-		{
-			UIChantEditor.Instance = this;
-			this.ToggleKey = MappedControl.NONE; // prevent it from opening when Deprecated_CHANT_EDITOR is pressed.
-		}
-	}
-	[ModifiesType]
-	public class Mod_NoEngagement_Player : Player
+	public class mod_Player : Player
 	{
 		[NewMember]
 		public static bool WalkMode = false;
@@ -154,6 +32,7 @@ namespace IEMod.Mods.NoEngagement {
 				}
 			}
 		}
+		//TODO: GR 29/8 - this will need to be re-integrated into 2.0.
 		//[NewMember]
 		//private double lastTime = -1;
 

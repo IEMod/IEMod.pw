@@ -1,8 +1,4 @@
-﻿using IEMod.Mods.NoEngagement;
-using IEMod.Mods.Options;
-using Patchwork.Attributes;
-
-namespace IEMod.Mods.FastSneak
+﻿namespace IEMod.Mods.ToggleWalking
 {
 	//TODO: GR 29/8 - if it's still correct, it will have to be rewritten.
 	/*
