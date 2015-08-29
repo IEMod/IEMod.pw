@@ -5,9 +5,12 @@ using Patchwork.Attributes;
 using UnityEngine;
 
 namespace IEMod.Mods.CombatLooting {
+	
+	//! Signature change!
 	[ModifiesType]
 	public class Mod_CombatLooting_UIIventoryGridItem : UIInventoryGridItem
 	{
+		//TODO: GR 29/8: this class will have to be integrated with 2.0 manually in an IDE, as the changes are complex. 
 		[NewMember]
 		static List<string> ForbiddenToMoveItems;
 
@@ -47,12 +50,13 @@ namespace IEMod.Mods.CombatLooting {
 
 		[NewMember]
 		[DuplicatesBody("ItemTransferValid")]
-		public static bool ItemTransferValidOrig(InventoryItem invitem, UIInventoryGridItem from, UIInventoryItemZone to, out string error) {
+		public static bool ItemTransferValidOrig(InventoryItem invitem, UIInventoryGridItem from, UIInventoryItemZone to, out string error, bool alreadyHeld = false) {
 			throw new DeadEndException("ItemTransferValidOrig");
 		}
 
+		//! Signature change!
 		[ModifiesMember("ItemTransferValid")]
-		public static bool ItemTransferValidNew(InventoryItem invitem, UIInventoryGridItem from, UIInventoryItemZone to, out string error)
+		public static bool ItemTransferValidNew(InventoryItem invitem, UIInventoryGridItem from, UIInventoryItemZone to, out string error, bool alreadyHeld = false)
 		{
 			// this is to disallow items "FROM"...
 			// added this code
@@ -65,8 +69,9 @@ namespace IEMod.Mods.CombatLooting {
 			return ItemTransferValidOrig(invitem, from, to, out error);
 		}
 
+		//! Signature change!
 		[ModifiesMember("ItemTransferValid")]
-		public static bool ItemTransferValidNew(InventoryItem invitem, UIInventoryGridItem from, UIInventoryGridItem to, out string error)
+		public static bool ItemTransferValidNew(InventoryItem invitem, UIInventoryGridItem from, UIInventoryGridItem to, out string error, bool alreadyHeld = false)
 		{
 			error = string.Empty;
 			if ((invitem == null) || (invitem.baseItem == null)) { return true; }

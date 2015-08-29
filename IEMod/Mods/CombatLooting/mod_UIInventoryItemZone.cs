@@ -15,11 +15,19 @@ namespace IEMod.Mods.CombatLooting {
 					return AccessLevel.InCombat; 
 				}
 			}
+			/*
+			pre-2.0:
 			if ((!RestZone.PartyInRestZone && !UIInventoryManager.Instance.StashAccess) && (((GameState.Instance.CurrentMap != null) && GameState.Instance.CurrentMap.CanCamp) && !GameState.Option.GetOption(GameOption.BoolOption.DONT_RESTRICT_STASH)))
 			{
 				return AccessLevel.InField;
 			}
 			return AccessLevel.Rest;
+			*/
+			if (RestZone.PartyInRestZone || UIInventoryManager.Instance.StashAccess || GameState.Instance.CurrentMap == null || GameState.Instance.CurrentMap.CanAccessStash || GameState.Option.GetOption(GameOption.BoolOption.DONT_RESTRICT_STASH))
+			{
+				return AccessLevel.Rest;
+			}
+			return AccessLevel.InField;
 		}
 	}
 }

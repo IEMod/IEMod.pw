@@ -17,12 +17,11 @@ namespace IEMod.Mods.VersionNumber {
 
 		[ModifiesMember(".ctor")]
 		public void CtorNew() {
-			//TODO: GR 29/8 - set the FormatString correctly. Is there a const for the current version? I suspect there is.
-			//Also, get rid of the PW version. It's really unnecessary. 
 			MonoBehavior_ctor();
 			var ieModVersion = IEMod.IEModVersion.Version;
 			var pwVersion = PatchworkVersion.Version;
-			this.FormatString = string.Format("[Game Version].{{0}} {{1}} - IEMod.pw {0} - pw {1}", ieModVersion, pwVersion);
+			//GR 29/8 - there has to be some const for the version, but I haven't found it :/
+			this.FormatString = string.Format("v2.00.{{0}} {{1}} - IEMod.pw {0}", ieModVersion);
 			this.m_stringBuilder = new StringBuilder();
 		}
 	}

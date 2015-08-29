@@ -76,39 +76,38 @@
     <Compile Include="Helpers\PathHelper.cs" />
     <Compile Include="Helpers\ReflectHelper.cs" />
     <Compile Include="IEModType.cs" />
+    <Compile Include="Mods\AI\Mod_AI_PathToPosition.cs" />
     <Compile Include="Mods\AlwaysShowCircles\Mod_AlwaysShowSelectionCircles_Faction.cs" />
     <Compile Include="Mods\BackerStuff\BackerNamesMod.cs" />
-    <Compile Include="Mods\BonusSpellsGrimoire\mod_Grimoire.cs" />
     <Compile Include="Mods\BonusSpellsGrimoire\mod_UIGrimoireInSpellRow.cs" />
-    <Compile Include="Mods\BonusSpellsPerDay\mod_SpellMax.cs" />
+    <Compile Include="Mods\BonusSpellsGrimoire\mod_Grimoire.cs" />
     <Compile Include="Mods\CameraControlMod\Mod_CameraControl.cs" />
     <Compile Include="Mods\CipherFocus\mod_FocusTrait.cs" />
+    <Compile Include="Mods\CombatLooting\Mod_CombatLooting_Container.cs" />
+    <Compile Include="Mods\CombatLooting\Mod_CombatLooting_UIIventoryGridItem.cs" />
+    <Compile Include="Mods\CombatLooting\mod_UIInventoryItemZone.cs" />
     <Compile Include="Mods\CombatOnly\mod_GenericAbility.cs" />
     <Compile Include="Mods\ConsoleMod\Mod_CommandLine.cs" />
     <Compile Include="Mods\ConsoleMod\mod_UIConsole.cs" />
     <Compile Include="Mods\DropButtonMod\DropButton.cs" />
+    <Compile Include="Mods\FastSneak\mod_PartyMemberAI.cs" />
+    <Compile Include="Mods\NoEngagement\Mod_NoEngagement_HudEngagementIndicator.cs" />
+    <Compile Include="Mods\ToggleWalking\mod_Player.cs" />
+    <Compile Include="Mods\ToggleWalking\mod_UIChantEditor.cs" />
+    <Compile Include="Mods\ToggleWalking\mod_PathingController.cs" />
+    <Compile Include="Mods\NoEngagement\Mod_NoEngagement_AIController.cs" />
+    <Compile Include="Mods\SaveXML\Mod_SaveRawXML.cs" />
+    <Compile Include="Mods\UICustomization\PartyBar\mod_UIPartyPortrait.cs" />
+    <Compile Include="Mods\UICustomization\PartyBar\mod_UIPortraitOnClick.cs" />
+    <Compile Include="Mods\SelectionCircles\mod_SelectionCircle.cs" />
+    <Compile Include="Mods\Targeting\mod_AttackBase.cs" />
+    <Compile Include="Mods\Targeting\mod_AttackAOE.cs" />
+    <Compile Include="Mods\BonusSpellsPerDay\mod_SpellMax.cs" />
+    <Compile Include="Mods\OnLevelLoad\mod_GameState.cs" />
     <Compile Include="Helpers\IEDropdownChoice.cs" />
     <Compile Include="Helpers\IEDebug.cs" />
-    <Compile Include="Mods\FastSneak\mod_PartyMemberAI.cs" />
-    <Compile Include="Mods\FastSneak\mod_PathingController.cs" />
-    <Compile Include="Mods\NoEngagement\mod_Player.cs" />
-    <Compile Include="Mods\OnLevelLoad\mod_GameState.cs" />
-    <Compile Include="Mods\PerEncounterSpells\mod_SpellMax.cs" />
-    <Compile Include="Mods\SelectionCircles\mod_InGameHUD.cs" />
-    <Compile Include="Mods\SelectionCircles\mod_SelectionCircle.cs" />
     <Compile Include="Mods\StringTable\mod_StringTableManager.cs" />
     <Compile Include="Mods\StringTable\IEModString.cs" />
-    <Compile Include="Mods\Targeting\mod_AttackAOE.cs" />
-    <Compile Include="Mods\Targeting\mod_AttackBase.cs" />
-    <Compile Include="Mods\Targeting\Mod_FriendlyFire_CharacterStats.cs" />
-    <Compile Include="Mods\Targeting\Mod_FriendlyFire_Trap.cs" />
-    <Compile Include="Mods\UICustomization\PartyBar\mod_UIPartyPortrait.cs" />
-    <Compile Include="Mods\UICustomization\PartyBar\mod_UIPartyPortraitBar.cs" />
-    <Compile Include="Mods\UICustomization\PartyBar\mod_UIPortraitOnClick.cs" />
-    <Compile Include="Mods\UICustomization\Tooltips\mod_UIActionBarTooltip.cs" />
-    <Compile Include="Mods\UICustomization\Tooltips\mod_UICamera.cs" />
-    <Compile Include="Mods\UICustomization\Tooltips\mod_UIMapTooltip.cs" />
-    <Compile Include="Mods\UICustomization\Tooltips\mod_UIMapTooltipManager.cs" />
     <Compile Include="Mods\UICustomization\UICustomizer.cs" />
     <Compile Include="Options\Definitions\IEModOptions.cs" />
     <Compile Include="Helpers\LabelAttribute.cs" />
@@ -120,8 +119,17 @@
     <Compile Include="Mods\LootShuffler\mod_Loot.cs" />
     <Compile Include="Mods\Memorials\mod_MemorialContainer.cs" />
     <Compile Include="Mods\ObjectBrowser\Mod_OnGUI_Player.cs" />
+    <Compile Include="Mods\UICustomization\PartyBar\mod_UIPartyPortraitBar.cs" />
+    <Compile Include="Mods\PerEncounterSpells\mod_SpellMax.cs" />
     <Compile Include="Mods\RecoveryRate\mod_CharacterStats.cs" />
     <Compile Include="Mods\ReligionMod\Mod_Religion.cs" />
+    <Compile Include="Mods\SelectionCircles\mod_InGameHUD.cs" />
+    <Compile Include="Mods\Targeting\Mod_FriendlyFire_CharacterStats.cs" />
+    <Compile Include="Mods\Targeting\Mod_FriendlyFire_Trap.cs" />
+    <Compile Include="Mods\UICustomization\Tooltips\mod_UIMapTooltipManager.cs" />
+    <Compile Include="Mods\UICustomization\Tooltips\mod_UIActionBarTooltip.cs" />
+    <Compile Include="Mods\UICustomization\Tooltips\mod_UICamera.cs" />
+    <Compile Include="Mods\UICustomization\Tooltips\mod_UIMapTooltip.cs" />
     <Compile Include="Mods\VersionNumber\mod_UIVersionNumber.cs" />
     <Compile Include="Mods\XPTable\mod_CharacterStats.cs" />
     <Compile Include="Options\UI\mod_UIOptionsManager.cs" />
@@ -152,6 +160,7 @@
       <Name>Patchwork.Attributes</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

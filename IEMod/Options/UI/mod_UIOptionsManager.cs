@@ -93,6 +93,7 @@ namespace IEMod.Mods.Options {
 
 		[ModifiesMember("Start")]
 		private void StartNew() {
+			//TODO: GR 29/8 - manually check if this method is consistent with 2.0. It probably is though.
 			var exampleCheckbox =
 				this.ComponentsInDescendants<UIOptionsTag>(true).Single(
 					opt => opt.Checkbox && opt.BoolSuboption == GameOption.BoolOption.SCREEN_EDGE_SCROLLING)

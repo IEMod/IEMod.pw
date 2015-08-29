@@ -2,6 +2,7 @@ using System;
 using AI.Achievement;
 using AI.Player;
 using IEMod.Mods.Options;
+using IEMod.Mods.ToggleWalking;
 using Patchwork.Attributes;
 using UnityEngine;
 using Attack = AI.Achievement.Attack;
@@ -151,7 +152,7 @@ namespace IEMod.Mods.FastSneak {
             if (this.m_mover != null && !GameState.InCombat)
             {
                 bool fastSneakActive = false;
-                if(IEModOptions.FastSneak != IEModOptions.FastSneakOptions.Normal && !(IEMod.Mods.NoEngagement.Mod_NoEngagement_Player.WalkMode))
+                if(IEModOptions.FastSneak != IEModOptions.FastSneakOptions.Normal && !(mod_Player.WalkMode))
                 {
                     bool canSeeEnemy = false;
 

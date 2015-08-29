@@ -119,12 +119,9 @@ namespace IEMod.Mods.RecoveryRate {
 						{
 							statusEffect2.Unsuppress();
 						}
-						else
+						else if (!isSuppressed && flag)
 						{
-							if (!isSuppressed && flag)
-							{
-								statusEffect2.Suppress();
-							}
+							statusEffect2.Suppress();
 						}
 					}
 				}

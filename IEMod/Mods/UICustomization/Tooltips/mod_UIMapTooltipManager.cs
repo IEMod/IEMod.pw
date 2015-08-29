@@ -10,29 +10,23 @@ namespace IEMod.Mods.Tooltips {
 	/// TAB makes abilities tooltip appear instantly. Same was supposed to work for inventory, but it was buggy, and I didn't know how to fix it.
 	/// </summary>
 	[ModifiesType]
-	public class mod_UIMapTooltipManager : UIMapTooltipManager
-	{
+	public class mod_UIMapTooltipManager : UIMapTooltipManager {
 		[ModifiesMember("Show")]
-		public UIMapTooltip ShowNew(GameObject target, bool byMouse, bool byAttack)
-		{
+		public UIMapTooltip ShowNew(GameObject target, bool byMouse, bool byAttack) {
 			// this mod makes it that only the tooltip for a hovered character is shown when TAB is pressed
 			bool showOnlyOneTooltip = IEModOptions.OneTooltip;
 			bool npcUnderCursor = GameCursor.ObjectUnderCursor == target; // added this line
 
 			if ((npcUnderCursor && showOnlyOneTooltip) || !showOnlyOneTooltip) // added this line
 			{
-				if ((target == null) || this.m_LevelUnloading)
-				{
+				if ((target == null) || this.m_LevelUnloading) {
 					return null;
 				}
-				if (UIBarkstringManager.Instance.IsBarking(target))
-				{
+				if (UIBarkstringManager.Instance.IsBarking(target)) {
 					return null;
 				}
-				if (!this.m_ActiveTips.ContainsKey(target))
-				{
-					if (this.m_TipPool.Count <= 0)
-					{
+				if (!this.m_ActiveTips.ContainsKey(target)) {
+					if (this.m_TipPool.Count <= 0) {
 						this.NewToPool();
 					}
 					UIMapTooltip tooltip = this.m_TipPool[this.m_TipPool.Count - 1];
@@ -43,16 +37,16 @@ namespace IEMod.Mods.Tooltips {
 					tooltip.RevealedByAttackCursor = byAttack;
 					this.m_ActiveTips.Add(target, tooltip);
 					tooltip.Panel.alpha = 0f;
+					//uIMapTooltip.NotifyShown(); // <-- this line appears in 2.0, but it would probably make the tooltip appear, or cause glitches.
 					return tooltip;
 				}
-			//GR 29/8 - this section was fixed to match 2.0, in particular NotifyShown was previously not called.
-			UIMapTooltip uIMapTooltip2 = this.m_ActiveTips[target];
-			uIMapTooltip2.RevealedByMouse = (byMouse || this.m_ActiveTips[target].RevealedByMouse);
-			uIMapTooltip2.RevealedByAttackCursor = (byAttack || this.m_ActiveTips[target].RevealedByAttackCursor);
-			uIMapTooltip2.NotifyShown();
-				return this.m_ActiveTips[target];
-			} 
-			else
+				//GR 29/8 - this section was fixed to match 2.0, in particular NotifyShown was previously not called.
+				UIMapTooltip uIMapTooltip2 = this.m_ActiveTips[target];
+				uIMapTooltip2.RevealedByMouse = (byMouse || this.m_ActiveTips[target].RevealedByMouse);
+				uIMapTooltip2.RevealedByAttackCursor = (byAttack || this.m_ActiveTips[target].RevealedByAttackCursor);
+				uIMapTooltip2.NotifyShown();
+				return uIMapTooltip2;
+			} else
 				return null;
 		}
 	}

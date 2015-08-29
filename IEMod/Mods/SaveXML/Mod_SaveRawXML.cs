@@ -6,7 +6,8 @@ using Patchwork.Attributes;
 using Polenter.Serialization;
 using UnityEngine;
 
-
+[assembly: DisablePatchingByName(@"^IEMod\.Mods\.SaveXML", PatchingTarget.Type)]
+/*
 namespace IEMod.Mods.SaveXML {
 	[ModifiesType]
 	public class Mod_SaveRawXML : PersistenceManager
@@ -162,4 +163,4 @@ namespace IEMod.Mods.SaveXML {
 
 	}
 }
-
+*/

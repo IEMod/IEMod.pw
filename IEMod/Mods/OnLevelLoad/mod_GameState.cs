@@ -32,8 +32,7 @@ namespace IEMod.Mods.OnLevelLoad {
 		{
 			if (IEModOptions.SaveBeforeTransition) // added this block
 			{
-				//AutosaveIfAllowed();
-				GameState.Autosave();
+				AutosaveIfAllowed();
 			}
 			try
 			{
