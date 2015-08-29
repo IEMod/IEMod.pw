@@ -47,7 +47,7 @@ namespace IEMod.Mods.Options {
 		[NewMember]
 		private QuickCheckbox _removeMovingRecovery;
 		[NewMember]
-		private QuickCheckbox _fastSneak;
+		private QuickDropdown<IEModOptions.FastSneakOptions> _fastSneak;
 		[NewMember]
 		private QuickCheckbox _improvedAi;
 		[NewMember]
@@ -165,17 +165,22 @@ namespace IEMod.Mods.Options {
 			_removeMovingRecovery = quickFactory.Checkbox(() => IEModOptions.RemoveMovingRecovery);
 			_removeMovingRecovery.Transform.localPosition = column1Top.Plus(y:-210);
 
-			_fastSneak = quickFactory.Checkbox(() => IEModOptions.FastSneak);
-			_fastSneak.Transform.localPosition = column1Top.Plus(y:-240);
+			//_fastSneak = quickFactory.Checkbox(() => IEModOptions.FastSneak);
+			//_fastSneak.Transform.localPosition = column1Top.Plus(y:-240);
 
+            /* * * TJH 8/28/2015. Improved AI Excluded from v2.0 
 			_improvedAi = quickFactory.Checkbox(() => IEModOptions.ImprovedAI);
 			_improvedAi.Transform.localPosition = column1Top.Plus(y: -270);
+            * * */
 
+            
 			_disableFriendlyFire = quickFactory.Checkbox(() => IEModOptions.DisableFriendlyFire);
-			
-			_disableFriendlyFire.Transform.localPosition = column1Top.Plus(y: -300);
+			/* * * TJH 8/28/2015. Moved up since Improved AI and Fast Sneak are no longer present here * * */
+			_disableFriendlyFire.Transform.localPosition = column1Top.Plus(y: -240);
 
-			var column2Top = column1Top.Plus(x: +420);
+           
+
+            var column2Top = column1Top.Plus(x: +420);
 
 			_lootShuffler = quickFactory.Checkbox(() => IEModOptions.LootShuffler);
 			_lootShuffler.Transform.localPosition = column2Top;
@@ -211,7 +216,7 @@ namespace IEMod.Mods.Options {
 			_enableCustomUI = quickFactory.Checkbox(() => IEModOptions.EnableCustomUI);
 			_enableCustomUI.LocalPosition = column2Top.Plus(y: -210);
 
-			var centerCmbTop = new Vector3(-80, -70, 0);
+			var centerCmbTop = new Vector3(-80, -40, 0);
 			const int cmbLabelWidth = 300;
 			const int cmbWidth = 515;
 
@@ -241,8 +246,13 @@ namespace IEMod.Mods.Options {
 			_autosaveCmb.LabelWidth = cmbLabelWidth;
 			_autosaveCmb.Transform.localPosition = centerCmbTop.Plus(y:-120);
 
-			// Pallegina dispositions mod page
-			quickFactory.CurrentParent = ieModDisposition.Transform;
+            _fastSneak = quickFactory.EnumDropdown(() => IEModOptions.FastSneak);
+            _fastSneak.Width = cmbWidth;
+            _fastSneak.LabelWidth = cmbLabelWidth;
+            _fastSneak.Transform.localPosition = centerCmbTop.Plus(y: -150);
+
+            // Pallegina dispositions mod page
+            quickFactory.CurrentParent = ieModDisposition.Transform;
 
 			var favoredDisposition1 = quickFactory.EnumDropdown(() => IEModOptions.PalleginaFavored1);
 			favoredDisposition1.Width = 150;
