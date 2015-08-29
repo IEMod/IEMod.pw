@@ -10,6 +10,7 @@ namespace IEMod.Mods.CombatLooting {
 			[ModifiesMember("get_IsUsable")]
 			get
 			{
+				//TODO: GR 29/8 - manually check if this code is valid
 				if (IEModOptions.UnlockCombatInv)
 				{
 					if (GameState.InCombat && (this.gameObject.name.Contains ("DefaultDropItem") || this.gameObject.GetComponent<CharacterStats> () != null)) // this is a check for ground loot or body loot

@@ -8,6 +8,7 @@ namespace IEMod.Mods.PartyBar {
 		[ModifiesMember("RepositionPortraits")]
 		public void RepositionPortraitsNew()
 		{
+			//TODO: GR 29/8 - manually correct this section to be consistent with 2.0 using an IDE
 			/*StringBuilder sb = new StringBuilder();
         sb.Append("P! RepositionPortraitsNew() start. PartyBarToggle = " + PlayerPrefs.GetInt("PartyBarToggled", 0).ToString() + "\n");*/
 			for (int i = 0; i < this.m_Portraits.Length; i++) {

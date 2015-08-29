@@ -38,11 +38,9 @@ namespace IEMod.Mods.CombatOnly {
 				if (this.m_perEncounterResetTimer <= 0f)
 				{
 					this.m_cooldownCounter = 0;
-
 					this.m_perEncounterResetTimer = 0f;
 				}
 			}
-
 			if (this.m_activated)
 			{
 				if (this.ClearsOnMovement && this.IsMoving)
@@ -65,6 +63,7 @@ namespace IEMod.Mods.CombatOnly {
 			}
 			if (!GameState.Paused)
 			{
+				/* 
 				if (this.m_statusEffectsNeeded && !this.m_statusEffectsActivated)
 				{
 					this.ActivateStatusEffects();
@@ -73,6 +72,9 @@ namespace IEMod.Mods.CombatOnly {
 				{
 					this.DeactivateStatusEffects();
 				}
+				This code was changed to the following in 2.0:
+				*/
+				this.UpdateStatusEffectActivation();
 			}
 			if (this.m_activated && !this.m_applied)
 			{

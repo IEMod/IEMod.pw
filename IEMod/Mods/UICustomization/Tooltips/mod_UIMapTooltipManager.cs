@@ -37,6 +37,7 @@ namespace IEMod.Mods.Tooltips {
 					tooltip.RevealedByAttackCursor = byAttack;
 					this.m_ActiveTips.Add(target, tooltip);
 					tooltip.Panel.alpha = 0f;
+					//uIMapTooltip.NotifyShown(); // <-- this line appears in 2.0, but it would probably make the tooltip appear, or cause glitches.
 					return tooltip;
 				}
 				//GR 29/8 - this section was fixed to match 2.0, in particular NotifyShown was previously not called.
