@@ -8,6 +8,9 @@ using Patchwork.Attributes;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+//GR 29/8 - disabled for 2.0
+[assembly: DisablePatchingByName(@"^IEMod.Mods.AIMod", PatchingTarget.Type)]
+/*
 namespace IEMod.Mods.AIMod {
 
 		[ModifiesType]
@@ -464,3 +467,4 @@ namespace IEMod.Mods.AIMod {
 		}
 	}
 }
+*/
