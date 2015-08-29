@@ -8,6 +8,7 @@ using System.Text;
 using IEMod.Helpers;
 using IEMod.Mods.ObjectBrowser;
 using IEMod.Mods.Options;
+using IEMod.Mods.UICustomization;
 //using IEMod.Mods.UICustomization;
 using Patchwork.Attributes;
 using UnityEngine;
@@ -353,13 +354,29 @@ namespace IEMod.Mods.ConsoleMod {
 		}
 
 		[NewMember]
-		public static void ClearAllPreferences(bool confirmation) {
+		public static void PlayerPrefs_DeleteAll(bool confirmation) {
 			if (!confirmation) {
 				Console.AddMessage("You need to supply a 'true' argument if you're sure you want to clear all preferences.");
 				return;
 			}
+			
 			PlayerPrefs.DeleteAll();
 			Console.AddMessage("All preferences cleared. Please restart the game so that no errors occur.");
+		}
+
+	    [NewMember]
+	    public static void PlayerPrefs_Delete(string name) {
+		    if (!PlayerPrefs.HasKey(name)) {
+			    Console.AddMessage("A key with this name was not found in PlayerPrefs.");
+		    }
+		    PlayerPrefs.DeleteKey(name);
+	    }
+
+		[NewMember]
+	    public static void ResetCustomUI() {
+			IEModOptions.Layout = UICustomizer.DefaultLayout.Clone();
+			IEModOptions.SaveToPrefs();
+			Console.AddMessage("Successfuly reset the UI to default.");
 		}
 
 		[NewMember]
