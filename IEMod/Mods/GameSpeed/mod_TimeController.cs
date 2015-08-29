@@ -1,5 +1,6 @@
 ﻿using IEMod.Mods.Options;
 using Patchwork.Attributes;
+using UnityEngine;
 
 
 namespace IEMod.Mods.GameSpeed {
@@ -34,6 +35,9 @@ namespace IEMod.Mods.GameSpeed {
 		[ModifiesMember("Update")]
 		private void UpdateNew()
 		{
+			//imported line from 2.0:
+			this.RealtimeSinceStartupThisFrame = Time.realtimeSinceStartup;
+			
 			if (GameState.InCombat && this.TimeScale > this.NormalTime)
 			{
 				this.TimeScale = 1f;

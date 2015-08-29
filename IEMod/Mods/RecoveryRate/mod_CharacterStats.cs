@@ -136,11 +136,11 @@ namespace IEMod.Mods.RecoveryRate {
 				{
 					statusEffect4.ApplyEffect(base.gameObject);
 				}
-				if (!statusEffect4.Stackable && !statusEffect4.IsSuspended && !statusEffect4.IsSuppressed)
+				if (!statusEffect4.Stackable && !statusEffect4.IsSuspended && this.m_statusEffects.Count > 1 && !statusEffect4.IsSuppressed)
 				{
 					StatusEffect trackedEffect = this.GetTrackedEffect(statusEffect4.NonstackingEffectType, statusEffect4.GetStackingKey());
 					int num3 = this.m_statusEffects.IndexOf(trackedEffect);
-					if (trackedEffect == null || trackedEffect.IsSuspended || statusEffect4.Suppresses(trackedEffect, num3 > m))
+					if (m != num3 || trackedEffect == null || trackedEffect.IsSuspended || statusEffect4.Suppresses(trackedEffect, num3 > m))
 					{
 						if (trackedEffect != null && trackedEffect.Applied)
 						{
@@ -169,7 +169,7 @@ namespace IEMod.Mods.RecoveryRate {
 					}
 					while (list.Count > 0 && AfflictionData.Instance.TravelFatigueSoundTimer <= 0f)
 					{
-						PartyMemberAI partyMemberAI = list[Random.Range(0, list.Count)];
+						PartyMemberAI partyMemberAI = list[UnityEngine.Random.Range(0, list.Count)];
 						this.PlayPartyMemberFatigueSound(partyMemberAI);
 						list.Remove(partyMemberAI);
 					}
@@ -221,6 +221,16 @@ namespace IEMod.Mods.RecoveryRate {
 							break;
 						}
 					}
+				}
+			}
+			if (this.IsPartyMember && !GameState.InCombat && !TimeController.Instance.Paused)
+			{
+				int maxLevelCanLevelUpTo = this.GetMaxLevelCanLevelUpTo();
+				if (maxLevelCanLevelUpTo > this.Level && maxLevelCanLevelUpTo > this.m_NotifiedLevel)
+				{
+					GameUtilities.LaunchEffect(InGameHUD.Instance.LevelUpVfx, 1f, base.transform, null);
+					UIHealthstringManager.Instance.ShowNotice(GUIUtils.GetText(807), base.gameObject, 2.5f);
+					this.m_NotifiedLevel = this.GetMaxLevelCanLevelUpTo();
 				}
 			}
 			if (CharacterStats.DebugStats)

@@ -45,8 +45,11 @@ namespace IEMod.Mods.Tooltips {
 					tooltip.Panel.alpha = 0f;
 					return tooltip;
 				}
-				this.m_ActiveTips[target].RevealedByMouse = byMouse || this.m_ActiveTips[target].RevealedByMouse;
-				this.m_ActiveTips[target].RevealedByAttackCursor = byAttack || this.m_ActiveTips[target].RevealedByAttackCursor;
+			//GR 29/8 - this section was fixed to match 2.0, in particular NotifyShown was previously not called.
+			UIMapTooltip uIMapTooltip2 = this.m_ActiveTips[target];
+			uIMapTooltip2.RevealedByMouse = (byMouse || this.m_ActiveTips[target].RevealedByMouse);
+			uIMapTooltip2.RevealedByAttackCursor = (byAttack || this.m_ActiveTips[target].RevealedByAttackCursor);
+			uIMapTooltip2.NotifyShown();
 				return this.m_ActiveTips[target];
 			} 
 			else

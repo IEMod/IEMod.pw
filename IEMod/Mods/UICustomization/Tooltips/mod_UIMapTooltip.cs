@@ -40,6 +40,7 @@ namespace IEMod.Mods.Tooltips {
 				this.PortraitAnchor.relativeOffset = new Vector2(0f, this.PortraitAnchor.relativeOffset.y);
 				this.PortraitAnchor.side = UIAnchor.Side.Center;
 			}
+			//TODO: GR 28/9 - manually check if this section is compatible with 2.0
 
 			// displays tooltip over your party members models if you hover over their ingame models, instead of always displaying it above portraits.
 			// and displays it above portraits if you hover over their portraits
