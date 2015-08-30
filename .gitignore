@@ -40,8 +40,6 @@ TestResult.xml
 [Rr]eleasePS/
 dlldata.c
 
-*.DoNotPush.cs
-
 *_i.c
 *_p.c
 *_i.h
