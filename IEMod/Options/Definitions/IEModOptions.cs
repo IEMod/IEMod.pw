@@ -369,21 +369,26 @@ namespace IEMod.Mods.Options {
 
 		[NewType]
 		public enum PerEncounterSpells {
-			[Description("No Change (Per-encounter spell " +
-				"level gained at level 9)")]
+			[Description("No Change")]
 			NoChange,
 
-			[Description("Per-encounter spell levels gained at levels 9 and 12")]
+			[Description("Per-encounter spells gained at levels 9 and 12")]
 			Levels_9_12,
 
-			[Description("Per-encounter spell levels gained at levels 6, 9 and 12")]
+			[Description("Per-encounter spells gained at levels 6, 9 and 12")]
 			Levels_6_9_12,
 
-			[Description("Per-encounter spell levels gained at levels 6, 8, 10 and 12")]
-			Levels_6_8_10_12,
+            [Description("Per-encounter spells gained at levels 8, 10, 12, and 14")]
+            Levels_8_10_12_14,
 
-			[Description("Per-encounter spell levels gained at levels 4, 6, 8, 10 and 12")]
-			Levels_4_6_8_10_12,
+            [Description("Per-encounter spells gained at levels 6, 9, 12 and 14")]
+            Levels_6_9_12_14,
+
+            [Description("Per-encounter spells gained at levels 6, 8, 10, 12 and 14")]
+			Levels_6_8_10_12_14,
+
+			[Description("Per-encounter spells gained at levels 4, 6, 8, 10, 12 and 14")]
+			Levels_4_6_8_10_12_14,
 
 			[Description("All spells per-encounter")]
 			AllPerEncounter,
