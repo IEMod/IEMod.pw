@@ -5,6 +5,8 @@ namespace IEMod.Mods.ConsoleMod {
 	[ModifiesType()]
 	public  class mod_UIConsole : UIConsole
 	{
+		
+
 		[ModifiesMember("AdjustBackground")]
 		private void AdjustBackgroundNew(Vector2 delta)
 		{

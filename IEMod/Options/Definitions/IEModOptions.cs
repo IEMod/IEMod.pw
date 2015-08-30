@@ -60,7 +60,11 @@ namespace IEMod.Mods.Options {
 			public bool TooltipOffset;
 
 			public string FramePath;
-			
+
+			public LayoutOptions Clone() {
+				return (LayoutOptions)this.MemberwiseClone();
+			}
+
             public override bool Equals(object obj)
             {
                 if (!(obj is LayoutOptions))
@@ -101,8 +105,8 @@ namespace IEMod.Mods.Options {
 		public static bool EnableCustomUI;
 
 		//GR 28/8/15 - this was out of good intentions, but... yeah... it doesn't work. I hadn't noticed on my machine circumstances made it seem like it did.
-		[Save]
-		public static float? SelectionCircleWidth;
+		//GR 30/8 - I'm just gonna disable this for now.
+		public static float? SelectionCircleWidth = null;
 
 		[Save]
 		public static  float DefaultZoom;

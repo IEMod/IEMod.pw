@@ -21,6 +21,9 @@ namespace IEMod.Helpers {
 		}
 
 		private static object GetXmlObject(string name, Type type) {
+			if (!PlayerPrefs.HasKey(name)) {
+				return null;
+			}
 			var xmlSerializer = new XmlSerializer(type);
 			var content = PlayerPrefs.GetString(name);
 			if (String.IsNullOrEmpty(content)) {
@@ -33,15 +36,13 @@ namespace IEMod.Helpers {
 			catch (Exception ) {
 				IEDebug.Log($"Error when deserializing: {name}");
 			}
-			
-			
-			if (obj == null) {
-				return Activator.CreateInstance(type);
-			}
 			return obj;
 		}
 
 		private static void SetXmlObject(string name, Type type, object o) {
+			if (o == null) {
+				PlayerPrefs.DeleteKey(name);
+			}
 			var xmlSerializer = new XmlSerializer(type);
 			var strWriter = new StringWriter();
 			xmlSerializer.Serialize(strWriter, o);

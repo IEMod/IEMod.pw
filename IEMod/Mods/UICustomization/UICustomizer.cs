@@ -25,7 +25,7 @@ namespace IEMod.Mods.UICustomization {
 		private static Texture DefaultActionBarAtlas;
 		private static Texture2D AlternateActionBarAtlas;
 		private static Texture DefaultLeftCornerTexture;
-		private static IEModOptions.LayoutOptions DefaultLayout;
+		public static IEModOptions.LayoutOptions DefaultLayout;
 		private static QuickButton _customizeButton;
 		public static void Initialize() {
 			
