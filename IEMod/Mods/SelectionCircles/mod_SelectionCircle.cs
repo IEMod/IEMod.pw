@@ -72,7 +72,7 @@ namespace IEMod.Mods.SelectionCircles {
 			if (base.renderer == null) {
 				return;
 			}
-			if (IEModOptions.BlueCircles && !isFoe && !isStealthed) {
+			if (IEModOptions.BlueCircles && !isFoe && !isStealthed && !InGameHUD.Instance.UseColorBlindSettings) {
 				var isPartyMember = m_Owner.HasComponent<PartyMemberAI>()
 					&& m_Owner.Component<Faction>().CurrentTeam == Team.GetTeamByTag("player");
 				if (!isPartyMember) {

@@ -5,30 +5,29 @@ using Patchwork.Attributes;
 using UnityEngine;
 
 namespace IEMod.Mods.CombatLooting {
-	
-	//! Signature change!
+
 	[ModifiesType]
-	public class Mod_CombatLooting_UIIventoryGridItem : UIInventoryGridItem
-	{
+	public class Mod_CombatLooting_UIIventoryGridItem : UIInventoryGridItem {
 		//TODO: GR 29/8: this class will have to be integrated with 2.0 manually in an IDE, as the changes are complex. 
 		[NewMember]
-		static List<string> ForbiddenToMoveItems;
+		private static List<string> ForbiddenToMoveItems;
 
-		[MemberAlias(".ctor", typeof(MonoBehaviour))]
+		[MemberAlias(".ctor", typeof (MonoBehaviour))]
 		private void MonoBehavior_ctor() {
-			
+
+		}
+
+		[NewMember]
+		[DuplicatesBody(".ctor")]
+		private void CtorOrig() {
+
 		}
 
 		[ModifiesMember(".ctor")]
 		public void CtorNew() {
 			MonoBehavior_ctor();
-			// Note: this type is marked as 'beforefieldinit'.
-			//UIInventoryGridItem.s_TooltipRepeatTime = 0f;
-			UIInventoryGridItem.s_TooltipRepeatLast = Vector2.zero;
-			UIInventoryGridItem.s_BlockRefresh = false;
-
-			if (ForbiddenToMoveItems == null)
-			{
+			CtorOrig();
+			if (ForbiddenToMoveItems == null) {
 				ForbiddenToMoveItems = new List<string> {
 					"Druid Cat Claws",
 					"Druid Bear Claws",
@@ -50,110 +49,144 @@ namespace IEMod.Mods.CombatLooting {
 
 		[NewMember]
 		[DuplicatesBody("ItemTransferValid")]
-		public static bool ItemTransferValidOrig(InventoryItem invitem, UIInventoryGridItem from, UIInventoryItemZone to, out string error, bool alreadyHeld = false) {
+		public static bool ItemTransferValidOrig(InventoryItem invitem, UIInventoryGridItem from, UIInventoryItemZone to,
+			out string error, bool alreadyHeld = false) {
 			throw new DeadEndException("ItemTransferValidOrig");
 		}
 
-		//! Signature change!
 		[ModifiesMember("ItemTransferValid")]
-		public static bool ItemTransferValidNew(InventoryItem invitem, UIInventoryGridItem from, UIInventoryItemZone to, out string error, bool alreadyHeld = false)
-		{
+		public static bool ItemTransferValidNew(InventoryItem invitem, UIInventoryGridItem from, UIInventoryItemZone to,
+			out string error, bool alreadyHeld = false) {
 			// this is to disallow items "FROM"...
-			// added this code
-			if (IEModOptions.UnlockCombatInv && GameState.InCombat && (from.EquipmentSlot == Equippable.EquipmentSlot.Armor || ForbiddenToMoveItems.Contains(invitem.BaseItem.Name)))
-			{
+			//!+ ADDED CODE
+			if (IEModOptions.UnlockCombatInv && GameState.InCombat
+				&& (from.EquipmentSlot == Equippable.EquipmentSlot.Armor || ForbiddenToMoveItems.Contains(invitem.BaseItem.Name))) {
 				error = GUIUtils.GetText(0xd7);
 				return false;
 			}
-			// end of added code
-			return ItemTransferValidOrig(invitem, from, to, out error);
+			//!+ END ADD
+			return ItemTransferValidOrig(invitem, from, to, out error, alreadyHeld);
 		}
 
 		//! Signature change!
 		[ModifiesMember("ItemTransferValid")]
-		public static bool ItemTransferValidNew(InventoryItem invitem, UIInventoryGridItem from, UIInventoryGridItem to, out string error, bool alreadyHeld = false)
-		{
+		public static bool ItemTransferValidNew(InventoryItem invitem, UIInventoryGridItem from, UIInventoryGridItem to,
+			out string error, bool alreadyHeld = false) {
+			UIInventoryItemZone owner;
 			error = string.Empty;
-			if ((invitem == null) || (invitem.baseItem == null)) { return true; }
-			if ((@from == to) && UIGlobalInventory.Instance.DragOwnerIsSame())
-			{
+			if (invitem == null || invitem.baseItem == null) {
 				return true;
 			}
-			if (!ItemTransferValid(invitem, @from, to.Owner, out error))
-			{
+			if (from == to && UIGlobalInventory.Instance.DragOwnerIsSame()) {
+				return true;
+			}
+			InventoryItem inventoryItem = invitem;
+			UIInventoryGridItem uIInventoryGridItem = from;
+			if (!to) {
+				owner = null;
+			} else {
+				owner = to.Owner;
+			}
+			if (!UIInventoryGridItem.ItemTransferValid(inventoryItem, uIInventoryGridItem, owner, out error, alreadyHeld)) {
+				return false;
+			}
+			if (!UIInventoryGridItem.ItemTakeValid(to, out error)) {
 				return false;
 			}
 
+			//!+ ADDED CODE
 			// this is to disallow items TO
-			// added code
-			if (IEModOptions.UnlockCombatInv && GameState.InCombat && (to.EquipmentSlot == Equippable.EquipmentSlot.Armor || ForbiddenToMoveItems.Contains(invitem.BaseItem.Name))) // added this line
+			if (IEModOptions.UnlockCombatInv && GameState.InCombat
+				&& (to.EquipmentSlot == Equippable.EquipmentSlot.Armor || ForbiddenToMoveItems.Contains(invitem.BaseItem.Name)))
 			{
+				// doesn't allow equipping/unequipping armor during combat, as well as summoned magical items such as druid cat claws
 				error = GUIUtils.GetText(0xd7);
-				return false; // added this line // doesn't allow equipping/unequipping armor during combat, as well as summoned magical items such as druid cat claws
-			}
-			// end of added code
-
-			if ((to.Locked || to.Blocked) || !to.EquipmentModifyValid())
-			{
 				return false;
 			}
-			if (to.EquipmentSlot != Equippable.EquipmentSlot.None)
-			{
-				error = GUIUtils.GetText(0xd9);
-				Equippable baseItem = invitem.baseItem as Equippable;
-				if (baseItem == null)
-				{
+			//!+ END ADD
+
+			if (to && (to.Locked || to.Blocked || !to.EquipmentModifyValid())) {
+				return false;
+			}
+			if (to && to.EquipmentSlot != Equippable.EquipmentSlot.None) {
+				error = GUIUtils.GetText(217);
+				Equippable equippable = invitem.baseItem as Equippable;
+				EquipmentSoulbind component = invitem.baseItem.GetComponent<EquipmentSoulbind>();
+				if (!equippable) {
 					return false;
 				}
-				if (!baseItem.CanUseSlot(to.EquipmentSlot))
-				{
+				if (!equippable.CanUseSlot(to.EquipmentSlot)) {
 					return false;
 				}
-				if ((to.WeaponSetBuddy != null) && !to.WeaponSetBuddy.Empty)
-				{
-					if (baseItem.BothPrimaryAndSecondarySlot)
-					{
-						error = GUIUtils.GetText(0x6c9);
+				if (to.WeaponSetBuddy != null && !to.WeaponSetBuddy.Empty) {
+					if (equippable.BothPrimaryAndSecondarySlot) {
+						error = GUIUtils.GetText(1737);
 						return false;
 					}
-					Equippable equippable2 = to.WeaponSetBuddy.InvItem.baseItem as Equippable;
-					if ((equippable2 != null) && equippable2.BothPrimaryAndSecondarySlot)
-					{
-						error = GUIUtils.GetText(0x6c9);
+					Equippable invItem = to.WeaponSetBuddy.InvItem.baseItem as Equippable;
+					if (invItem && invItem.BothPrimaryAndSecondarySlot) {
+						error = GUIUtils.GetText(1737);
 						return false;
 					}
 				}
 				Equipment selectedEquipment = UIInventoryManager.Instance.Equipment.SelectedEquipment;
-				if ((selectedEquipment != null) && selectedEquipment.IsSlotLocked(to.EquipmentSlot))
-				{
+				if (selectedEquipment && selectedEquipment.IsSlotLocked(to.EquipmentSlot)) {
 					return false;
 				}
-				if (!baseItem.CanEquip(UIInventoryManager.Instance.SelectedCharacter.gameObject))
-				{
+				Equippable.CantEquipReason cantEquipReason =
+					equippable.WhyCantEquip(UIInventoryManager.Instance.SelectedCharacter.gameObject);
+				if (cantEquipReason != Equippable.CantEquipReason.None) {
 					CharacterStats selectedCharacter = UIInventoryManager.Instance.SelectedCharacter;
-					object[] parameters = new object[] { invitem.baseItem.Name, GUIUtils.GetClassString(selectedCharacter.CharacterClass, selectedCharacter.Gender) };
-					error = GUIUtils.Format(0x3eb, parameters);
+					switch (cantEquipReason) {
+						case Equippable.CantEquipReason.EquipmentLocked: {
+							object[] name = new object[] {
+								invitem.baseItem.Name,
+								CharacterStats.Name(selectedCharacter)
+							};
+							error = GUIUtils.Format(1003, name);
+							break;
+						}
+						case Equippable.CantEquipReason.ClassMismatch: {
+							error = GUIUtils.Format(1003, new object[] {
+								invitem.baseItem.Name,
+								GUIUtils.GetClassString(selectedCharacter.CharacterClass, selectedCharacter.Gender)
+							});
+							break;
+						}
+						case Equippable.CantEquipReason.SoulboundToOther: {
+							error = GUIUtils.Format(2038, new object[] {
+								equippable.Name,
+								CharacterStats.Name(component.BoundGuid)
+							});
+							break;
+						}
+						default: {
+							goto case Equippable.CantEquipReason.EquipmentLocked;
+						}
+					}
 					return false;
 				}
 			}
-			if (@from.EquipmentSlot != Equippable.EquipmentSlot.None)
-			{
-				Equipment equipment2 = UIInventoryManager.Instance.Equipment.SelectedEquipment;
-				if ((equipment2 != null) && equipment2.IsSlotLocked(to.EquipmentSlot))
-				{
+			if (from.EquipmentSlot != Equippable.EquipmentSlot.None) {
+				Equipment equipment = UIInventoryManager.Instance.Equipment.SelectedEquipment;
+				if (equipment && to && equipment.IsSlotLocked(to.EquipmentSlot)) {
 					return false;
 				}
 			}
-			if ((to.EquipmentSlot == Equippable.EquipmentSlot.Grimoire) && (UIInventoryManager.Instance.SelectedCharacter.SpellCastingDisabled > 0))
-			{
-				error = GUIUtils.GetText(0x6ca);
+			if (to && to.EquipmentSlot == Equippable.EquipmentSlot.Grimoire
+				&& UIInventoryManager.Instance.SelectedCharacter.SpellCastingDisabled > 0) {
+				error = GUIUtils.GetText(1738);
 				return false;
 			}
-			if (((to.RestrictByFilter != UIInventoryFilter.ItemFilterType.NONE) && ((invitem.baseItem.FilterType & to.RestrictByFilter) == UIInventoryFilter.ItemFilterType.NONE)) && (((to.OrAllowEquipment == Equippable.EquipmentSlot.None) || !(invitem.baseItem is Equippable)) || !(invitem.baseItem as Equippable).CanUseSlot(to.OrAllowEquipment)))
-			{
-				return false;
+			if (to && to.RestrictByFilter != UIInventoryFilter.ItemFilterType.NONE
+				&& (invitem.baseItem.FilterType & to.RestrictByFilter) == UIInventoryFilter.ItemFilterType.NONE) {
+				if (to.OrAllowEquipment == Equippable.EquipmentSlot.None || !(invitem.baseItem is Equippable)
+					|| !(invitem.baseItem as Equippable).CanUseSlot(to.OrAllowEquipment)) {
+					return false;
+				}
 			}
 			return true;
 		}
 	}
+
 }

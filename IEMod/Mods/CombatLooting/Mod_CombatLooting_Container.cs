@@ -1,33 +1,39 @@
-﻿using IEMod.Mods.Options;
+﻿using IEMod.Helpers;
+using IEMod.Mods.Options;
 using Patchwork.Attributes;
 
 namespace IEMod.Mods.CombatLooting {
 	[ModifiesType]
 	public class Mod_CombatLooting_Container : Container
 	{
+		/// <summary>
+		/// base.IsUsable
+		/// </summary>
+		/// <returns></returns>
+		[MemberAlias("get_IsUsable", typeof(OCL), AliasCallMode.NonVirtual)]
+		private bool base_get_IsUsable() {
+			throw new DeadEndException(nameof(Mod_CombatLooting_Container.base_get_IsUsable));
+			//this will be translated to base.get_IsUsable
+		}
+
 		public bool IsUsableNew
 		{
 			[ModifiesMember("get_IsUsable")]
-			get
-			{
+			get {
 				//TODO: GR 29/8 - manually check if this code is valid
-				if (IEModOptions.UnlockCombatInv)
-				{
-					if (GameState.InCombat && (this.gameObject.name.Contains ("DefaultDropItem") || this.gameObject.GetComponent<CharacterStats> () != null)) // this is a check for ground loot or body loot
-					{
-						return false;
-					} else
-					{
-						return (((base.m_currentState != State.Sealed) && (base.m_currentState != State.SealedOpen)) && base.IsVisible);
-					}
-				} else
-				{
-					if (this.IsEmptyDeadBody())
+				//!+ ADDED CODE
+				if (IEModOptions.UnlockCombatInv) {
+					if (GameState.InCombat
+						&& (this.gameObject.name.Contains("DefaultDropItem") || this.gameObject.GetComponent<CharacterStats>() != null))
+						// this is a check for ground loot or body loot
 					{
 						return false;
 					}
-					return (!GameState.InCombat && ((base.m_currentState != State.Sealed) && (base.m_currentState != State.SealedOpen)) && base.IsVisible); // this code is a combination of OCL.IsUsable and Container.IsUsable to avoid the .base problem
+					return !this.IsEmptyDeadBody() && base_get_IsUsable();
 				}
+				//!+ END ADD
+				return !this.IsEmptyDeadBody() && !GameState.InCombat && base_get_IsUsable();
+				
 			}
 		}
 	}

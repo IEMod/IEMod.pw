@@ -40,13 +40,17 @@ namespace IEMod.Mods.Tooltips {
 				this.PortraitAnchor.relativeOffset = new Vector2(0f, this.PortraitAnchor.relativeOffset.y);
 				this.PortraitAnchor.side = UIAnchor.Side.Center;
 			}
-			//TODO: GR 28/9 - manually check if this section is compatible with 2.0
+			//x TODO:GR 28/9 - manually check if this section is compatible with 2.0
+			//GR 30/8 - I don't know what the original code was, so I can't meaningfuly merge it. It was totally changed. 
+			//figuring out exactly what it does and why it does it seems just way too much work (why -0.495?? why not -0.494?)
+			//I can't help but think a lot of work went into this.
+			//we'll have to come back to it later if there are problems.
 
 			// displays tooltip over your party members models if you hover over their ingame models, instead of always displaying it above portraits.
 			// and displays it above portraits if you hover over their portraits
 			bool npcUnderCursor = GameCursor.OverrideCharacterUnderCursor == target; // added this line
 
-			if (this.TargetIsParty && (this.PortraitAnchor != null) && npcUnderCursor) // added && npcUnderCursor
+			if (this.TargetIsParty && this.PortraitAnchor != null && npcUnderCursor) // added && npcUnderCursor
 			{
 				UIPartyPortrait portraitFor = UIPartyPortraitBar.Instance.GetPortraitFor(this.m_PartyAI);
 				this.PortraitAnchor.widgetContainer = (portraitFor == null) ? null : portraitFor.Border;
