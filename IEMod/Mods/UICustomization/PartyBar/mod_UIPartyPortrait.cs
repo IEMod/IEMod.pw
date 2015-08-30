@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using IEMod.Helpers;
 using Patchwork.Attributes;
 using UnityEngine;
 
@@ -29,12 +30,13 @@ namespace IEMod.Mods.PartyBar {
 		public static bool IsVertical;
 
 		[ModifiesMember("Update")]
-		private void UpdateNew()
-		{
+		private void UpdateNew() {
 			if (this.m_partyMemberAI == null)
 			{
 				return;
 			}
+			/*
+			pre-2.0:
 			if (this.m_partyMemberAI.Selected)
 			{
 				//GR 27/8/15 - Glow member has been removed :(
@@ -47,6 +49,7 @@ namespace IEMod.Mods.PartyBar {
 				//this.Glow.alpha = 0f;
 				this.Border.spriteName = "portSelectedNot";
 			}
+			*/
 			this.m_EnduranceValues.LineBreak = this.Minion.gameObject.activeSelf;
 			this.UpdateLevelTalkGrid();
 			if (this.m_ClassCounterType == UIPartyPortrait.ClassCounterType.Focus)
