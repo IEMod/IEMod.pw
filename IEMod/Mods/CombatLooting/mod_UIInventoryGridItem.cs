@@ -7,8 +7,7 @@ using UnityEngine;
 namespace IEMod.Mods.CombatLooting {
 
 	[ModifiesType]
-	public class Mod_CombatLooting_UIIventoryGridItem : UIInventoryGridItem {
-		//TODO: GR 29/8: this class will have to be integrated with 2.0 manually in an IDE, as the changes are complex. 
+	public class mod_UIInventoryGridItem : UIInventoryGridItem {
 		[NewMember]
 		private static List<string> ForbiddenToMoveItems;
 
