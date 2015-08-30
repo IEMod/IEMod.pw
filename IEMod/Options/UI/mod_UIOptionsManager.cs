@@ -87,13 +87,14 @@ namespace IEMod.Mods.Options {
 
 		[NewMember]
 		[DuplicatesBody("Start")]
-		public void StartOrig() {
+		public void dup_Start() {
 			throw new DeadEndException("StartOrig");
 		}
 
 		[ModifiesMember("Start")]
-		private void StartNew() {
+		private void mod_Start() {
 			//TODO: GR 29/8 - manually check if this method is consistent with 2.0. It probably is though.
+            //NEW CODE HERE
 			var exampleCheckbox =
 				this.ComponentsInDescendants<UIOptionsTag>(true).Single(
 					opt => opt.Checkbox && opt.BoolSuboption == GameOption.BoolOption.SCREEN_EDGE_SCROLLING)
@@ -113,7 +114,7 @@ namespace IEMod.Mods.Options {
 				ieModDisposition.GameObject
 			}).ToArray();
 
-			//don't touch this
+			//ORIGINAL CODE
 			this.SetMenuLayout(OptionsMenuLayout.InGame);
 			this.QuitButton.onClick = (UIEventListener.VoidDelegate) Delegate.Combine(this.QuitButton.onClick, new UIEventListener.VoidDelegate(this.OnQuitClicked));
 			this.SaveButton.onClick = (UIEventListener.VoidDelegate) Delegate.Combine(this.SaveButton.onClick, new UIEventListener.VoidDelegate(this.OnSaveClicked));
@@ -121,11 +122,11 @@ namespace IEMod.Mods.Options {
         
 			this.m_Options = this.ComponentsInDescendants<UIOptionsTag>(true);
 
+            //NEW CODE
 			var quickFactory = new QuickFactory() {
 				CurrentParent = Pages[7].transform
 			};
 
-			// end
 			//File.WriteAllText("ComboboxDump.txt", UnityObjectDumper.PrintUnityGameObject(exampleDropdown.gameObject, null, x => false));
 			quickFactory.CurrentParent = Pages[7].transform;
 
@@ -274,9 +275,9 @@ namespace IEMod.Mods.Options {
 			disDisposition2.LocalPosition = new Vector3(100, 250, 0);
 			disDisposition2.LabelWidth = 0;
 			disDisposition2.Width = 150;
-			
-			//END OF CONTROL DEFINITIONS. The rest is built in stuff that needs to happen after creating all of our controls.
-			this.PageButtonGroup.OnRadioSelectionChangedEvent += new UIRadioButtonGroup.RadioSelectionChanged(this.OnChangePage); // changed to Event
+
+            //REPLACES ORIGINAL CODE WITH SOME TWEAKED LINES (mostly due to changed number of tabs)
+            this.PageButtonGroup.OnRadioSelectionChangedEvent += new UIRadioButtonGroup.RadioSelectionChanged(this.OnChangePage); // changed to Event
 			this.m_PageButtonGrid = this.PageButtonGroup.GetComponent<UIGrid>();
 			this.m_PageButtons = new UIMultiSpriteImageButton[9];
 			this.m_PageButtons[0] = this.PageButtonPrefab;
@@ -302,16 +303,19 @@ namespace IEMod.Mods.Options {
 				}
 				this.m_PageButtons[i].name = this.PageOrder[i] + "." + this.m_PageButtons[i].name;
 			}
+            //PURE ORIGINAL CODE NOW
 			this.m_PageButtonGrid.Reposition();
-			foreach (UIOptionsTag tag in this.m_Options)
-			{
-				if (tag.Checkbox != null)
-				{
-					tag.Checkbox.onStateChange = (UICheckbox.OnStateChange) Delegate.Combine(tag.Checkbox.onStateChange, new UICheckbox.OnStateChange(this.OnCheckChanged));
-				}
-			}
+            UIOptionsTag[] mOptions = this.m_Options;
+            for (int j = 0; j < (int)mOptions.Length; j++)
+            {
+                UIOptionsTag uIOptionsTag = mOptions[j];
+                if (uIOptionsTag.Checkbox)
+                {
+                    uIOptionsTag.Checkbox.onStateChange += new UICheckbox.OnStateChange(this.OnCheckChanged);
+                }
+            }
 
-			this.CombatTimerSlider.Slider.OnChanged = (UIOptionsSlider.OnSettingChanged) Delegate.Combine(this.CombatTimerSlider.Slider.OnChanged, new UIOptionsSlider.OnSettingChanged(this.OnCombatTimerChanged));
+            this.CombatTimerSlider.Slider.OnChanged = (UIOptionsSlider.OnSettingChanged) Delegate.Combine(this.CombatTimerSlider.Slider.OnChanged, new UIOptionsSlider.OnSettingChanged(this.OnCombatTimerChanged));
 			this.AutoslowThresholdSlider.Slider.OnChanged = (UIOptionsSlider.OnSettingChanged) Delegate.Combine(this.AutoslowThresholdSlider.Slider.OnChanged, new UIOptionsSlider.OnSettingChanged(this.OnAutoslowThresholdChanged));
 			this.TooltipDelay.Slider.OnChanged = (UIOptionsSlider.OnSettingChanged) Delegate.Combine(this.TooltipDelay.Slider.OnChanged, new UIOptionsSlider.OnSettingChanged(this.OnTooltipDelayChanged));
 			this.FontSize.Slider.OnChanged = (UIOptionsSlider.OnSettingChanged) Delegate.Combine(this.FontSize.Slider.OnChanged, new UIOptionsSlider.OnSettingChanged(this.OnFontSizeChanged));
@@ -326,19 +330,18 @@ namespace IEMod.Mods.Options {
 			this.FrameRateMaxSlider.Slider.OnChanged = (UIOptionsSlider.OnSettingChanged) Delegate.Combine(this.FrameRateMaxSlider.Slider.OnChanged, new UIOptionsSlider.OnSettingChanged(this.OnMaxFPSChanged));
 
 			this.m_VolumeSliders = new UIOptionsSliderGroup[4];
-			UIOptionsVolumeSlider[] componentsInChildren = base.GetComponentsInChildren<UIOptionsVolumeSlider>(true);
-			UIOptionsVolumeSlider[] array = componentsInChildren;
-			for (int k = 0; k < array.Length; k++)
-			{
-				UIOptionsVolumeSlider uIOptionsVolumeSlider = array[k];
-				if (this.m_VolumeSliders[(int)uIOptionsVolumeSlider.Category] == null)
-				{
-					UIOptionsSliderGroup component = uIOptionsVolumeSlider.GetComponent<UIOptionsSliderGroup>();
-					this.m_VolumeSliders[(int)uIOptionsVolumeSlider.Category] = component;
-					component.Slider.OnChanged = (UIOptionsSlider.OnSettingChanged)Delegate.Combine(component.Slider.OnChanged, new UIOptionsSlider.OnSettingChanged(this.OnVolumeChanged));
-				}
-			}
-			this.AcceptButton.onClick = (UIEventListener.VoidDelegate) Delegate.Combine(this.AcceptButton.onClick, new UIEventListener.VoidDelegate(this.OnAcceptClick));
+			UIOptionsVolumeSlider[] componentsInChildren = base.GetComponentsInChildren<UIOptionsVolumeSlider>(true);            
+            for (int k = 0; k < (int)componentsInChildren.Length; k++)
+            {
+                UIOptionsVolumeSlider uIOptionsVolumeSlider = componentsInChildren[k];
+                if (this.m_VolumeSliders[(int)uIOptionsVolumeSlider.Category] == null)
+                {
+                    UIOptionsSliderGroup component = uIOptionsVolumeSlider.GetComponent<UIOptionsSliderGroup>();
+                    this.m_VolumeSliders[(int)uIOptionsVolumeSlider.Category] = component;
+                    component.Slider.OnChanged += new UIOptionsSlider.OnSettingChanged(this.OnVolumeChanged);
+                }
+            }
+            this.AcceptButton.onClick = (UIEventListener.VoidDelegate) Delegate.Combine(this.AcceptButton.onClick, new UIEventListener.VoidDelegate(this.OnAcceptClick));
 			this.DefControlsButton.onClick = (UIEventListener.VoidDelegate) Delegate.Combine(this.DefControlsButton.onClick, new UIEventListener.VoidDelegate(this.OnRestoreDefaultControls));
 			this.ApplyResolutionButton.onClick = (UIEventListener.VoidDelegate) Delegate.Combine(this.ApplyResolutionButton.onClick, new UIEventListener.VoidDelegate(this.OnApplyResolution));
 		}
