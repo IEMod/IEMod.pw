@@ -182,7 +182,7 @@ namespace IEMod.Mods.FastSneak {
                         fastSneakActive = true;
                 }
 
-                bool flag = (Stealth.IsInStealthMode(base.gameObject) && !fastSneakActive);
+                bool flag = ((Stealth.IsInStealthMode(base.gameObject) && !fastSneakActive) || mod_Player.WalkMode);
                 float desiredSpeed = (!flag ? this.m_mover.GetRunSpeed() : this.m_mover.GetWalkSpeed());
                 GameObject[] selectedPartyMembers = PartyMemberAI.SelectedPartyMembers;
                 for (int i = 0; i < (int)selectedPartyMembers.Length; i++)
@@ -191,7 +191,7 @@ namespace IEMod.Mods.FastSneak {
                     if (!(gameObject == null) && !(gameObject == base.gameObject) && flag == Stealth.IsInStealthMode(gameObject))
                     {
                         Mover mover = gameObject.GetComponent<Mover>();
-                        if ((!Stealth.IsInStealthMode(gameObject) || fastSneakActive ? mover.GetRunSpeed() : mover.GetWalkSpeed()) < desiredSpeed)
+                        if (((!Stealth.IsInStealthMode(gameObject) || fastSneakActive)  ? mover.GetRunSpeed() : mover.GetWalkSpeed()) < desiredSpeed)
                         {
                             desiredSpeed = mover.DesiredSpeed;
                         }
