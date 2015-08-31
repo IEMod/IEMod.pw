@@ -15,7 +15,7 @@ namespace IEMod.Mods.NoEngagement {
 			}
 			this.LineRenderer.renderer.enabled = (GameState.Paused || GameCursor.CharacterUnderCursor == this.m_Source || GameCursor.CharacterUnderCursor == this.m_Target);
 			this.LineRenderer.renderer.enabled &= InGameHUD.Instance.ShowHUD;
-			this.LineRenderer.renderer.enabled &= IEModOptions.DisableEngagement; // added this line
+			this.LineRenderer.renderer.enabled &= !IEModOptions.DisableEngagement; // added this line
 			if (!this.LineRenderer.renderer.enabled)
 			{
 				return;

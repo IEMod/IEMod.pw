@@ -953,31 +953,31 @@ namespace IEMod.Mods.ConsoleMod {
 			else
 				global::Console.AddMessage("Mouse is not on navmesh, move mouse elsewhere and try again.", UnityEngine.Color.red);
 		}
-	
-		
 
-		//// this method gives your maincharacter all existing mage spells... it was just to test something, but someone might want to use some bits of it
-		//[NewMember]
-		//public  static void AdAb()
-		//{
-		//	CharacterStats firstparam = GameState.s_playerCharacter.GetComponent<CharacterStats>();
-		//	AbilityProgressionTable wizardsProgressionTable = AbilityProgressionTable.LoadAbilityProgressionTable("Wizard");
-		//	global::Console.AddMessage("Wizard abilities in game: " + wizardsProgressionTable.AbilityUnlocks.Length);
-		//	global::Console.AddMessage("This wizard has abilities: " + GameState.s_playerCharacter.GetComponent<CharacterStats>().GetCopyOfCoreData().KnownSkills.Count());
-		//	foreach (var abil in wizardsProgressionTable.AbilityUnlocks)
-		//	{
-		//		bool hasSpell = false;
 
-		//		foreach (var spell in firstparam.GetCopyOfCoreData().KnownSkills)
-		//			if (abil.Ability.name == spell.name.Replace("(Clone)", ""))
-		//				hasSpell = true;
 
-		//		if (hasSpell)
-		//			global::Console.AddMessage("The wizard already knows: " + abil.Ability.name);
-		//		else
-		//			CommandLine.AddAbility(firstparam, abil.Ability.name);
-		//	}
-		//}
+		// this method gives your maincharacter all existing mage spells... it was just to test something, but someone might want to use some bits of it
+		[NewMember]
+		public static void AdAb()
+		{
+			CharacterStats firstparam = GameState.s_playerCharacter.GetComponent<CharacterStats>();
+			AbilityProgressionTable wizardsProgressionTable = AbilityProgressionTable.LoadAbilityProgressionTable("Wizard");
+			global::Console.AddMessage("Wizard abilities in game: " + wizardsProgressionTable.AbilityUnlocks.Length);
+			global::Console.AddMessage("This wizard has abilities: " + GameState.s_playerCharacter.GetComponent<CharacterStats>().GetCopyOfCoreData().KnownSkills.Count());
+			foreach (var abil in wizardsProgressionTable.AbilityUnlocks)
+			{
+				bool hasSpell = false;
+
+				foreach (var spell in firstparam.GetCopyOfCoreData().KnownSkills)
+					if (abil.Ability.name == spell.name.Replace("(Clone)", ""))
+						hasSpell = true;
+
+				if (hasSpell)
+					global::Console.AddMessage("The wizard already knows: " + abil.Ability.name);
+				else
+					AbilityProgressionTable.AddAbilityToCharacter(abil.Ability.name,firstparam, false);
+			}
+		}
 
 
 		[NewMember]
@@ -1000,58 +1000,59 @@ namespace IEMod.Mods.ConsoleMod {
 			IEModOptions.SelectionCircleWidth = width;
 		}
 
-		//[NewMember]
-		//public static void BB() {
-		//	UICustomizer.ShowInterface(true);
-		//}
+		[NewMember]
+		public static void BB()
+		{
+			UICustomizer.ShowInterface(true);
+		}
 
-		//[NewMember]
-		//public  static void TT()
-		//{
-		//	if (((Mod_OnGUI_Player)GameState.s_playerCharacter).showGameObjectBrowser == false)
-		//	{
-		//		if (((Mod_OnGUI_Player)GameState.s_playerCharacter).inspecting == null)
-		//			((Mod_OnGUI_Player)GameState.s_playerCharacter).inspecting = UICustomizer.UiCamera.transform;
+		[NewMember]
+		public static void TT()
+		{
+			if (((Mod_OnGUI_Player)GameState.s_playerCharacter).showGameObjectBrowser == false)
+			{
+				if (((Mod_OnGUI_Player)GameState.s_playerCharacter).inspecting == null)
+					((Mod_OnGUI_Player)GameState.s_playerCharacter).inspecting = UICustomizer.UiCamera.transform;
 
-		//		if (GameBrowserBackground == null)
-		//		{
-		//			UIMultiSpriteImageButton portraitLast = null;
+				if (GameBrowserBackground == null)
+				{
+					UIMultiSpriteImageButton portraitLast = null;
 
-		//			foreach (UIMultiSpriteImageButton btn in UnityEngine.Object.FindObjectsOfType<UIMultiSpriteImageButton>())
-		//				if (btn.ToString() == "PartyPortrait(Clone) (UIMultiSpriteImageButton)" && portraitLast == null)
-		//					portraitLast = btn;
+					foreach (UIMultiSpriteImageButton btn in UnityEngine.Object.FindObjectsOfType<UIMultiSpriteImageButton>())
+						if (btn.ToString() == "PartyPortrait(Clone) (UIMultiSpriteImageButton)" && portraitLast == null)
+							portraitLast = btn;
 
-		//			GameBrowserBackground = NGUITools.AddWidget<UITexture>(portraitLast.transform.parent.parent.gameObject);
-		//			GameBrowserBackground.mainTexture = new Texture2D(500, 500);
+					GameBrowserBackground = NGUITools.AddWidget<UITexture>(portraitLast.transform.parent.parent.gameObject);
+					GameBrowserBackground.mainTexture = new Texture2D(500, 500);
 
-		//			GameBrowserBackground.transform.localScale = new Vector3(1100f, 600f, 1f); // those values are for 1920*1080...
-		//			//GameBrowserBackground.transform.localScale = new Vector3 (1600f, 800f, 1f); // those values are for 1280*1024
+					GameBrowserBackground.transform.localScale = new Vector3(1100f, 600f, 1f); // those values are for 1920*1080...
+																							   //GameBrowserBackground.transform.localScale = new Vector3 (1600f, 800f, 1f); // those values are for 1280*1024
 
-		//			// rescaler
-		//			if (Screen.width != 1920)
-		//			{
-		//				float addwidth = (1920 - Screen.width) * 0.78f;
-		//				float addheight = (1080 - Screen.height) * 0.55f;
-		//				GameBrowserBackground.transform.localScale += new Vector3(addwidth, addheight, 0f);
-		//			}
+					// rescaler
+					if (Screen.width != 1920)
+					{
+						float addwidth = (1920 - Screen.width) * 0.78f;
+						float addheight = (1080 - Screen.height) * 0.55f;
+						GameBrowserBackground.transform.localScale += new Vector3(addwidth, addheight, 0f);
+					}
 
-		//			BoxCollider boxColl = NGUITools.AddWidgetCollider(GameBrowserBackground.gameObject); // adding a box collider, it's required for the UINoClick component
-		//			boxColl.gameObject.AddComponent<UINoClick>(); // this prevents clicks from going through the U-frame
-		//			UIAnchor ank = GameBrowserBackground.gameObject.AddComponent<UIAnchor>();
-		//			ank.side = UIAnchor.Side.Center;
+					BoxCollider boxColl = NGUITools.AddWidgetCollider(GameBrowserBackground.gameObject); // adding a box collider, it's required for the UINoClick component
+					boxColl.gameObject.AddComponent<UINoClick>(); // this prevents clicks from going through the U-frame
+					UIAnchor ank = GameBrowserBackground.gameObject.AddComponent<UIAnchor>();
+					ank.side = UIAnchor.Side.Center;
 
-		//		}
-		//		else
-		//			GameBrowserBackground.gameObject.SetActive(true);
+				}
+				else
+					GameBrowserBackground.gameObject.SetActive(true);
 
-		//		((Mod_OnGUI_Player)GameState.s_playerCharacter).showGameObjectBrowser = true; // temporarily turned off
-		//	}
-		//	else
-		//	{
-		//		GameBrowserBackground.gameObject.SetActive(false);
-		//		((Mod_OnGUI_Player)GameState.s_playerCharacter).showGameObjectBrowser = false;
-		//	}
-		//}
+				((Mod_OnGUI_Player)GameState.s_playerCharacter).showGameObjectBrowser = true; // temporarily turned off
+			}
+			else
+			{
+				GameBrowserBackground.gameObject.SetActive(false);
+				((Mod_OnGUI_Player)GameState.s_playerCharacter).showGameObjectBrowser = false;
+			}
+		}
 
 		[NewMember]
 		public  static void ShowModelViewer()
