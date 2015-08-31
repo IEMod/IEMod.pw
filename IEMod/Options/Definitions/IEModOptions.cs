@@ -197,8 +197,7 @@ namespace IEMod.Mods.Options {
 
 		[Save]
 		[Label("Remove Combat-Only Restrictions")]
-		[Description(
-			"Allows all spells and abilities to function outside of combat. (Warning: this can significantly affect game balance, and possibly could cause bugs.)"
+		[Description("Allows most spells, abilities, items, and consumables to function outside of combat. (Warning: this can significantly affect game balance, and will cause bugs. Be careful while saving with combat-only effects active.)"
 			)]
 		public static bool CombatOnlyMod;
 
