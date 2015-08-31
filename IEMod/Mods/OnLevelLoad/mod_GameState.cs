@@ -28,7 +28,7 @@ namespace IEMod.Mods.OnLevelLoad {
 		}
 
 		[ModifiesMember("ChangeLevel")]
-		public  static void ChangeLevelNew(MapData map)
+		public  static void mod_ChangeLevel(MapData map)
 		{
 			if (IEModOptions.SaveBeforeTransition) // added this block
 			{
@@ -77,7 +77,7 @@ namespace IEMod.Mods.OnLevelLoad {
 		}
 
 		[ModifiesMember("FinalizeLevelLoad")]
-		public void FinalizeLevelLoadNew() {
+		public void mod_FinalizeLevelLoad() {
 			if (this.CurrentMap != null && !this.CurrentMap.HasBeenVisited && BonusXpManager.Instance
 				&& this.CurrentMap.GivesExplorationXp) {
 				this.CurrentMap.HasBeenVisited = true;
@@ -107,8 +107,7 @@ namespace IEMod.Mods.OnLevelLoad {
 					if (FogOfWar.Instance) {
 						FogOfWar.Instance.WaitForFogUpdate();
 					}
-					//AutosaveIfAllowed();
-					GameState.Autosave();
+					AutosaveIfAllowed();
 				}
 			}
 			NewGame = false;

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
 using IEMod.Helpers;
+using IEMod.QuickControls;
 using Patchwork.Attributes;
 using UnityEngine;
 
@@ -159,7 +160,45 @@ namespace IEMod.Mods.Options {
 		[Save]
 		[Label("Autosave setting")]
 		[Description("Auto save setting")]
-		public static AutoSaveSetting AutosaveSetting;
+		public static AutoSaveSetting AutosaveSetting {
+			get {
+				return _autoSaveSetting;
+			}
+			set {
+				_autoSaveSetting = value;
+				OnAutosaveSettingChanged();
+			}
+		}
+
+		private static void OnAutosaveSettingChanged() {
+			switch (AutosaveSetting) {
+				case AutoSaveSetting.Default:
+					SaveInterval = 0;
+					break;
+				case AutoSaveSetting.DisableAutosave:
+					SaveInterval = -1;
+					break;
+				case AutoSaveSetting.SaveAfter15:
+					SaveInterval = 15;
+					break;
+				case AutoSaveSetting.SaveAfter30:
+					SaveInterval = 30;
+					break;
+				case AutoSaveSetting.SaveBefore:
+					SaveBeforeTransition = true;
+					break;
+				case AutoSaveSetting.SaveBefore15:
+					SaveBeforeTransition = true;
+					SaveInterval = 15;
+					break;
+				case AutoSaveSetting.SaveBefore30:
+					SaveBeforeTransition = true;
+					SaveInterval = 30;
+					break;
+				default:
+					throw IEDebug.Exception(null, $"Invalid AutoSaveSetting: {AutosaveSetting}");
+			}
+		}
 
 		[Save]
 		[Label("Fix moving recovery rate")]
@@ -294,6 +333,8 @@ namespace IEMod.Mods.Options {
 		[Description("Engagement begone.")]
 		public static bool DisableEngagement;
 
+		private static AutoSaveSetting _autoSaveSetting;
+
 		public static void LoadFromPrefs() {
 			foreach (var field in FieldCache.Values) {
 				var fieldType = field.FieldType;
@@ -334,7 +375,7 @@ namespace IEMod.Mods.Options {
 		[NewType]
 		public enum AutoSaveSetting {
 			[Description("Save after every area transition (standard)")]
-			SaveAfter,
+			Default,
 
 			[Description("Save after area transitions, but only once per 15 minutes")]
 			SaveAfter15,

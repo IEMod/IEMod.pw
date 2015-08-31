@@ -63,8 +63,6 @@ namespace IEMod.QuickControls {
 		public QuickDropdown<T> EnumDropdown<T>(Expression<Func<T>> memberAccessExpr, string name = null) 
 			where T : struct, IConvertible, IComparable, IFormattable {
 			return Dropdown(memberAccessExpr, DropdownChoice.FromEnum<T>(), name);
-		}
-
-		
+		}		
 	}
 }
