@@ -1,47 +1,46 @@
-# IEMod<sub>pw</sub> <a href="https://gitter.im/GregRos/Patchwork"><img style="float: right" src="https://badges.gitter.im/Join%20Chat.svg"/></a>
+# IE Mod
+**IEMod Version:** 5.0.0-beta
+**PoE Version:** 2.0.0706
+**License:** [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/), referenced libraries under separate licenses.
+_**Patchwork Version:** 0.6.0_
 
-**IEMod<sub>pw</sub> Version/Patchwork Version:** 0.7.6/0.6.0
+This is the most recent repository for [IEMod](https://bitbucket.org/Bester/poe-modding-framework), which is a mod for [Pillars of Eternity](http://eternity.obsidian.net/). The previous repository may be found [here](https://bitbucket.org/Bester/poe-modding-framework). A repository for the fork which became the current version can be found [here](https://bitbucket.org/GregRoss/patchwork-iemod).
 
-*Also stylized __IEMod.pw__ in  places that don't support subscripts*.
+It uses the [Patchwork](https://github.com/GregRos/Patchwork) assembly modification framework.
 
-#### *This readme is outdated.*
-
-This is a **fork** of [IEMod](https://bitbucket.org/Bester/poe-modding-framework) mod for [Pillars of Eternity](http://eternity.obsidian.net/). I ported the mod to my new assembly modification framework, [Patchwork](https://github.com/GregRos/Patchwork). 
-
-I've transferred this project from [my old Bitbucket repository](https://bitbucket.org/GregRoss/patchwork-iemod).
-
-I'll introduce IEMod myself at some point, but for now I'll just let the original website do the talking:
+Original descriptions of IE Mod (some may be outdated):
 
 * [IEMod Nexus Page](http://www.nexusmods.com/pillarsofeternity/mods/1/?)
 * [IEMod Website](http://rien-ici.com/iemod/)
 
-## New Additions
-These are additional mods to the game, beyond the functionality of the original IEMod.
+## New Additions in 5.0.0+
+
+Most of these are optional.
 
 ### Target Turned Enemies
 I've added an option called *"target turned enemies"* that makes enemies that have switched allegiance due to e.g. dominate, confusion, etc. to be considered hostile against your attacks. I always hated how being a little confused gave your enemies miraculous defensive benefits.
 
-### Minimize Intrusive Backer Elements
-This is probably the most requested feature I've seen. Many people find some backer NPCs and Tombstones to be intrusive. I've provided a few options to fix that.
+### Disable Backer Dialogs
+If this option is chosen, you can no longer "talk" to backer NPCs (experience their backstory). This option existed in the mod before, but was kind of hidden.
 
-1. **Disable Backer Dialogs:** If this option is chosen, you can no longer "talk" to backer NPCs (experience their backstory). This option existed in the mod before, but was kind of hidden.
+### Cipher Base Focus
+Modifies cipher's start focus in the beginning of combat.
+
+### Fast Scouting Mode
+You can choose from a number of options, depending on the behavior you want.
 
 ### UI Customization
 1. You can access the UI customization from a button in the UI. This button is draggable as well in UI customization mode.
 3. Turned the frame selection feature into a dropdown instead of many separate buttons. Also easier to add your own frames, since no changes to the code are necessary (you just add the appropriate files to the `iemod/frames` folder, and that's it).
 2. Added a checkbox for enabling tooltip offset. This nudges the enemy tooltip that appears in the upper left hand corner to the right, so it's not blocked by other UI elements. It was an already present but somewhat hidden feature.
 4. Restoring defaults happens instantly. You don't leave the UI customization menu or need to reload.
-5. Fixed various small bugs people have had with the system. 
-6. A few other small changes.
+5. A few other small changes.
 
 ### Console Commands
 1. `ShowMouseDebug` toggles debug information for what's under the cursor (this is something that was already in the game's code). There isn't much information. I'll probably expand it later on. You can use it to get the IDs of characters instead of using `FindCharacter`.
-2. `ClearAllPreferences true` clears all preferences, including mod settings and some game settings.
+2. `ResetCustomUI` resets the custom UI settings to the default. Use this if you somehow manage to screw them up and can't fix them. You need to reload/area transition after this is done.
 
-## Code Injection
-See the [Patchwork library](https://github.com/GregRos/Patchwork) for more information. Patchwork is made part of this repository as a sub-module (basically a kind of sub-project).
-
-## UI Creation
+## Development Information
 The options/settings of the mod are handled in the folder `IEMod\Mods\Options`.
 
 Previously, UI creation was pretty convoluted and involved *a lot* of repetition. It also involved working around rather inconvenient (for us) features, such as language-specific string tables, and a pretty confusing GameObject and Component hierarchy. 
@@ -54,40 +53,17 @@ Of course, some of that still happens, but somewhere far away from you.
 
 The new setup uses the *static* class `IEModOptions` for your options. Each option is just a field (it could also be a property). Add the `[Label]` attribute to the member to set the label of the control that option is bound to, and `[Description]` to set its tooltip.
 
-These options can be bound to controls created using the class `IEControlFactory`. Currently, the class can only create checkboxes bound to boolean fields/properties, and combo boxes bound to enum-typed fields/properties (each enum value represents an option).
-
 You can put the `[Description]` attribute on each value in the enum definition to set its label in the combo box. 
 
-Before creating a control, you have to get an example of that control from the UI. It's used as a prototype. Then you need the `Example` property for that control in the control factory. 
+Before creating a control, you have to get an example of that control from the game UI. This is done automatically for you, usually.
 
-The UI is created in the file `mod_UIOptionsManager`. Here is an example of how simple the process is:
-
-		//this is how you create a control factory:
-		var controlFactory = new IEControlFactory {
-			ExampleCheckbox = exampleCheckbox.gameObject,
-			CurrentParent = Pages[5],
-			ExampleComboBox = exampleDropdown.gameObject
-		};
-		//now you can just create the controls and they are automatically added to the page:
-		//one check box
-		_blueCirclesBg = controlFactory.Checkbox(() => IEModOptions.BlueCirclesBG);
-		_blueCirclesBg.transform.localPosition = new Vector3(-180, 240, 0);
-
-		//another checkbox
-		_alwaysShowCircles = controlFactory.Checkbox(() => IEModOptions.AlwaysShowCircles);
-		_alwaysShowCircles.transform.localPosition = new Vector3(-210, 210, 0);
-
-		//this is a dropdown:
-		_nerfedXpCmb = controlFactory.EnumBoundDropdown(() => IEModOptions.NerfedXPTableSetting, 515, 300);
-		_nerfedXpCmb.transform.localPosition = new Vector3(-80, -70, 0);
+The UI is created in the file `mod_UIOptionsManager`. 
 		
-The methods for creating controls take an `Expression` parameter. An expression is a bit like a lambda, but you can freely inspect it, so I just pull the  property/field you want to bind to the control from the lambda you write there. It's extremely convenient.
+Some methods for creating controls take an `Expression` parameter. An expression is a bit like a lambda, but you can freely inspect it, so I just pull the  property/field you want to bind to the control from the lambda you write there. It's extremely convenient.
 
 By the way, binding means that once the control is changed, the property/field is changed as well. Unfortunately, it doesn't work the other way around, at least not at this point.
 
-## Modding Tips
-
-### Debugging
+### Modding Tips
 
 #### General Advice
 Debugging mods like this one is hard. It's possible to debug Unity applications (attach a debugger to them, I mean), it's possible to debug modified assemblies, and it's possible to debug assemblies you don't have any debug symbols for. Unfortunately, there is no tool that allows you to debug all three, and I have no idea how to make one.
@@ -111,11 +87,3 @@ When navigating the Component/GameObject graph, use the extension methods in `Un
 Seriously, avoid nulls *at all costs*. 
 
 Use the `QuickControl` system instead of working with raw GameObjects, where this is possible. These are thin wrappers around UI GameObjects that give you access to common components, as well as improved error detection and data binding.
-
-*More to come later*
-
-## Modding Intro
-*Here I'll talk about how modding unity games works in general (what I've managed to figure out, anyway), and Pillars of Eternity in particular.*
-
-## License
-[CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/), same as the original. Though this license is implied, rather than clearly stated.
