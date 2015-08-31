@@ -1,7 +1,7 @@
 # IE Mod
-**IEMod Version:** 5.0.0-beta
-**PoE Version:** 2.0.0706
-**License:** [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/), referenced libraries under separate licenses.
+**IEMod Version:** 5.0.0-beta<br/>
+**PoE Version:** 2.0.0706<br/>
+**License:** [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/).<br/>
 _**Patchwork Version:** 0.6.0_
 
 This is the most recent repository for [IEMod](https://bitbucket.org/Bester/poe-modding-framework), which is a mod for [Pillars of Eternity](http://eternity.obsidian.net/). The previous repository may be found [here](https://bitbucket.org/Bester/poe-modding-framework). A repository for the fork which became the current version can be found [here](https://bitbucket.org/GregRoss/patchwork-iemod).
