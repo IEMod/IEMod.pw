@@ -19,12 +19,19 @@ namespace IEMod.Mods.ConsoleMod {
     public class mod_CommandLine 
 	{
 		[ModifiesType()]
-		public class Mod5_GameState : GameState {
+		public class mod_GameState : GameState {
 			[ModifiesAccessibility]
 			public new bool s_playerCharacter;
 		}
+
+	    [ModifiesType]
+	    private class mod_AchievementsTracker : AchievementTracker {
+			[ModifiesAccessibility()]
+		    public new bool m_disableAchievements;
+	    }
+
 		[ModifiesType()]
-		public class Mod5_Loot : Loot {
+		public class mod_Loot : Loot {
 
 			[ModifiesAccessibility]
 			public new bool GetInventoryComponent() {
@@ -32,7 +39,7 @@ namespace IEMod.Mods.ConsoleMod {
 			}
 		}
 		[ModifiesType()]
-		public class Mod5_Health : Health {
+		public class mod_Health : Health {
 			public new bool m_isAnimalCompanion {
 				[ModifiesAccessibility()] get;
 				[ModifiesAccessibility()] set; 
@@ -46,7 +53,7 @@ namespace IEMod.Mods.ConsoleMod {
 			}
 		}
 		[ModifiesType]
-		public class Mod5_QuestManager : QuestManager {
+		public class mod_QuestManager : QuestManager {
 
 			[ModifiesAccessibility("get_ActiveQuests")]
 			public void ActiveGetter() {
@@ -54,7 +61,7 @@ namespace IEMod.Mods.ConsoleMod {
 			}
 		}
 		[ModifiesType("StringTableManager")]
-		public static class Mod5_StringTableManager {
+		public static class mod_StringTableManager {
 			[ModifiesAccessibility]
 			public static bool StringTables;
 			[ModifiesAccessibility]
@@ -62,12 +69,12 @@ namespace IEMod.Mods.ConsoleMod {
 		}
 
 		[ModifiesType]
-		public class Mod5_UIOptionsManager : UIOptionsManager {
+		public class mod_UIOptionsManager : UIOptionsManager {
 			[ModifiesAccessibility]
 			public new bool m_GameMode;
 		}
 		[ModifiesType]
-		public class Mod5_CharacterStats : global::CharacterStats {
+		public class mod_CharacterStats : global::CharacterStats {
 			[ModifiesAccessibility]
 			public new bool m_stronghold;
 		}
@@ -325,9 +332,9 @@ namespace IEMod.Mods.ConsoleMod {
 		[NewMember]
 		public  static void ReenableAchievements()
 		{
-			if (AchievementTracker.Instance.DisableAchievements == true)
+			if (AchievementTracker.Instance.DisableAchievements)
 			{
-				AchievementTracker.Instance.DisableAchievements = false;
+				AchievementTracker.Instance.m_disableAchievements = false;
 				global::Console.AddMessage("Achievements have been reenabled for this playthrough.", Color.green);
 			}
 			else
