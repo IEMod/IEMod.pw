@@ -20,7 +20,7 @@ namespace IEMod.QuickControls {
 			//What happens with controls linked to the UI is pretty strange.
 			//At first, when you add them, you can see they have no colliders. You can see this by printing out their children, etc.
 			//However, later when you check them using the object browser, you see they suddenly have colliders as though by magic!
-			//Apparently, at some point after the UI has loaded, a pixie comes along and gives every control its collider(s),
+			//Apparently, at some point a pixie comes along and gives every control its collider(s),
 			//This is annoying, as we want to manipulat the collider, such as attach UIDRagObjects to it and other things.
 			//so we just add it from the start. 
 			var exampleButton = altPrototype ?? Prefabs.QuickButton;
@@ -33,8 +33,9 @@ namespace IEMod.QuickControls {
 			ButtonComponent.onClick += go => RaiseClick(this);
 			ButtonComponent.onPress += (go, state) => RaisePress(this, state);
 
-			//! Actually I removed this because doing this is very dangerous. Sometimes, Unity doesn't work properly if you destroy a component and then add it again soon after.
-			//x newButton.Children().Where(x => x.HasComponent<Collider>()).ToList().ForEach(Object.DestroyImmediate);
+			//sometimes the button already comes with a collider (because the pixie already visited it)
+			newButton.Children().Where(x => x.HasComponent<Collider>()).ToList().ForEach(Object.DestroyImmediate);
+
 			//this is important. The pixie is kind of lazy and just checks for GameObjects named "Collider".
 			//if we name it something else, the thing will end up with 2 colliders, which breaks it.
 			if (addCollider) {
