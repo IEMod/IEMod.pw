@@ -385,9 +385,6 @@ namespace IEMod.Mods.Options {
 				var value = field.GetValue(null, null);
 				PlayerPrefsHelper.SetObject(GetSettingName(field.Name), fieldType, value);
 			}
-			if (!EnableCustomUi) {
-				mod_UIPartyPortrait.IsVertical = false;
-			}
 		}
 
 		public static bool IsIdenticalToPrefs() {

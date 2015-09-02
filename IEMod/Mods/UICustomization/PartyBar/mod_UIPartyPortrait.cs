@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using IEMod.Helpers;
+using IEMod.Mods.Options;
 using Patchwork.Attributes;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ namespace IEMod.Mods.PartyBar {
 	{
 		[NewMember]
 		public bool Dragging;
+		[NewMember]
+		private static bool _isVertical;
 
 		[MemberAlias(".ctor", typeof(MonoBehaviour))]
 		private void MonoBehavior_ctor() {
@@ -27,7 +30,14 @@ namespace IEMod.Mods.PartyBar {
 		}
 
 		[NewMember]
-		public static bool IsVertical;
+		public static bool IsVertical {
+			get {
+				return IEModOptions.EnableCustomUi && _isVertical;
+			}
+			set {
+				_isVertical = value;
+			}
+		}
 
 		[ModifiesMember("Update")]
 		private void UpdateNew() {
