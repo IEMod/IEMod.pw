@@ -4,9 +4,34 @@ using UnityEngine;
 
 namespace IEMod.Mods.Targeting {
 	
-	public class Mod_FriendlyFire_Trap : Trap
+	[ModifiesType]
+	public class mod_Trap : Trap
 	{
-		[ModifiesMember("CanActivate")]
+		[NewMember]
+		[DuplicatesBody(nameof(CanActivate))]
+		private bool orig_CanActivate(GameObject victim) {
+			return false;
+		}
+
+		[ModifiesMember(nameof(CanActivate))]
+		public bool mod_CanActivate(GameObject victim) {
+			if (!this.m_trap_initialized)
+			{
+				Debug.LogError("Cannot activate uninitialized trap!");
+				return false;
+			}
+			if (IEModOptions.DisableFriendlyFire) {
+				Faction victimFaction = victim?.GetComponent<Faction>();
+				if (victimFaction?.isPartyMember == true && this.IsPlayerOwnedTrap)
+				{
+					return false;
+				}
+			}
+			return orig_CanActivate(victim);
+		}
+	
+
+		//[ModifiesMember("CanActivate")]
 		private bool CanActivateNew(GameObject victim) {
 			bool disableFriendlyFire = IEModOptions.DisableFriendlyFire;
 
