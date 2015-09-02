@@ -16,8 +16,6 @@ using Serilog;
 using Serilog.Events;
 
 namespace Start {
-
-
 	class Program {
 		static Program() {
 			var log = new LoggerConfiguration().MinimumLevel.Verbose().WriteTo.ColoredConsole().CreateLogger();
@@ -27,10 +25,13 @@ namespace Start {
 		[STAThread]
 		private static void Main(string[] args) {
 			DoSetup();
-			PatchGame();
+			BuildAllVersions();
+			PatchIntoGame();
 			LogFile.Flush();
 			LogFile.Close();
 		}
+
+		
 
 		private static ILogger Log {
 			get;
@@ -63,10 +64,27 @@ namespace Start {
 			Log = log;
 		}
 
-		private static void PatchGame() {
+		private static void BuildAllVersions() {
+			Log.Information("PATCHING WINDOWS");
+			PatchGame("win", Path.Combine(Paths.YourDllLatestBuildFolder, "win"), false);
+			Log.Information("PATCHING MAC");
+			PatchGame("mac", Path.Combine(Paths.YourDllLatestBuildFolder, "mac"), false);
+			Log.Information("PATCHING LINUX");
+			PatchGame("linux", Path.Combine(Paths.YourDllLatestBuildFolder, "linux"), false);
+		}
+
+		private static void PatchIntoGame() {
+			PatchGame("win", Paths.YourNormalManagedFolder, true);
+		}
+
+		private static void PatchGame(string version, string copyToFolder, bool runPeVerify) {
+			if (!Directory.Exists(copyToFolder)) {
+				Log.Information("Creating copy to folder.");
+				Directory.CreateDirectory(copyToFolder);
+			}
 			//+ Path-related
-			var copyToPath = Paths.YourNormalManagedFolder + @"\Assembly-CSharp.dll";
-			var originalDllPath = Path.Combine(Paths.YourDllSourcesPath, "Assembly-CSharp.dll");
+			var copyToPath = Path.Combine(copyToFolder, @"Assembly-CSharp.dll");
+			var originalDllPath = Path.Combine(Paths.YourDllSourcesPath, version, "Assembly-CSharp.dll");
 
 			//+ Creating patcher
 			var patcher = new AssemblyPatcher(originalDllPath, ImplicitImportSetting.OnlyCompilerGenerated, Log);
@@ -79,17 +97,20 @@ namespace Start {
 			//+ End
 
 			patcher.WriteTo(copyToPath);
-			Console.WriteLine(
-				"Going to run PEVerify to check the IL for errors. Press ESC to cancel, or any other key to continue.");
-			if (Console.ReadKey().Key != ConsoleKey.Escape) {
-				RunPEVerify(copyToPath);
-				//RunILSpy(copyToPath);
-				//RunILSpy(typeof (IEModType).Assembly.Location);
+			if (runPeVerify) {
+				Console.WriteLine(
+					"Going to run PEVerify to check the IL for errors. Press ESC to cancel, or any other key to continue.");
+				if (Console.ReadKey().Key != ConsoleKey.Escape) {
+					RunPEVerify(copyToPath);
+					//RunILSpy(copyToPath);
+					//RunILSpy(typeof (IEModType).Assembly.Location);
+				}
 			}
+
 		}
 
 		private static void RunILSpy(string path) {
-			Process.Start(string.Format("\"{0}\"", Paths.ILSpyPath), string.Format("\"{0}\"", path));
+			Process.Start($"\"{Paths.ILSpyPath}\"", $"\"{path}\"");
 		}
 
 		private static void RunPEVerify(string path) {
