@@ -34,7 +34,7 @@ namespace IEMod.Mods.Targeting {
 				return false;
 			}
 			var component3 = caster.GetComponent<Faction>();
-			var component4 = target.GetComponent<Faction>();
+			var targetFaction = target.GetComponent<Faction>();
 			switch (validType) {
 				case TargetType.All:
 					if (!component1.Unconscious && !component1.Dead) {
@@ -45,7 +45,7 @@ namespace IEMod.Mods.Targeting {
 					//(this part is modified)
 					if (component1.Unconscious || component1.Dead) { break; }
 					if ((component3 != null && component3.IsHostile(target))
-						|| (component4 != null && component4.IsHostile(caster))) {
+						|| (targetFaction != null && targetFaction.IsHostile(caster))) {
 						return true;
 					}
 
@@ -57,7 +57,7 @@ namespace IEMod.Mods.Targeting {
 				case TargetType.Friendly:
 					if (component1.Unconscious || component1.Dead) { break; }
 					if (component3 != null && !component3.IsHostile(target)
-						&& (component4 == null || !component4.IsHostile(caster))) {
+						&& (targetFaction == null || !targetFaction.IsHostile(caster))) {
 						if (!confusedArentFriends || activeAiController == null
 							|| activeAiController.GetOriginalTeam().GetRelationship(component3.CurrentTeam) != Faction.Relationship.Hostile) {
 							return true;
@@ -66,7 +66,7 @@ namespace IEMod.Mods.Targeting {
 					break;
 				case TargetType.FriendlyUnconscious:
 					if (component3 != null && component1.Unconscious && !component3.IsHostile(target)
-						&& (component4 == null || !component4.IsHostile(caster))) {
+						&& (targetFaction == null || !targetFaction.IsHostile(caster))) {
 						return true;
 					}
 					break;
@@ -77,7 +77,7 @@ namespace IEMod.Mods.Targeting {
 					break;
 				case TargetType.HostileWithGrimoire:
 					if (component3 != null && component3.IsHostile(target)
-						|| component4 != null && component4.IsHostile(caster)) {
+						|| targetFaction != null && targetFaction.IsHostile(caster)) {
 						var component5 = target.GetComponent<Equipment>();
 						if (component5 != null && component5.CurrentItems != null
 							&& component5.CurrentItems.Grimoire != null) {
@@ -87,14 +87,14 @@ namespace IEMod.Mods.Targeting {
 					break;
 				case TargetType.HostileVessel:
 					if ((component3 != null && component3.IsHostile(target)
-						|| component4 != null && component4.IsHostile(caster))
+						|| targetFaction != null && targetFaction.IsHostile(caster))
 						&& (component2 != null && component2.CharacterRace == CharacterStats.Race.Vessel)) {
 						return true;
 					}
 					break;
 				case TargetType.HostileBeast:
 					if ((component3 != null && component3.IsHostile(target)
-						|| component4 != null && component4.IsHostile(caster))
+						|| targetFaction != null && targetFaction.IsHostile(caster))
 						&& (component2 != null && component2.CharacterRace == CharacterStats.Race.Beast)) {
 						return true;
 					}

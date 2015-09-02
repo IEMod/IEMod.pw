@@ -340,9 +340,6 @@ namespace IEMod.Mods.Options {
 			}
 			set {
 				_enableCustomUi = value;
-				if (!_enableCustomUi) {
-					mod_UIPartyPortrait.IsVertical = false;
-				}
 			}
 		}
 
@@ -387,6 +384,9 @@ namespace IEMod.Mods.Options {
 				var fieldType = field.PropertyType;
 				var value = field.GetValue(null, null);
 				PlayerPrefsHelper.SetObject(GetSettingName(field.Name), fieldType, value);
+			}
+			if (!EnableCustomUi) {
+				mod_UIPartyPortrait.IsVertical = false;
 			}
 		}
 
