@@ -333,7 +333,7 @@ namespace IEMod.Mods.Options {
 
 		[Save]
 		[Label("UI Customization")]
-		[Description("Enables UI customization. This option is applied on an area transition.")]
+		[Description("Enables UI customization. You need to exit to main menu and reload to toggle this option properly.")]
 		public static bool EnableCustomUi {
 			get {
 				return _enableCustomUi;
@@ -348,7 +348,7 @@ namespace IEMod.Mods.Options {
 
 		[Save]
 		[Label("Disable engagement")]
-		[Description("Engagement begone.")]
+		[Description("Engagement begone. You need to exit to main menu and reload to reenable engagement.")]
 		public static bool DisableEngagement;
 
 		private static AutoSaveSetting _autoSaveSetting;
