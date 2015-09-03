@@ -28,7 +28,7 @@ namespace IEMod.Mods.OnLevelLoad {
 		}
 
 		[ModifiesMember("ChangeLevel")]
-		public  static void ChangeLevelNew(MapData map)
+		public  static void mod_ChangeLevel(MapData map)
 		{
 			if (IEModOptions.SaveBeforeTransition) // added this block
 			{
@@ -77,7 +77,7 @@ namespace IEMod.Mods.OnLevelLoad {
 		}
 
 		[ModifiesMember("FinalizeLevelLoad")]
-		public void FinalizeLevelLoadNew() {
+		public void mod_FinalizeLevelLoad() {
 			if (this.CurrentMap != null && !this.CurrentMap.HasBeenVisited && BonusXpManager.Instance
 				&& this.CurrentMap.GivesExplorationXp) {
 				this.CurrentMap.HasBeenVisited = true;
@@ -107,8 +107,7 @@ namespace IEMod.Mods.OnLevelLoad {
 					if (FogOfWar.Instance) {
 						FogOfWar.Instance.WaitForFogUpdate();
 					}
-					//AutosaveIfAllowed();
-					GameState.Autosave();
+					AutosaveIfAllowed();
 				}
 			}
 			NewGame = false;
@@ -136,7 +135,7 @@ namespace IEMod.Mods.OnLevelLoad {
 			// in here you can place something like if (CurrentMap.SceneName == "AR_0011_Dyrford_Tavern_02") make_an_NPC; or change_NPC's_stats;
 			// added this code
 			DropButton.InjectDropInvButton();
-			if (IEModOptions.EnableCustomUI) {
+			if (IEModOptions.EnableCustomUi) {
 				if (IEModOptions.Layout == null) {
 					UICustomizer.Initialize();
 					IEModOptions.Layout = UICustomizer.DefaultLayout.Clone();

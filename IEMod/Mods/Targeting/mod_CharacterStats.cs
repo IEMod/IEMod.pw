@@ -1,13 +1,31 @@
+using System;
 using IEMod.Mods.Options;
 using Patchwork.Attributes;
 using UnityEngine;
 
 namespace IEMod.Mods.Targeting {
-	
-	public class Mod_FriendlyFire_CharacterStats : CharacterStats
+
+	[ModifiesType]
+	public class mod_CharacterStats : CharacterStats
 	{
-		[ModifiesMember("AdjustDamageDealt")]
-		public void AdjustDamageDealtNew(GameObject enemy, ref DamageInfo damage)
+		[NewMember]
+		[DuplicatesBody(nameof(AdjustDamageDealt))]
+		private void orig_AdjustDamageDealt(GameObject enemy, DamageInfo damage, bool testing) {
+			
+		}
+
+		[ModifiesMember(nameof(AdjustDamageDealt))]
+		public void mod_AdjustDamageDealt(GameObject enemy, DamageInfo damage, bool testing) {
+			if (IEModOptions.DisableFriendlyFire && gameObject && enemy?.GetComponent<Faction>()?.IsFriendly(gameObject) == true && base.IsPartyMember) {
+				damage.IsCriticalHit = damage.Interrupts = damage.IsGraze =damage.IsKillingBlow = false;
+				damage.IsMiss = true;
+				return;
+			}
+			orig_AdjustDamageDealt(enemy, damage, testing);
+		}
+
+		//[ModifiesMember("AdjustDamageDealt")]
+		public void AdjustDamageDealtNew(GameObject enemy, DamageInfo damage)
 		{
 			bool disableFriendlyFire = IEModOptions.DisableFriendlyFire;
 			float statDamageHealMultiplier = this.StatDamageHealMultiplier;

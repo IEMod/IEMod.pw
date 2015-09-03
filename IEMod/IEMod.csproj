@@ -124,8 +124,8 @@
     <Compile Include="Mods\RecoveryRate\mod_CharacterStats.cs" />
     <Compile Include="Mods\ReligionMod\Mod_Religion.cs" />
     <Compile Include="Mods\SelectionCircles\mod_InGameHUD.cs" />
-    <Compile Include="Mods\Targeting\Mod_FriendlyFire_CharacterStats.cs" />
-    <Compile Include="Mods\Targeting\Mod_FriendlyFire_Trap.cs" />
+    <Compile Include="Mods\Targeting\mod_CharacterStats.cs" />
+    <Compile Include="Mods\Targeting\mod_Trap.cs" />
     <Compile Include="Mods\UICustomization\Tooltips\mod_UIMapTooltipManager.cs" />
     <Compile Include="Mods\UICustomization\Tooltips\mod_UIActionBarTooltip.cs" />
     <Compile Include="Mods\UICustomization\Tooltips\mod_UICamera.cs" />

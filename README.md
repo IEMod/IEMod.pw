@@ -1,5 +1,5 @@
 # IE Mod
-**IEMod Version:** 5.0.0-beta<br/>
+**IEMod Version:** 5.0.1-beta<br/>
 **PoE Version:** 2.0.0706<br/>
 **License:** [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/).<br/>
 _**Patchwork Version:** 0.6.0_
@@ -12,6 +12,13 @@ Original descriptions of IE Mod (some may be outdated):
 
 * [IEMod Nexus Page](http://www.nexusmods.com/pillarsofeternity/mods/1/?)
 * [IEMod Website](http://rien-ici.com/iemod/)
+
+## 5.0.1-beta Patch Notes
+1. Fixed **Disable Friendly Fire** option.
+2. Fixed **AutoSave** options.
+3. Fixed **BSC** command (partial).
+4. Fixed **Combad Only Mod** (partial)
+5. Fixed **ReenableAchievements**
 
 ## New Additions in 5.0.0+
 

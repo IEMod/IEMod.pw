@@ -14,6 +14,7 @@
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
+[Rr]eleases/
 x64/
 x86/
 build/
@@ -21,7 +22,8 @@ bld/
 [Bb]in/
 [Oo]bj/
 Old/
-
+/PoE Latest Builds/*.zip
+/PoE Latest Builds/iemod
 
 # Visual Studo 2015 cache/options directory
 .vs/

@@ -19,12 +19,19 @@ namespace IEMod.Mods.ConsoleMod {
     public class mod_CommandLine 
 	{
 		[ModifiesType()]
-		public class Mod5_GameState : GameState {
+		public class mod_GameState : GameState {
 			[ModifiesAccessibility]
 			public new bool s_playerCharacter;
 		}
+
+	    [ModifiesType]
+	    private class mod_AchievementsTracker : AchievementTracker {
+			[ModifiesAccessibility()]
+		    public new bool m_disableAchievements;
+	    }
+
 		[ModifiesType()]
-		public class Mod5_Loot : Loot {
+		public class mod_Loot : Loot {
 
 			[ModifiesAccessibility]
 			public new bool GetInventoryComponent() {
@@ -32,7 +39,7 @@ namespace IEMod.Mods.ConsoleMod {
 			}
 		}
 		[ModifiesType()]
-		public class Mod5_Health : Health {
+		public class mod_Health : Health {
 			public new bool m_isAnimalCompanion {
 				[ModifiesAccessibility()] get;
 				[ModifiesAccessibility()] set; 
@@ -46,7 +53,7 @@ namespace IEMod.Mods.ConsoleMod {
 			}
 		}
 		[ModifiesType]
-		public class Mod5_QuestManager : QuestManager {
+		public class mod_QuestManager : QuestManager {
 
 			[ModifiesAccessibility("get_ActiveQuests")]
 			public void ActiveGetter() {
@@ -54,7 +61,7 @@ namespace IEMod.Mods.ConsoleMod {
 			}
 		}
 		[ModifiesType("StringTableManager")]
-		public static class Mod5_StringTableManager {
+		public static class mod_StringTableManager {
 			[ModifiesAccessibility]
 			public static bool StringTables;
 			[ModifiesAccessibility]
@@ -62,12 +69,12 @@ namespace IEMod.Mods.ConsoleMod {
 		}
 
 		[ModifiesType]
-		public class Mod5_UIOptionsManager : UIOptionsManager {
+		public class mod_UIOptionsManager : UIOptionsManager {
 			[ModifiesAccessibility]
 			public new bool m_GameMode;
 		}
 		[ModifiesType]
-		public class Mod5_CharacterStats : global::CharacterStats {
+		public class mod_CharacterStats : global::CharacterStats {
 			[ModifiesAccessibility]
 			public new bool m_stronghold;
 		}
@@ -325,9 +332,9 @@ namespace IEMod.Mods.ConsoleMod {
 		[NewMember]
 		public  static void ReenableAchievements()
 		{
-			if (AchievementTracker.Instance.DisableAchievements == true)
+			if (AchievementTracker.Instance.DisableAchievements)
 			{
-				AchievementTracker.Instance.DisableAchievements = false;
+				AchievementTracker.Instance.m_disableAchievements = false;
 				global::Console.AddMessage("Achievements have been reenabled for this playthrough.", Color.green);
 			}
 			else
@@ -614,6 +621,7 @@ namespace IEMod.Mods.ConsoleMod {
                 Debug.Log(string.Concat("Skill: Error - stats component not found for '", character, "'."));
                 return;
             }
+			
             switch (skill)
             {
                 case CharacterStats.SkillType.Stealth:
@@ -665,159 +673,6 @@ namespace IEMod.Mods.ConsoleMod {
 		public static void ShowMouseDebug() {
 			GameCursor.ShowDebug = !GameCursor.ShowDebug;
 		}
-
-        /* * * TJH 8/26/2015 - Removed. CommandLine no longer contains RunCommand, it's been moved to CommandLineRun. 
-		// makes it possible to use some console commands without having to type in "IRoll20s" first
-		[ModifiesMember("RunCommand")]
-		public  static void RunCommandNew(string command)
-		{
-			if (!string.IsNullOrEmpty(command) && (command.ToLower() != "runcommand"))
-			{
-				List<string> list = new List<string>();
-				char[] separator = new char[] { ' ' };
-				list.AddRange(command.Split(separator));
-
-				var methods = typeof(Scripts).GetMethods().Concat<System.Reflection.MethodInfo>(typeof(CommandLine).GetMethods());
-				
-				IEnumerator<MethodInfo> enumerator = methods.GetEnumerator();
-				try
-				{
-					while (enumerator.MoveNext())
-					{
-						System.Reflection.MethodInfo current = enumerator.Current;
-						bool alwaysCheat = true; // added this line and put it in the if below
-						if (((current.GetCustomAttributes(typeof(CheatAttribute), true).Length <= 0) || alwaysCheat) && (string.Compare(current.Name, list[0], true) == 0))
-						{
-							ParameterInfo[] parameters = current.GetParameters();
-							if (parameters.Length == (list.Count - 1))
-							{
-								object[] objArray = new object[parameters.Length];
-								for (int i = 0; i < parameters.Length; i++)
-								{
-									Type attributeType = (Type)s_ScriptAttributeTypes[i];
-									object[] customAttributes = current.GetCustomAttributes(attributeType, false);
-									Scripts.BrowserType none = Scripts.BrowserType.None;
-									if (customAttributes.Length > 0)
-									{
-										none = (Scripts.BrowserType)((int)attributeType.GetProperty("Browser").GetValue(customAttributes[0], null));
-									}
-									ParameterInfo info2 = parameters[i];
-									if (info2.ParameterType.IsEnum)
-									{
-										try
-										{
-											objArray[i] = Enum.Parse(info2.ParameterType, list[i + 1]);
-										}
-										catch
-										{
-											objArray[i] = Enum.GetValues(info2.ParameterType).GetValue(0);
-										}
-									}
-									else if ((none == Scripts.BrowserType.ObjectGuid) || (info2.ParameterType == typeof(Guid)))
-									{
-										try
-										{
-											objArray[i] = new Guid(list[i + 1]);
-										}
-										catch
-										{
-											GameObject obj2 = GameObject.Find(list[i + 1]);
-											if (obj2 != null)
-											{
-												InstanceID component = obj2.GetComponent<InstanceID>();
-												if (component != null)
-												{
-													objArray[i] = component.Guid;
-												}
-												else
-												{
-													objArray[i] = Guid.Empty;
-												}
-											}
-											else
-											{
-												objArray[i] = Guid.Empty;
-											}
-										}
-									}
-									else if (none == Scripts.BrowserType.Quest)
-									{
-										List<string> list2 = QuestManager.Instance.FindLoadedQuests(list[i + 1]);
-										if (list2.Count != 0)
-										{
-											if (list2.Count != 1)
-											{
-												global::Console.AddMessage("Multiple quests matched search '" + list[i + 1] + "':", Color.yellow);
-												foreach (string str in list2)
-												{
-													global::Console.AddMessage(Path.GetFileNameWithoutExtension(str), Color.yellow);
-												}
-												return;
-											}
-											objArray[i] = list2[0];
-										}
-										else
-										{
-											objArray[i] = list[i + 1];
-										}
-									}
-									else if (none == Scripts.BrowserType.Conversation)
-									{
-										List<string> list3 = ConversationManager.Instance.FindConversations(list[i + 1]);
-										if (list3.Count != 0)
-										{
-											if (list3.Count != 1)
-											{
-												global::Console.AddMessage("Multiple conversations matched search '" + list[i + 1] + "':", Color.yellow);
-												foreach (string str2 in list3)
-												{
-													global::Console.AddMessage(Path.GetFileNameWithoutExtension(str2), Color.yellow);
-												}
-												return;
-											}
-											objArray[i] = list3[0];
-										}
-										else
-										{
-											objArray[i] = list[i + 1];
-										}
-									}
-									else if (info2.ParameterType.IsValueType)
-									{
-										try
-										{
-											objArray[i] = Convert.ChangeType(list[i + 1], info2.ParameterType, CultureInfo.InvariantCulture);
-										}
-										catch (Exception)
-										{
-											global::Console.AddMessage(string.Concat(new object[] { "Script error: could not convert parameter ", i + 1, " ('", list[i], "') into type ", info2.ParameterType.Name, ". " }), Color.yellow);
-											return;
-										}
-									}
-									else
-									{
-										objArray[i] = list[i + 1];
-									}
-								}
-								current.Invoke(null, objArray);
-								return;
-							}
-						}
-					}
-				}
-				finally
-				{
-					if (enumerator == null)
-					{
-					}
-					else
-						enumerator.Dispose(); // seems there was an "else" lacking here
-				}
-				global::Console.AddMessage(string.Concat(new object[] { "No command or script '", list[0], "' accepting ", list.Count - 1, " parameters exists." }), Color.yellow);
-			}
-		}
-        */
-
 
 		[NewMember]
 		public  static void ListActiveQuests()
@@ -893,62 +748,30 @@ namespace IEMod.Mods.ConsoleMod {
 			}
 		}
 
-		
-
-		// spawns a creature... param1 is the creature, param2 is a bool: 0 for friendly, 1 for hostile
-		// for instance: BSC cre_druid_cat01 1
-		static void BSC(string param1, string param2)
+		// for instance: BSC cre_druid_cat01 true
+		[NewMember]
+		public static void BSC(string prefabName, bool isHostile)
 		{
 			if (GameState.s_playerCharacter.IsMouseOnWalkMesh())
 			{
-				if (param2 == "1")
-					global::Console.AddMessage("Spawning a hostile: " + param1, UnityEngine.Color.green);
-				else
-					global::Console.AddMessage("Spawning a friendly: " + param1, UnityEngine.Color.green);
-				UnityEngine.GameObject besterCreature;
-				besterCreature = GameResources.LoadPrefab<UnityEngine.GameObject>(param1, true);
-				if (besterCreature != null)
+				Console.AddMessage($"Spawning ${(isHostile ? "Hostile" : "Friendly")}: ${prefabName}", Color.green);
+				var newCreature = GameResources.LoadPrefab<UnityEngine.GameObject>(prefabName, true);
+				if (newCreature != null)
 				{
-					besterCreature.transform.position = GameInput.WorldMousePosition;
-					besterCreature.transform.rotation = GameState.s_playerCharacter.transform.rotation;
-
-					bool isHostile = false;
-					if (param2 == "1")
-						isHostile = true;
-
-					if (isHostile == false)
-					{
-						if (besterCreature.GetComponent<Faction>() != null)
-						{
-							besterCreature.GetComponent<Faction>().RelationshipToPlayer = Faction.Relationship.Neutral;
-							besterCreature.GetComponent<Faction>().CurrentTeamInstance = Team.GetTeamByTag("player");
-							besterCreature.GetComponent<Faction>().UnitHostileToPlayer = false;
-						}
-						if (besterCreature.GetComponent<AIPackageController>() != null)
-						{
-							// some monsters might come without AI, which would make them always stand idly, so we give them DefaultAI
-							besterCreature.GetComponent<AIPackageController>().ChangeBehavior(AIPackageController.PackageType.DefaultAI);
-							besterCreature.GetComponent<AIPackageController>().InitAI();
-						}
-					}
-					else
-					{
-						if (besterCreature.GetComponent<Faction>() != null)
-						{
-							besterCreature.GetComponent<Faction>().CurrentTeamInstance = Team.GetTeamByTag("monster");
-							besterCreature.GetComponent<Faction>().RelationshipToPlayer = Faction.Relationship.Hostile;
-
-						}
-						if (besterCreature.GetComponent<AIPackageController>() != null)
-						{
-							besterCreature.GetComponent<AIPackageController>().ChangeBehavior(AIPackageController.PackageType.DefaultAI);
-							besterCreature.GetComponent<AIPackageController>().InitAI();
-						}
-					}
-					global::CameraControl.Instance.FocusOnPoint(besterCreature.transform.position);
+					newCreature.transform.position = GameInput.WorldMousePosition;
+					newCreature.transform.rotation = GameState.s_playerCharacter.transform.rotation;
+					var faction = newCreature.Component<Faction>();
+					faction.RelationshipToPlayer = isHostile ? Faction.Relationship.Hostile : Faction.Relationship.Neutral;
+					faction.UnitHostileToPlayer = isHostile;
+					var teamTag = isHostile ? "monster" : "player";
+					faction.CurrentTeamInstance = Team.GetTeamByTag(teamTag);
+					var aiPackage = newCreature.Component<AIPackageController>();
+					aiPackage.ChangeBehavior(AIPackageController.PackageType.DefaultAI);
+					aiPackage.InitAI();
+					global::CameraControl.Instance.FocusOnPoint(newCreature.transform.position);
 				}
 				else
-					global::Console.AddMessage("Failed to spawn " + param1 + " - probably bad naming.", UnityEngine.Color.red);
+					global::Console.AddMessage("Failed to spawn " + prefabName + " - probably bad naming.", UnityEngine.Color.red);
 			}
 			else
 				global::Console.AddMessage("Mouse is not on navmesh, move mouse elsewhere and try again.", UnityEngine.Color.red);

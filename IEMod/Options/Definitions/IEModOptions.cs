@@ -5,6 +5,9 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
 using IEMod.Helpers;
+using IEMod.Mods.PartyBar;
+using IEMod.Mods.UICustomization;
+using IEMod.QuickControls;
 using Patchwork.Attributes;
 using UnityEngine;
 
@@ -99,10 +102,8 @@ namespace IEMod.Mods.Options {
 
 
 
-		[Save]
-		[Label("UI Customization")]
-		[Description("Enables the UI customization interface. This option is applied on an area transition.")]
-		public static bool EnableCustomUI;
+
+		private static bool _enableCustomUi;
 
 		//GR 28/8/15 - this was out of good intentions, but... yeah... it doesn't work. I hadn't noticed on my machine circumstances made it seem like it did.
 		//GR 30/8 - I'm just gonna disable this for now.
@@ -150,16 +151,45 @@ namespace IEMod.Mods.Options {
 			)]
 		public static bool FixBackerNames;
 
-		[Save]
 		public static bool SaveBeforeTransition;
 
-		[Save]
 		public static int SaveInterval;
 
 		[Save]
 		[Label("Autosave setting")]
 		[Description("Auto save setting")]
-		public static AutoSaveSetting AutosaveSetting;
+		public static AutoSaveSetting AutosaveSetting {
+			get {
+				return _autoSaveSetting;
+			}
+			set {
+				_autoSaveSetting = value;
+				OnAutosaveSettingChanged();
+			}
+		}
+
+		private static void OnAutosaveSettingChanged() {
+			switch (AutosaveSetting) {
+				case AutoSaveSetting.SaveAfter15:
+				case AutoSaveSetting.SaveBefore15:
+					SaveInterval = 15;
+					break;
+				case AutoSaveSetting.SaveAfter30:
+				case AutoSaveSetting.SaveBefore30:
+					SaveInterval = 30;
+					break;
+				case AutoSaveSetting.Default:
+				case AutoSaveSetting.SaveBefore:
+					SaveInterval = 0;
+					break;
+				case AutoSaveSetting.DisableAutosave:
+					SaveInterval = -1;
+					break;
+				default:
+					throw IEDebug.Exception(null, $"Invalid AutoSaveSetting: {AutosaveSetting}");
+			}
+			SaveBeforeTransition = AutosaveSetting.ToString().Contains("Before");
+		}
 
 		[Save]
 		[Label("Fix moving recovery rate")]
@@ -197,8 +227,7 @@ namespace IEMod.Mods.Options {
 
 		[Save]
 		[Label("Remove Combat-Only Restrictions")]
-		[Description(
-			"Allows all spells and abilities to function outside of combat. (Warning: this can significantly affect game balance, and possibly could cause bugs.)"
+		[Description("Allows most spells, abilities, items, and consumables to function outside of combat. (Warning: this can significantly affect game balance, and will cause bugs. Be careful while saving with combat-only effects active.)"
 			)]
 		public static bool CombatOnlyMod;
 
@@ -290,16 +319,48 @@ namespace IEMod.Mods.Options {
 			}
 		}
 
+		public static Dictionary<string, PropertyInfo> PropertyCache {
+			get {
+				if (_propertyCache == null) {
+					_propertyCache =
+						typeof (IEModOptions).GetProperties(BindingFlags.Public | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Instance)
+						.Where(x => x.GetCustomAttribute<SaveAttribute>() != null)
+							.ToDictionary(x => x.Name, x => x);
+				}
+				return _propertyCache;
+			}
+		}
+
+		[Save]
+		[Label("UI Customization")]
+		[Description("Enables UI customization. You need to exit to main menu and reload to toggle this option properly.")]
+		public static bool EnableCustomUi {
+			get {
+				return _enableCustomUi;
+			}
+			set {
+				_enableCustomUi = value;
+			}
+		}
+
 		[Save]
 		[Label("Disable engagement")]
-		[Description("Engagement begone.")]
+		[Description("Engagement begone. You need to exit to main menu and reload to reenable engagement.")]
 		public static bool DisableEngagement;
+
+		private static AutoSaveSetting _autoSaveSetting;
+		private static Dictionary<string, PropertyInfo> _propertyCache;
 
 		public static void LoadFromPrefs() {
 			foreach (var field in FieldCache.Values) {
 				var fieldType = field.FieldType;
 				var value = PlayerPrefsHelper.GetObject(field.Name, fieldType);
 				field.SetValue(null, value);
+			}
+			foreach (var property in PropertyCache.Values) {
+				var fieldType = property.PropertyType;
+				var value = PlayerPrefsHelper.GetObject(property.Name, fieldType);
+				property.SetValue(null, value, null);
 			}
 		}
 
@@ -319,6 +380,11 @@ namespace IEMod.Mods.Options {
 				var value = field.GetValue(null);
 				PlayerPrefsHelper.SetObject(GetSettingName(field.Name), fieldType, value);
 			}
+			foreach (var field in PropertyCache.Values) {
+				var fieldType = field.PropertyType;
+				var value = field.GetValue(null, null);
+				PlayerPrefsHelper.SetObject(GetSettingName(field.Name), fieldType, value);
+			}
 		}
 
 		public static bool IsIdenticalToPrefs() {
@@ -329,13 +395,20 @@ namespace IEMod.Mods.Options {
                     return false;
 				}
 			}
+			foreach (var field in PropertyCache.Values) {
+				var myValue = field.GetValue(null, null);
+				var prefValue = PlayerPrefsHelper.GetObject(GetSettingName(field.Name), field.PropertyType);
+				if (!Equals(myValue, prefValue)) {
+                    return false;
+				}
+			}
 			return true;
 		}
 
 		[NewType]
 		public enum AutoSaveSetting {
 			[Description("Save after every area transition (standard)")]
-			SaveAfter,
+			Default,
 
 			[Description("Save after area transitions, but only once per 15 minutes")]
 			SaveAfter15,

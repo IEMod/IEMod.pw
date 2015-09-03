@@ -215,7 +215,7 @@ namespace IEMod.Mods.Options {
 			});
 			_fixBackerNames.IsChecked.NotifyChange();
 
-			_enableCustomUI = quickFactory.Checkbox(() => IEModOptions.EnableCustomUI);
+			_enableCustomUI = quickFactory.Checkbox(() => IEModOptions.EnableCustomUi);
 			_enableCustomUI.LocalPosition = column2Top.Plus(y: -210);
 
 			var centerCmbTop = new Vector3(-80, -40, 0);

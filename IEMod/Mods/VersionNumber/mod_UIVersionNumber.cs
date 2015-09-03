@@ -11,13 +11,13 @@ namespace IEMod.Mods.VersionNumber {
 	{
 		
 		[MemberAlias(".ctor", typeof(MonoBehaviour))]
-		public void MonoBehavior_ctor() {
+		public void alias_MonoBehavior_ctor() {
 			
 		}
 
 		[ModifiesMember(".ctor")]
-		public void CtorNew() {
-			MonoBehavior_ctor();
+		public void mod_ctor() {
+			alias_MonoBehavior_ctor();
 			var ieModVersion = IEMod.IEModVersion.Version;
 			var pwVersion = PatchworkVersion.Version;
 			//GR 29/8 - there has to be some const for the version, but I haven't found it :/

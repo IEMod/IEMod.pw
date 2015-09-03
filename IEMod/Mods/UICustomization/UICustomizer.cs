@@ -31,7 +31,7 @@ namespace IEMod.Mods.UICustomization {
 			
 			//Note that the game will destroy the UI when you go to the main menu, so we'll have to rebuild it.
 			//The best way to check if we need to initialize everything seem to be the following, though it's strange messy.
-			if (PartyBar.HasChild("IsInitialized")) { return; }
+			if (IsInitialized) { return; }
 
 			//This is the 'Customize UI' button that lets you customize the UI.
 			_customizeButton = new QuickButton(UIPartyPortraitBar.Instance.transform.parent) {
@@ -89,6 +89,13 @@ namespace IEMod.Mods.UICustomization {
 			slowMoAnchors[0].widgetContainer = Hud.Component<UIPanel>().widgets[0];
 			slowMoAnchors[1].DisableY = true;
 			PartyBar.AddChild(new GameObject("IsInitialized"));
+		}
+
+		public static bool IsInitialized {
+			get {
+
+				return PartyBar.HasChild("IsInitialized");
+			}
 		}
 
 		public static void DumpOptionsManager() {
