@@ -147,16 +147,21 @@ namespace IEMod.Mods.PerEncounterSpells
                 case IEModOptions.PerEncounterSpells.Levels_4_6_8_10_12_14:
                 case IEModOptions.PerEncounterSpells.AllPerEncounter:
                 case IEModOptions.PerEncounterSpells.AllPerRest:
-                    int[] encounterLevel = GetModifiedEncounterData();
-
-                    for (int j = 0; j < Grimoire.MaxSpellLevel; j++)
+                    if (casterClass == CharacterStats.Class.Priest || casterClass == CharacterStats.Class.Wizard || casterClass == CharacterStats.Class.Druid)
                     {
-                        if (this.SpellCastMaxLookup(casterClass, newLevel, j + 1) > 0 && encounterLevel[j] > prevLevel && encounterLevel[j] <= newLevel)
+
+                        int[] encounterLevel = GetModifiedEncounterData();
+
+                        for (int j = 0; j < Grimoire.MaxSpellLevel; j++)
                         {
-                            return j + 1;
+                            if (this.SpellCastMaxLookup(casterClass, newLevel, j + 1) > 0 && encounterLevel[j] > prevLevel && encounterLevel[j] <= newLevel)
+                            {
+                                return j + 1;
+                            }
                         }
                     }
                     return 0;
+
 
                 default:
                     goto case IEModOptions.PerEncounterSpells.NoChange;
