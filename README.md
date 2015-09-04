@@ -13,12 +13,31 @@ Original descriptions of IE Mod (some may be outdated):
 * [IEMod Nexus Page](http://www.nexusmods.com/pillarsofeternity/mods/1/?)
 * [IEMod Website](http://rien-ici.com/iemod/)
 
-## 5.0.1-beta Patch Notes
+## 5.0.2-beta Patch Notes
 1. Fixed **Disable Friendly Fire** option.
 2. Fixed **AutoSave** options.
 3. Fixed **BSC** command (partial).
 4. Fixed **Combad Only Mod** (partial)
 5. Fixed **ReenableAchievements**
+
+
+# Building
+This is a "how-to" that assumes you're a programmer, but not necessarily a Visual Studio dev. These steps should be performed at your own risk, this will obviously not result in a tested or supported build.
+
+You need Microsoft Visual Studio (VS) 2015. You can get the free, full-featured [Community edition](https://www.visualstudio.com/products/visual-studio-community-vs).
+
+If you download the source as zip, you need to get the zip from Patchwork as well. If you clone the repo, you need to pull Patchwork explicitly. This is extremely annoying, but that's how it is.  
+
+1. Open `IEMod.pw.sln` in VS.
+2. You need to edit the file `PathConsts.DoNotPush.cs` and to set up your paths (like PoE folders, etc). Your can use the other constants to set the paths, like in the example file.
+	1.  Set `YourGameFolderPath` to the path of your game folder. Patching will automatically overwrite some files
+	2.  Set `YourOriginalManagedFolder` to a folder containing original PoE DLLs from the game's Managed folder that will be copied and used as a kind of base that will be patched. 
+	3.  If you are forking the repo and plan to submit pull requests, please type the following into your git shell: `git update-index --assume-unchanged PathConsts.DoNotPush.cs`. This will make sure you don't push your environment settings to the repo. It may not be necessary in the future.
+1. Change the "startup" project to `PrepareEnvironment`, then run. You only need to do this each time a new version comes out, to copy and generate all the required files.
+1. Change the "startup" project to `_Start!`, then run.
+1. Make sure the `iemod` (the lowercase one!) folder is installed at `PillarsOfEternity_Data/Managed`.
+
+Your `Assembly-CSharp.dll` will be patched directly during the build. Simply launch POE when done.
 
 ## New Additions in 5.0.0+
 
@@ -95,19 +114,3 @@ Seriously, avoid nulls *at all costs*.
 
 Use the `QuickControl` system instead of working with raw GameObjects, where this is possible. These are thin wrappers around UI GameObjects that give you access to common components, as well as improved error detection and data binding.
 
-#### Building
-
-Note: this is a "how-to" that assumes you're a programmer, but not necessarily a Visual Studio dev. These steps should be performed at your own risk, this will obviously not result in a tested or supported build.
-
-You need Microsoft Visual Studio (VS).  The [Community edition](https://www.visualstudio.com/products/visual-studio-community-vs) is sufficient.
-
-1. Open `IEMod.pw.sln` in VS.
-1. Edit the file `PathConsts.DoNotPush.cs` and set `YourGameFolderPath` to the path to your POE install.
-1. Edit the file `NuGet.targets` and set `DownloadNuGetExe` to `true` since you probably don't have it.
-1. Update the `PoE Dll Source` subfolders with the `Assembly-CSharp.dll` from your POE install.
-    * Note: this is a temporary step, future versions should do this automatically.
-1. Change the "startup" project to `PrepareEnvironment`, then run.
-1. Change the "startup" project to `_Start!`, then run.
-1. Make sure the `iemod` (the lowercase one!) folder is installed at `PillarsOfEternity_Data/Managed`.
-
-Your `Assembly-CSharp.dll` will be patched directly during the build. Simply launch POE when done.
