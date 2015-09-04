@@ -94,3 +94,20 @@ When navigating the Component/GameObject graph, use the extension methods in `Un
 Seriously, avoid nulls *at all costs*. 
 
 Use the `QuickControl` system instead of working with raw GameObjects, where this is possible. These are thin wrappers around UI GameObjects that give you access to common components, as well as improved error detection and data binding.
+
+#### Building
+
+Note: this is a "how-to" that assumes you're a programmer, but not necessarily a Visual Studio dev. These steps should be performed at your own risk, this will obviously not result in a tested or supported build.
+
+You need Microsoft Visual Studio (VS).  The [Community edition](https://www.visualstudio.com/products/visual-studio-community-vs) is sufficient.
+
+1. Open `IEMod.pw.sln` in VS.
+1. Edit the file `PathConsts.DoNotPush.cs` and set `YourGameFolderPath` to the path to your POE install.
+1. Edit the file `NuGet.targets` and set `DownloadNuGetExe` to `true` since you probably don't have it.
+1. Update the `PoE Dll Source` subfolders with the `Assembly-CSharp.dll` from your POE install.
+    * Note: this is a temporary step, future versions should do this automatically.
+1. Change the "startup" project to `PrepareEnvironment`, then run.
+1. Change the "startup" project to `_Start!`, then run.
+1. Make sure the `iemod` (the lowercase one!) folder is installed at `PillarsOfEternity_Data/Managed`.
+
+Your `Assembly-CSharp.dll` will be patched directly during the build. Simply launch POE when done.
