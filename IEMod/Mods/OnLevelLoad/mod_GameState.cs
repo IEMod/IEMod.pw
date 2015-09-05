@@ -72,7 +72,7 @@ namespace IEMod.Mods.OnLevelLoad {
 			}
 			catch (Exception exception)
 			{
-				Debug.LogError(exception.ToString());
+				Debug.LogException(exception);
 			}
 		}
 

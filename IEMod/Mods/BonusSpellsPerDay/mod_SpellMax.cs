@@ -17,7 +17,7 @@ namespace IEMod.Mods.BonusSpellsPerDay {
 				CharacterStats component = caster.GetComponent<CharacterStats>();
 				if (component != null)
 				{
-					num = this.SpellCastMaxLookup(component.CharacterClass, component.Level, spellLevel);
+					num = this.SpellCastMaxLookup(component.CharacterClass, component.ScaledLevel, spellLevel);
 					if (num == 2147483647)
 					{
 						if (CharacterStats.IsPlayableClass(component.CharacterClass))

@@ -48,7 +48,7 @@ namespace IEMod.Mods.NoEngagement {
 		public void DisengageEnemyNew(GameObject enemy, AttackBase attack)
 		{
 			CharacterStats component = enemy.GetComponent<CharacterStats>();
-			if ((component != null) && !component.ImmuneToEngagement && !IEModOptions.DisableEngagement) // added && (Mod_GameOptions_GameMode)GameState.Mode).DisableEngagement == 0
+			if ((component != null) && !component.IsImmuneToEngagement && !IEModOptions.DisableEngagement) // added && (Mod_GameOptions_GameMode)GameState.Mode).DisableEngagement == 0
 			{
 				attack.IsDisengagementAttack = true;
 				attack.Launch(enemy, -1);

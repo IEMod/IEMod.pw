@@ -78,7 +78,7 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 						this.m_Spells[i].SetSpell(genericSpell);
 						this.m_Spells[i].SetVisibility(true);
 						this.m_Spells[i].SetSelected(i < (4 + (int)IEModOptions.ExtraWizardSpells) && spellLevel == UIGrimoireManager.Instance.LevelButtons.CurrentLevel);
-						this.m_Spells[i].SetDisabled(GameState.InCombat);
+						this.m_Spells[i].SetDisabled(GameState.InCombat || !UIGrimoireManager.Instance.CanEditGrimoire);
 						i++;
 					}
 				}
