@@ -66,11 +66,11 @@ namespace Start {
 
 		private static void BuildAllVersions() {
 			Log.Information("PATCHING WINDOWS");
-			PatchGame("win", Path.Combine(RelativePaths.YourDllLatestBuildFolder, "win"), false);
+			PatchGame("win", Path.Combine(RelativePaths.LatestBuildFolder, "win"), false);
 			Log.Information("PATCHING MAC");
-			PatchGame("mac", Path.Combine(RelativePaths.YourDllLatestBuildFolder, "mac"), false);
+			PatchGame("mac", Path.Combine(RelativePaths.LatestBuildFolder, "mac"), false);
 			Log.Information("PATCHING LINUX");
-			PatchGame("linux", Path.Combine(RelativePaths.YourDllLatestBuildFolder, "linux"), false);
+			PatchGame("linux", Path.Combine(RelativePaths.LatestBuildFolder, "linux"), false);
 
 		}
 
