@@ -206,8 +206,11 @@ namespace IEMod.Mods.PartyBar {
 				float num6 = this.m_health.MaxStamina;
 				num6 = Mathf.Min(num6, b);
 				float num7 = this.m_characterStats.BaseMaxStamina - num6;
-				this.Stamina.sliderValue = 1f - Mathf.Clamp01(num5 / num6);
-				this.StaminaCap.sliderValue = Mathf.Clamp01(num7 / this.m_characterStats.BaseMaxStamina);
+				float num8 = Mathf.Clamp01(num7 / this.m_characterStats.BaseMaxStamina);
+				float num9 = 1f - Mathf.Clamp01(num5 / num6);
+				num9 = Mathf.Min(num9, 1f - num8);
+				this.Stamina.sliderValue = num9;
+				this.StaminaCap.sliderValue = num8;
 				this.PortraitTexture.material.SetFloat(this.m_SaturationMinV, 1f - this.StaminaCap.sliderValue);
 			}
 			else

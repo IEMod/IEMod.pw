@@ -23,7 +23,8 @@ namespace IEMod.Mods.CipherFocus
                 float level = 0f;
                 if (this.m_ownerStats != null)
                 {
-                    level = (float)this.m_ownerStats.Level * 5f;
+					//2.0 ⇒ 2.1: was "num = (float)this.m_ownerStats.Level * 5f;"
+                    level = (float)this.m_ownerStats.ScaledLevel * 5f;
                     level = level + 10f;
                 }
                 float multiplier = .5f;

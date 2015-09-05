@@ -90,6 +90,7 @@ namespace IEMod.Mods.Targeting {
 					damage.DamageMult(0f);
 				}
 			}
+			WeaponSpecializationData.AddWeaponSpecialization(this, damage);
 			damage.AccuracyRating = num2;
 			damage.DefenseRating = num3;
 			damage.RawRoll = num;

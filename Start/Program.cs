@@ -66,11 +66,11 @@ namespace Start {
 
 		private static void BuildAllVersions() {
 			Log.Information("PATCHING WINDOWS");
-			PatchGame("win", Path.Combine(Paths.YourDllLatestBuildFolder, "win"), false);
+			PatchGame("win", Path.Combine(RelativePaths.LatestBuildFolder, "win"), false);
 			Log.Information("PATCHING MAC");
-			PatchGame("mac", Path.Combine(Paths.YourDllLatestBuildFolder, "mac"), false);
+			PatchGame("mac", Path.Combine(RelativePaths.LatestBuildFolder, "mac"), false);
 			Log.Information("PATCHING LINUX");
-			PatchGame("linux", Path.Combine(Paths.YourDllLatestBuildFolder, "linux"), false);
+			PatchGame("linux", Path.Combine(RelativePaths.LatestBuildFolder, "linux"), false);
 		}
 
 		private static void PatchIntoGame() {
@@ -84,7 +84,7 @@ namespace Start {
 			}
 			//+ Path-related
 			var copyToPath = Path.Combine(copyToFolder, @"Assembly-CSharp.dll");
-			var originalDllPath = Path.Combine(Paths.YourDllSourcesPath, version, "Assembly-CSharp.dll");
+			var originalDllPath = Path.Combine(RelativePaths.DllSourcesPath, version, "Assembly-CSharp.dll");
 
 			//+ Creating patcher
 			var patcher = new AssemblyPatcher(originalDllPath, ImplicitImportSetting.OnlyCompilerGenerated, Log);
@@ -110,7 +110,7 @@ namespace Start {
 		}
 
 		private static void RunILSpy(string path) {
-			Process.Start($"\"{Paths.ILSpyPath}\"", $"\"{path}\"");
+			Process.Start($"\"{RelativePaths.ILSpyPath}\"", $"\"{path}\"");
 		}
 
 		private static void RunPEVerify(string path) {
@@ -145,7 +145,7 @@ namespace Start {
 				FileName = "cmd",
 				RedirectStandardOutput = true,
 				Arguments =
-					string.Format("/c \"\"{1}\" /il /md /verbose /hresult /ignore={2} \"{0}\"\"", path, Paths.PeVerifyPath,
+					string.Format("/c \"\"{1}\" /il /md /verbose /hresult /ignore={2} \"{0}\"\"", path, RelativePaths.PeVerifyPath,
 						ignoreErrors.Join(","))
 			};
 			using (var process = Process.Start(info)) {

@@ -62,6 +62,9 @@
     <Compile Include="..\PathConsts.DoNotPush.cs">
       <Link>PathConsts.DoNotPush.cs</Link>
     </Compile>
+    <Compile Include="..\RelativePaths.cs">
+      <Link>RelativePaths.cs</Link>
+    </Compile>
     <Compile Include="LinkedListHelpers.cs" />
     <Compile Include="ModifiedDecompiler.cs" />
     <Compile Include="Program.cs" />

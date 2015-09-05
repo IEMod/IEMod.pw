@@ -67,7 +67,6 @@ namespace IEMod.Mods.CombatLooting {
 			return ItemTransferValidOrig(invitem, from, to, out error, alreadyHeld);
 		}
 
-		//! Signature change!
 		[ModifiesMember("ItemTransferValid")]
 		public static bool ItemTransferValidNew(InventoryItem invitem, UIInventoryGridItem from, UIInventoryGridItem to,
 			out string error, bool alreadyHeld = false) {

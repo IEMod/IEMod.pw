@@ -80,8 +80,8 @@ namespace ModdingEnvironment
                 "UnityEngine"
             };
 
-            var referencesPath = PathHelper.GetAbsolutePath(Paths.YourDllReferencesPath);
-            var workingPath = PathHelper.GetAbsolutePath(Paths.YourDllSourcesPath);
+            var referencesPath = PathHelper.GetAbsolutePath(RelativePaths.ReferencesPath);
+            var workingPath = PathHelper.GetAbsolutePath(RelativePaths.DllSourcesPath);
             var sourcePath = PathHelper.GetAbsolutePath(Paths.YourOriginalManagedFolder);
             Serilog.Log.Information("Copying {0} files from {1} to {2}", filesToCopy.Length + 1, sourcePath, referencesPath);
             Directory.CreateDirectory(referencesPath);
