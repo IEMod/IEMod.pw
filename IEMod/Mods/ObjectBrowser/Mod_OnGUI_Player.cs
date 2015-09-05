@@ -122,7 +122,7 @@ namespace IEMod.Mods.ObjectBrowser {
 			if (InGameHUD.Instance != null)
 			{
 				var width = IEModOptions.SelectionCircleWidth;
-				if (width.HasValue) {
+				if (width != null) {
 					InGameHUD.Instance.SelectionCircleWidth = width.Value;
 					InGameHUD.Instance.EngagedCircleWidth = width.Value;
 				}
