@@ -8,6 +8,7 @@ using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.Ast;
 using Mono.Cecil;
 using Patchwork;
+using Patchwork.Attributes;
 using Patchwork.Utility;
 
 namespace Start {
@@ -55,8 +56,19 @@ namespace Start {
 		/// </summary>
 		/// <param name="changes"></param>
 		/// <param name="overwriteExistingSource">If true, the existing files will be modified, instead of the source.</param>
-		public static void ReplaceCodeWithOriginal(IEnumerable<BodyFileChange> changes, bool overwriteExistingSource = false) {
-			foreach (var byFile in changes.GroupBy(x => x.Start.Document.Url)) {
+		public static void ReplaceCodeWithOriginal(PatchingManifest manifest, bool overwriteExistingSource = false) {
+			var methodActions = manifest.MethodActions[typeof (ModifiesMemberAttribute)];
+			var changeEntries =
+				from methodAction in methodActions
+				let yourMember = methodAction.YourMember
+				let change = yourMember.Body
+				select new {
+					Start = change.FirstSequencePoint(),
+					End = change.LastSequencePoint(),
+					Name = yourMember.Name,
+					ModifiedMember = methodAction.TargetMember
+				};
+			foreach (var byFile in changeEntries.GroupBy(x => x.Start.Document.Url)) {
 				var newName = overwriteExistingSource ? byFile.Key : Path.ChangeExtension(byFile.Key, ".new.cs");
 
 				var contents = File.ReadAllLines(byFile.Key);
