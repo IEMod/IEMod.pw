@@ -38,18 +38,25 @@ namespace IEMod.Mods.ConsoleMod {
 				return false;
 			}
 		}
-		[ModifiesType()]
+		[ModifiesType]
 		public class mod_Health : Health {
+
 			public new bool m_isAnimalCompanion {
-				[ModifiesAccessibility()] get;
-				[ModifiesAccessibility()] set; 
+				[ModifiesAccessibility()] get {
+					return false;
+				}
+				[ModifiesAccessibility()] set { } 
 			}
 
 			public new bool CanDie
 			{
 				[ModifiesAccessibility()]
-				get;
-				set;
+				get {
+					return false;
+				}
+				set {
+					
+				}
 			}
 		}
 		[ModifiesType]
