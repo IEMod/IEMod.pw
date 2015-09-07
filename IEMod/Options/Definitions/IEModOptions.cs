@@ -18,6 +18,30 @@ namespace IEMod.Mods.Options {
 	public class SaveAttribute : Attribute {
 		
 	}
+
+	/// <summary>
+	/// Nullable types don't seem to be easily serialized to XML.
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	[NewType]
+	public class XmlNullable<T> {
+		public XmlNullable(T value) {
+			Value = value;
+		}
+
+		public XmlNullable() {
+		}
+
+		public T Value {
+			get;
+			set;
+		}
+
+		public static implicit operator XmlNullable<T>(T value) {
+			return new XmlNullable<T>(value);
+		}
+	}
+
 	[NewType]
 	public static class IEModOptions {
 		[NewType]
@@ -107,7 +131,8 @@ namespace IEMod.Mods.Options {
 
 		//GR 28/8/15 - this was out of good intentions, but... yeah... it doesn't work. I hadn't noticed on my machine circumstances made it seem like it did.
 		//GR 30/8 - I'm just gonna disable this for now.
-		public static float? SelectionCircleWidth = null;
+		[Save]
+		public static XmlNullable<float> SelectionCircleWidth = null;
 
 		[Save]
 		public static  float DefaultZoom;
