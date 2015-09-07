@@ -46,6 +46,9 @@ namespace IEMod.Mods.UICustomization {
 				ShowInterface(!IsInterfaceVisible);
 			};
 
+			DefaultActionBarAtlas =
+				Attack.Child(0).Component<UISprite>().atlas.spriteMaterial.mainTexture;
+
 			//these may break in future version changes, but I doubt they'll break much.
 			//since changing them will probably break some of the developer's code as well
 			//to fix them, dump the UICamera hierarchy to file and see which names changed.
@@ -56,8 +59,7 @@ namespace IEMod.Mods.UICustomization {
 				SaveLayout(DefaultLayout);
 			}
 
-			DefaultActionBarAtlas =
-				Attack.Child(0).Component<UISprite>().atlas.spriteMaterial.mainTexture;
+	
 
 			// turning off BB-version label in the upper right corner, cause it's annoying when you want to move portraits there
 			UiCamera.Child("BBVersion").gameObject.SetActive(false);
@@ -454,7 +456,7 @@ namespace IEMod.Mods.UICustomization {
 			//			sprite1.paddingLeft = 0;
 			//			sprite1.paddingTop = 0;
 			//			sprite1.paddingRight = 0;
-			//			sprite1.paddingBottom = 0;
+			//			sprite1.paddingBottom = 0;f
 			//			sprite1.name = "test1";
 			//
 			//			copy.spriteList.Add (sprite1);
@@ -742,13 +744,13 @@ namespace IEMod.Mods.UICustomization {
 			layout.RightHudBarPosition = ButtonsRight.transform.localPosition;
 			layout.ClockPosition = TimeWidget.transform.localPosition;
 			layout.HudHorizontal = ButtonsLeft.Component<UIGrid>().arrangement != UIGrid.Arrangement.Vertical;
-			layout.UsingCustomTextures = Attack.Child("Icon").Component<UISprite>().atlas.spriteMaterial.mainTexture
-				!= DefaultActionBarAtlas;
+			layout.UsingCustomTextures = Attack.Child("Icon").Component<UISprite>().atlas.spriteMaterial.mainTexture != DefaultActionBarAtlas;
 			layout.PortraitHighlightsDisabled = !GetAllPortraits().First().Child("StupidPanelBack").activeSelf;
 			layout.ButtonsBackground = ButtonsLeft.ChildPath("#0/Background").activeSelf;
 			layout.HudTextureHidden = !ActionBarTrimB.activeSelf;
 			layout.LogPosition = ConsoleWindow.transform.localPosition;
 			layout.PartyBarHorizontal = mod_UIPartyPortrait.IsVertical;
+			
 			layout.FramePath = SelectedFrame.Value;
 		}
 

@@ -12,7 +12,7 @@ using IEMod.Mods.UICustomization;
 //using IEMod.Mods.UICustomization;
 using Patchwork.Attributes;
 using UnityEngine;
-using Object = UnityEngine.Object;
+
 
 namespace IEMod.Mods.ConsoleMod {
     [ModifiesType("CommandLine")]
@@ -38,18 +38,25 @@ namespace IEMod.Mods.ConsoleMod {
 				return false;
 			}
 		}
-		[ModifiesType()]
+		[ModifiesType]
 		public class mod_Health : Health {
+
 			public new bool m_isAnimalCompanion {
-				[ModifiesAccessibility()] get;
-				[ModifiesAccessibility()] set; 
+				[ModifiesAccessibility()] get {
+					return false;
+				}
+				[ModifiesAccessibility()] set { } 
 			}
 
 			public new bool CanDie
 			{
 				[ModifiesAccessibility()]
-				get;
-				set;
+				get {
+					return false;
+				}
+				set {
+					
+				}
 			}
 		}
 		[ModifiesType]
@@ -812,7 +819,6 @@ namespace IEMod.Mods.ConsoleMod {
 			IEModOptions.DeleteAllSettings();
 			Console.AddMessage("All settings have been deleted.", Color.green);
 		}
-
 
 		[NewMember]
 		public  static void SelectCircles(float width)

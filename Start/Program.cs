@@ -25,7 +25,7 @@ namespace Start {
 		[STAThread]
 		private static void Main(string[] args) {
 			DoSetup();
-			BuildAllVersions();
+			//BuildAllVersions();
 			PatchIntoGame();
 			LogFile.Flush();
 			LogFile.Close();
