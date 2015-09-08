@@ -11,6 +11,7 @@ using IEMod;
 using ModdingEnvironment;
 using Mono.Cecil;
 using Patchwork;
+using Patchwork.Attributes;
 using Patchwork.Utility;
 using Serilog;
 using Serilog.Events;
@@ -24,14 +25,13 @@ namespace Start {
 
 		[STAThread]
 		private static void Main(string[] args) {
+
 			DoSetup();
 			//BuildAllVersions();
 			PatchIntoGame();
 			LogFile.Flush();
 			LogFile.Close();
 		}
-
-		
 
 		private static ILogger Log {
 			get;
@@ -78,6 +78,20 @@ namespace Start {
 			PatchGame("win", Paths.YourNormalManagedFolder, true);
 		}
 
+		private static readonly long[] _ignoreErrors = {
+			//Expected an ObjRef on the stack.(Error: 0x8013185E). 
+			//-you can ignore the following. They are present in the original DLL. I'm not sure if they are actually errors.
+			0x8013185E,
+			//The 'this' parameter to the call must be the calling method's 'this' parameter.(Error: 0x801318E1)
+			//-this isn't really an issue. PEV is just confused.
+			0x801318E1,
+			//Call to .ctor only allowed to initialize this pointer from within a .ctor. Try newobj.(Error: 0x801318BF)
+			//-this is a *verificaiton* issue is caused by copying the code from an existing constructor to a non-constructor method 
+			//-it contains a call to .ctor(), which is illegal from a non-constructor method.
+			//-There will be an option to fix this at some point, but it's not really an error.
+			0x801318BF,
+		};
+
 		private static void PatchGame(string version, string copyToFolder, bool runPeVerify) {
 			if (!Directory.Exists(copyToFolder)) {
 				Log.Information("Creating copy to folder.");
@@ -88,76 +102,42 @@ namespace Start {
 			var originalDllPath = Path.Combine(RelativePaths.DllSourcesPath, version, "Assembly-CSharp.dll");
 
 			//+ Creating patcher
-			var patcher = new AssemblyPatcher(originalDllPath, ImplicitImportSetting.OnlyCompilerGenerated, Log);
+			var patcher = new AssemblyPatcher(originalDllPath, ImplicitImportSetting.OnlyCompilerGenerated, Log) {
+				EmbedHistory = true
+			};
 
 			//+ Patching assemblies
 			patcher.PatchAssembly(typeof (IEModType).Assembly.Location);
-
+			try {
+				File.Copy(typeof(PatchworkVersion).Assembly.Location, Path.Combine(copyToFolder, typeof(PatchworkVersion).Assembly.GetName().Name) + ".dll", true);
+			}
+			catch (Exception ex) {
+				Console.WriteLine(ex);
+			}
 			//add more lines to patch more things
 
 			//+ End
 
-			patcher.WriteTo(copyToPath);
 			if (runPeVerify) {
 				Console.WriteLine(
-					"Going to run PEVerify to check the IL for errors. Press ESC to cancel, or any other key to continue.");
-				if (Console.ReadKey().Key != ConsoleKey.Escape) {
-					RunPEVerify(copyToPath);
-					//RunILSpy(copyToPath);
-					//RunILSpy(typeof (IEModType).Assembly.Location);
-				}
+					"Running PEVerify on the assembly to check the IL for errors. Please wait.");
+				Log.Information(patcher.RunPeVerify(ignoreErrors: _ignoreErrors));
 			}
-
+			Console.WriteLine($"Press ESC to close, or any other key to write assembly to location: {PathHelper.GetUserFriendlyPath(copyToPath)}");
+			var key = Console.ReadKey();
+			if (key.Key == ConsoleKey.Escape) {
+				Log.Information("Cancelling write.");
+			} else {
+				patcher.WriteTo(copyToPath);
+			}
+			LogFile.Flush();
+			Console.WriteLine("Press any key to close.");
+			Console.Read();
 		}
 
 		private static void RunILSpy(string path) {
 			Process.Start($"\"{RelativePaths.ILSpyPath}\"", $"\"{path}\"");
 		}
-
-		private static void RunPEVerify(string path) {
-
-			//PEVerify is a tool that verifies IL. It goes over it and looks for various issues.
-			//Unfortunately, it just says every issue is an ERROR, but in reality some of them are fine as long as you run with full trust
-			//others are just invalid and will throw InvalidProgramExceptions or similar.
-
-			//PEVerify checks both validity and verifiability. Verifiability is primarily a security matter
-			//it doesn't tell you which error is related to verifiability and which will just make the whole business fail to run.
-			//it is best practice to have as few verifiability errors as possible, even though the game is running at full trust.
-
-			//
-			var ignoreErrors = new string[] {
-				//Expected an ObjRef on the stack.(Error: 0x8013185E). 
-				//-you can ignore the following. They are present in the original DLL. I'm not sure if they are actually errors.
-				"0x8013185E",
-				"0x801312BB",
-				"0x801312C2",
-				"0x80131274",
-				//The 'this' parameter to the call must be the calling method's 'this' parameter.(Error: 0x801318E1)
-				//-this isn't really an issue. PEV is just confused.
-				"0x801318E1",
-				//Call to .ctor only allowed to initialize this pointer from within a .ctor. Try newobj.(Error: 0x801318BF)
-				//-this is a *verificaiton* issue is caused by copying the code from an existing constructor to a non-constructor method 
-				//-it contains a call to .ctor(), which is illegal from a non-constructor method.
-				//-There will be an option to fix this at some point, but it's not really an error.
-				"0x801318BF",
-			};
-			var info = new ProcessStartInfo() {
-				UseShellExecute = false,
-				FileName = "cmd",
-				RedirectStandardOutput = true,
-				Arguments =
-					string.Format("/c \"\"{1}\" /il /md /verbose /hresult /ignore={2} \"{0}\"\"", path, RelativePaths.PeVerifyPath,
-						ignoreErrors.Join(","))
-			};
-			using (var process = Process.Start(info)) {
-				Log.Information("Running PEVerify.exe...");
-				Log.Information(process.StandardOutput.ReadToEnd());
-			}
-
-			Console.WriteLine("Press any key to close.");
-			Console.ReadKey();
-		}
-
 
 
 	}
