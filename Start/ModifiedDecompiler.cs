@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading;
 using ICSharpCode.Decompiler;
 using ICSharpCode.Decompiler.Ast;
@@ -36,9 +37,9 @@ namespace Start {
 			//	methodCode = methodCode.Substring(methodCode.IndexOf('\n') + 1);
 			//}
 
-			// Remove any attributes
-			//var attrRE = new Regex(@"^(?:\[[^]]+]\s*){1,}");
-			//methodCode = attrRE.Replace(methodCode, "", 1);
+
+		    var attrRE = new Regex(@"^(?:\[[^]]+]\s*){1,}");
+			methodCode = attrRE.Replace(methodCode, "", 1);
 
 			// change the method name to the mod's name for the method, and replace parameter names with game names
 			var methodName = mtd.Name;
@@ -54,7 +55,7 @@ namespace Start {
 		/// <summary>
 		/// This method replaces the bodies of methods with ModifiesMember() with the original bodies, from the modified members. This lets you merge any changes in the game code with your mod code.
 		/// </summary>
-		/// <param name="changes"></param>
+		/// <param name="manifest"></param>
 		/// <param name="overwriteExistingSource">If true, the existing files will be modified, instead of the source.</param>
 		public static void ReplaceCodeWithOriginal(PatchingManifest manifest, bool overwriteExistingSource = false) {
 			var methodActions = manifest.MethodActions[typeof (ModifiesMemberAttribute)];
