@@ -103,17 +103,11 @@ namespace Start {
 
 			//+ Creating patcher
 			var patcher = new AssemblyPatcher(originalDllPath, ImplicitImportSetting.OnlyCompilerGenerated, Log) {
-				EmbedHistory = true
+				EmbedHistory = false
 			};
 
 			//+ Patching assemblies
 			patcher.PatchAssembly(typeof (IEModType).Assembly.Location);
-			try {
-				File.Copy(typeof(PatchworkVersion).Assembly.Location, Path.Combine(copyToFolder, typeof(PatchworkVersion).Assembly.GetName().Name) + ".dll", true);
-			}
-			catch (Exception ex) {
-				Console.WriteLine(ex);
-			}
 			//add more lines to patch more things
 
 			//+ End
@@ -123,13 +117,7 @@ namespace Start {
 					"Running PEVerify on the assembly to check the IL for errors. Please wait.");
 				Log.Information(patcher.RunPeVerify(ignoreErrors: _ignoreErrors));
 			}
-			Console.WriteLine($"Press ESC to close, or any other key to write assembly to location: {PathHelper.GetUserFriendlyPath(copyToPath)}");
-			var key = Console.ReadKey();
-			if (key.Key == ConsoleKey.Escape) {
-				Log.Information("Cancelling write.");
-			} else {
-				patcher.WriteTo(copyToPath);
-			}
+			patcher.WriteTo(copyToPath);
 			LogFile.Flush();
 			Console.WriteLine("Press any key to close.");
 			Console.Read();
