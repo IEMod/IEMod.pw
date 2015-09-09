@@ -22,9 +22,10 @@ bld/
 [Bb]in/
 [Oo]bj/
 Old/
+NuGet.exe
 /PoE Latest Builds/*.zip
 /PoE Latest Builds/iemod
-
+/PoE Latest Builds/
 # Visual Studo 2015 cache/options directory
 .vs/
 

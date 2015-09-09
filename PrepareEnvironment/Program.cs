@@ -95,7 +95,7 @@ namespace ModdingEnvironment
                 File.Copy(filePath, targetPath, true);
             }
 
-            var workTarget = Path.Combine(workingPath, "Assembly-CSharp.dll");
+            var workTarget = Path.Combine(workingPath, "win", "Assembly-CSharp.dll");
             Serilog.Log.Information("Copying {0}", assemblyCSharpPath);
             File.Copy(assemblyCSharpPath, workTarget, true);
 
