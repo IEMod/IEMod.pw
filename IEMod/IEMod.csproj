@@ -76,13 +76,16 @@
     <Compile Include="Helpers\PathHelper.cs" />
     <Compile Include="Helpers\ReflectHelper.cs" />
     <Compile Include="IEModType.cs" />
-    <Compile Include="Mods\AbilityMod\mod_GameResources.cs" />
+    <Compile Include="Mods\AlterResourcesMod\AbilityChange.cs" />
+    <Compile Include="Mods\AlterResourcesMod\AbilityActionData.cs" />
+    <Compile Include="Mods\AlterResourcesMod\mod_GameResources.cs" />
     <Compile Include="Mods\AI\Mod_AI_PathToPosition.cs" />
     <Compile Include="Mods\AlwaysShowCircles\Mod_AlwaysShowSelectionCircles_Faction.cs" />
     <Compile Include="Mods\BackerStuff\BackerNamesMod.cs" />
     <Compile Include="Mods\BonusSpellsGrimoire\mod_UIGrimoireInSpellRow.cs" />
     <Compile Include="Mods\BonusSpellsGrimoire\mod_Grimoire.cs" />
     <Compile Include="Mods\Bugfix2_01_Caster_Centered_Spells\mod_AI_Player_Attack.cs" />
+    <Compile Include="Mods\Bugfix2_01_Caster_Centered_Spells\ScratchPad.cs" />
     <Compile Include="Mods\CameraControlMod\Mod_CameraControl.cs" />
     <Compile Include="Mods\CipherFocus\mod_FocusTrait.cs" />
     <Compile Include="Mods\CombatLooting\mod_Container.cs" />
