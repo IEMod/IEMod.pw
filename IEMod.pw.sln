@@ -38,8 +38,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.Cecil.Mdb", "Patchwork
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrepareEnvironment", "PrepareEnvironment\PrepareEnvironment.csproj", "{A403C3E6-FE5C-4BE7-980C-5285CDE7C1E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatchworkLauncher", "Patchwork\PatchworkLauncher\PatchworkLauncher.csproj", "{6C30DED5-0078-48AC-91BB-A0A05A1FC899}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patchwork.Tests.Patch", "Patchwork\Patchwork.Tests.Patch\Patchwork.Tests.Patch.csproj", "{9A1E9961-28B5-40B1-A04F-D46756746C88}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patchwork.Tests.Target", "Patchwork\Patchwork.Tests.Target\Patchwork.Tests.Target.csproj", "{551DCD0A-63F9-49BB-943C-EE470FA38AFD}"
@@ -158,18 +156,6 @@ Global
 		{A403C3E6-FE5C-4BE7-980C-5285CDE7C1E3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{A403C3E6-FE5C-4BE7-980C-5285CDE7C1E3}.Release|x86.ActiveCfg = Release|Any CPU
 		{A403C3E6-FE5C-4BE7-980C-5285CDE7C1E3}.Release|x86.Build.0 = Release|Any CPU
-		{6C30DED5-0078-48AC-91BB-A0A05A1FC899}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C30DED5-0078-48AC-91BB-A0A05A1FC899}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C30DED5-0078-48AC-91BB-A0A05A1FC899}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{6C30DED5-0078-48AC-91BB-A0A05A1FC899}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{6C30DED5-0078-48AC-91BB-A0A05A1FC899}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6C30DED5-0078-48AC-91BB-A0A05A1FC899}.Debug|x86.Build.0 = Debug|Any CPU
-		{6C30DED5-0078-48AC-91BB-A0A05A1FC899}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C30DED5-0078-48AC-91BB-A0A05A1FC899}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C30DED5-0078-48AC-91BB-A0A05A1FC899}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{6C30DED5-0078-48AC-91BB-A0A05A1FC899}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{6C30DED5-0078-48AC-91BB-A0A05A1FC899}.Release|x86.ActiveCfg = Release|Any CPU
-		{6C30DED5-0078-48AC-91BB-A0A05A1FC899}.Release|x86.Build.0 = Release|Any CPU
 		{9A1E9961-28B5-40B1-A04F-D46756746C88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9A1E9961-28B5-40B1-A04F-D46756746C88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A1E9961-28B5-40B1-A04F-D46756746C88}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

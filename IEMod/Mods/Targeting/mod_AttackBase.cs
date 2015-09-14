@@ -7,11 +7,11 @@ namespace IEMod.Mods.Targeting {
 	[ModifiesType]
 	internal class mod_AttackBase : AttackBase {
 		[NewMember]
-		private bool HostileEvenIfConfused(GameObject target, GameObject caster) {
+		public static bool HostileEvenIfConfused(GameObject target, GameObject caster) {
 			var targetFaction = target.GetComponent<Faction>();
 			var casterFaction = caster.GetComponent<Faction>();
 			var targetAiController = GameUtilities.FindActiveAIController(target);
-			if (targetFaction?.IsHostile(caster) == true || casterFaction?.IsHostile(target) == true) {
+			if (targetFaction.IsHostile(caster) == true || casterFaction.IsHostile(target) == true) {
 				//they're actually hostile
 				return true;
 			}
@@ -23,11 +23,8 @@ namespace IEMod.Mods.Targeting {
 				//no more checks if the option is disabled.
 				return false;
 			}
-			if (casterFaction?.CurrentTeam == null) {
-				//dunno if this is even necessary... sigh...
-				return false;
-			}
-			var targetOriginal = targetAiController.GetOriginalTeam()?.GetRelationship(casterFaction.CurrentTeam)
+	
+			var targetOriginal = targetAiController.GetOriginalTeam().GetRelationship(casterFaction.CurrentTeam)
 				== Faction.Relationship.Hostile;
 
 			return targetOriginal;
@@ -72,11 +69,6 @@ namespace IEMod.Mods.Targeting {
 			//Replaced all appearances of 'faction.IsHostile(target) || component1 != null && component1.IsHostile(caster)' with 'HostileEvenIfConfused(target,caster)'
 			switch (validType) {
 				case TargetType.All: {
-					//!+ADDED CODE
-					if (IEModOptions.DisableFriendlyFire) {
-						return casterFaction?.isPartyMember != true || targetFaction?.isPartyMember != true || HostileEvenIfConfused(target, caster);
-					}
-					//!+ END ADD
 					return true;
 				}
 				case TargetType.Hostile: {

@@ -38,9 +38,8 @@ namespace IEMod.Mods.Targeting {
 				this.ComputeHitAdjustment(attackerToHitRollOverride + num - num1, component, damage);
 				//!+ ADDED CODE
 				if (IEModOptions.DisableFriendlyFire) {
-
 					var faction = enemy.Component<Faction>();
-					if (faction.IsFriendly(base.gameObject) && base.IsPartyMember && faction.isPartyMember) {
+					if (!mod_AttackBase.HostileEvenIfConfused(enemy, this.gameObject)) {
 						damage.IsCriticalHit = false;
 						damage.Interrupts = false;
 						damage.IsGraze = false;
