@@ -58,6 +58,7 @@ namespace Start {
 		/// <param name="manifest"></param>
 		/// <param name="overwriteExistingSource">If true, the existing files will be modified, instead of the source.</param>
 		public static void ReplaceCodeWithOriginal(PatchingManifest manifest, bool overwriteExistingSource = false) {
+
 			var methodActions = manifest.MethodActions[typeof (ModifiesMemberAttribute)];
 			var changeEntries =
 				from methodAction in methodActions

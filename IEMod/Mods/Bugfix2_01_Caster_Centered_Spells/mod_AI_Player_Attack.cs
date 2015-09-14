@@ -6,8 +6,7 @@ namespace IEMod.Mods.Bugfix2_01_Caster_Centered_Spells
 {
     [ModifiesType]
     public class mod_AI_Player_Attack : Attack
-    {
-        [NewMember]
+    {	
         [MemberAlias("Update", typeof(AI.Player.PlayerState), AliasCallMode.NonVirtual)]
         private void add_BaseUpdate()
         {

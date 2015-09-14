@@ -11,7 +11,6 @@ namespace IEMod.Mods.FastSneak {
 	[ModifiesType]
 	public class mod_PartyMemberAI : PartyMemberAI
 	{
-		[NewMember]
 		[MemberAlias("Update", typeof(AIController), AliasCallMode.NonVirtual)]
 		private void BaseUpdate()
 		{
