@@ -58,7 +58,7 @@ namespace Start {
 					.MinimumLevel.Debug()
 					.WriteTo.ColoredConsole(LogEventLevel.Information)
 					.WriteTo.TextWriter(LogFile).CreateLogger();
-
+	
 			//note: if you're going to be looking at this a lot, better set your console font to something snazzy
 			//(right click on titlebar, Default)
 			Log = log;
@@ -102,7 +102,7 @@ namespace Start {
 			var originalDllPath = Path.Combine(RelativePaths.DllSourcesPath, version, "Assembly-CSharp.dll");
 
 			//+ Creating patcher
-			var patcher = new AssemblyPatcher(originalDllPath, ImplicitImportSetting.OnlyCompilerGenerated, Log) {
+			var patcher = new AssemblyPatcher(originalDllPath, Log) {
 				EmbedHistory = false
 			};
 
