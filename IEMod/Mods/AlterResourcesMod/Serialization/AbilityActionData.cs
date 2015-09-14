@@ -13,9 +13,8 @@ namespace IEMod.Mods.AlterResourcesMod.Serialization
 
         public List<Serialization.AbilityChange> AbilityChanges { get; set; }
 
-        [XmlArrayItem(ElementName = "AbilityName", Type = typeof(string))]
-        [XmlArray(ElementName ="AbilityExport")]
-        public List<AbilityExport> AbilityExports { get; set; }
+        [XmlArrayItem("Name")]
+        public List<string> AbilityExports { get; set; }
 
         public bool? ExportAll { get; set; }
     }

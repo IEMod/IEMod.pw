@@ -52,18 +52,13 @@ namespace IEMod.Mods.AlterResourcesMod
                 try
                 {
                     XmlSerializer serializer = new XmlSerializer(typeof(Serialization.AbilityActionData));
-                    Serialization.AbilityActionData value;
+                    Serialization.AbilityActionData serializedData;
                     using (var openRead = File.OpenRead(abilityDataPath))
                     {
-                        value = (Serialization.AbilityActionData)serializer.Deserialize(openRead);
-                        foreach (Serialization.AbilityExport x in value.AbilityExports)
-                        {
-                            IEDebug.Log($"Read request to export ability {x.Name}");
-                            //result.AbilityExports.Add(x.Name);
-                        }
+                        serializedData = (Serialization.AbilityActionData)serializer.Deserialize(openRead);
                     }
 
-                    result = new AbilityActionData(value);
+                    result = new AbilityActionData(serializedData);
 
                     //value = new Serialization.AbilityActionData();
                     //value.AbilityExports = new List<Serialization.AbilityExport>();

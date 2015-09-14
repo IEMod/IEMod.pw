@@ -82,7 +82,6 @@
     <Compile Include="Mods\AI\Mod_AI_PathToPosition.cs" />
     <Compile Include="Mods\AlterResourcesMod\Serialization\AbilityActionData.cs" />
     <Compile Include="Mods\AlterResourcesMod\Serialization\AbilityChange.cs" />
-    <Compile Include="Mods\AlterResourcesMod\Serialization\AbilityName.cs" />
     <Compile Include="Mods\AlterResourcesMod\Serialization\AfflictionChange.cs" />
     <Compile Include="Mods\AlwaysShowCircles\Mod_AlwaysShowSelectionCircles_Faction.cs" />
     <Compile Include="Mods\BackerStuff\BackerNamesMod.cs" />

@@ -22,9 +22,9 @@ namespace IEMod.Mods.AlterResourcesMod
             AbilityChanges = new Dictionary<string, IEnumerable<AbilityChange>>();
             AbilityExports = new HashSet<string>();
 
-            foreach(Serialization.AbilityExport ability in serializedData.AbilityExports)
+            foreach(string abilityName in serializedData.AbilityExports)
             {
-                AbilityExports.Add(ability.Name);
+                AbilityExports.Add(abilityName);
             }
 
             foreach (Serialization.AbilityChange ability in serializedData.AbilityChanges)
