@@ -32,6 +32,11 @@ namespace IEMod.Mods.AlterResourcesMod
                 AbilityChanges.Add(ability.Name, TranslateAbilityChanges(ability));
             }
 
+            if(serializedData.ExportAll.HasValue)
+            {
+                ExportAll = serializedData.ExportAll.Value;
+            }
+
         }
 
         public IEnumerable<AbilityChange> TranslateAbilityChanges(Serialization.AbilityChange serializedChangeData)
