@@ -757,7 +757,7 @@ namespace IEMod.Mods.ConsoleMod {
 
 		// for instance: BSC cre_druid_cat01 true
 		[NewMember]
-		public static void BSC(string prefabName, bool isHostile)
+		public static void BSC(string prefabName, int isHostile)
 		{
 			if (GameState.s_playerCharacter.IsMouseOnWalkMesh())
 			{
