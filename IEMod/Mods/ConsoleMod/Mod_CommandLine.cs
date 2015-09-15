@@ -142,6 +142,49 @@ namespace IEMod.Mods.ConsoleMod {
 			QualitySettings.IncreaseLevel();
 		}
 
+        [NewMember] 
+        public static void UnlockSoulbound(Guid character)
+        {
+            try
+            {
+                EquipmentSoulbind component;
+                Equipment componentByGuid = Scripts.GetComponentByGuid<Equipment>(character);
+                if (!componentByGuid)
+                {
+                    global::Console.AddMessage("Found no soulbound weapon.", Color.red);
+                    return;
+                }
+                Equippable itemInSlot = componentByGuid.CurrentItems.GetItemInSlot(Equippable.EquipmentSlot.PrimaryWeapon);
+                if (!itemInSlot)
+                {
+                    global::Console.AddMessage("Found no soulbound weapon.", Color.red);
+                    return;
+                }
+                else
+                {
+                    component = itemInSlot.GetComponent<EquipmentSoulbind>();
+
+                    if(component == null)
+                    {
+                        global::Console.AddMessage("Found no soulbound weapon.", Color.red);
+                        return;
+                    }
+                }
+
+                IEDebug.Log(string.Format("Found item {0}", component.name));
+                mod_EquipmentSoulbind componentAsSoulbind = (mod_EquipmentSoulbind)component;
+
+                componentAsSoulbind.ForceUnlock();
+               
+            }
+            catch (Exception ex)
+            {
+                IEDebug.Log(ex.ToString());
+                throw new IEModException("Failed to unlock soulbound", ex);
+            }
+        }
+   
+
 		[NewMember]
 		public  static void CheckAchievements()
 		{
@@ -972,4 +1015,39 @@ namespace IEMod.Mods.ConsoleMod {
 
     }
 
+    [ModifiesType]
+    public class mod_EquipmentSoulbind : EquipmentSoulbind
+    {
+
+        [NewMember]
+        public void ForceUnlock()
+        {
+            if (this.AreUnlocksComplete)
+            {
+                return;
+            }
+
+            this.UnlockLevel = this.m_NextUnlockLevel;
+            this.UnlockProgress = 0f;
+            this.DegenerateUnlockProgress = 0f;
+            ItemMod[] modsToApply = this.Unlocks[this.UnlockLevel].ModsToApply;
+            for (int i = 0; i < (int)modsToApply.Length; i++)
+            {
+                ItemMod itemMod = modsToApply[i];
+                this.m_Equippable.AttachItemMod(itemMod);
+            }
+            ItemMod[] modsToRemove = this.Unlocks[this.UnlockLevel].ModsToRemove;
+            for (int j = 0; j < (int)modsToRemove.Length; j++)
+            {
+                ItemMod itemMod1 = modsToRemove[j];
+                this.m_Equippable.DestroyFirstMod(itemMod1);
+            }
+            if (!UIItemInspectManager.ReloadWindowsForObject(base.gameObject))
+            {
+                UIItemInspectManager.ExamineSoulbindUnlock(this, this.m_Equippable.EquippedOwner);
+            }
+            this.TryUnlockNext();
+        }
+
+    }
 }

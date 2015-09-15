@@ -76,7 +76,13 @@
     <Compile Include="Helpers\PathHelper.cs" />
     <Compile Include="Helpers\ReflectHelper.cs" />
     <Compile Include="IEModType.cs" />
+    <Compile Include="Mods\AlterResourcesMod\AbilityChange.cs" />
+    <Compile Include="Mods\AlterResourcesMod\AbilityActionData.cs" />
+    <Compile Include="Mods\AlterResourcesMod\mod_GameResources.cs" />
     <Compile Include="Mods\AI\Mod_AI_PathToPosition.cs" />
+    <Compile Include="Mods\AlterResourcesMod\Serialization\AbilityActionData.cs" />
+    <Compile Include="Mods\AlterResourcesMod\Serialization\AbilityChange.cs" />
+    <Compile Include="Mods\AlterResourcesMod\Serialization\AfflictionChange.cs" />
     <Compile Include="Mods\AlwaysShowCircles\Mod_AlwaysShowSelectionCircles_Faction.cs" />
     <Compile Include="Mods\BackerStuff\BackerNamesMod.cs" />
     <Compile Include="Mods\BonusSpellsGrimoire\mod_UIGrimoireInSpellRow.cs" />
