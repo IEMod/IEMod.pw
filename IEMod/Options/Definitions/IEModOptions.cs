@@ -329,8 +329,23 @@ namespace IEMod.Mods.Options {
 			)]
 		public static ExtraSpellsInGrimoire ExtraWizardSpells;
 
+        private static MaxAdventurersOptions _maxAdventurersCount;
+        [Save]
+        [Label("Max adventurers you can hire")]
+        [Description(
+            "Changes the maximum count of adventurers you can hire in tavern."
+            )]
+        public static MaxAdventurersOptions MaxAdventurersCount {
+            get {
+                return _maxAdventurersCount;
+            }
+            set {
+                _maxAdventurersCount = value;
+                MaxAdventurers.mod_PartyMemberAI.newUpdateMaxAdventurers();
+            }
+        }
 
-		private static Dictionary<string, FieldInfo> _fieldCache;
+        private static Dictionary<string, FieldInfo> _fieldCache;
 
 		public static Dictionary<string, FieldInfo> FieldCache {
 			get {
@@ -545,5 +560,20 @@ namespace IEMod.Mods.Options {
             [Description("Fast Scouting, Individual LoS")]
             FastScoutingSingleLOS = 2
         }
-	}
+
+        [NewType]
+        public enum MaxAdventurersOptions
+        {
+            [Description("Normal (8)")]
+            Normal_8,
+            [Description("Double (16)")]
+            Double_16,
+            [Description("Triple (24)")]
+            Triple_24,
+            [Description("Quadra (32)")]
+            Quadra_32,
+            [Description("One hundred twenty eight (128)")]
+            OneHundredTwentyEight
+        }
+    }
 }

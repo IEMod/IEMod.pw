@@ -800,11 +800,11 @@ namespace IEMod.Mods.ConsoleMod {
 
 		// for instance: BSC cre_druid_cat01 true
 		[NewMember]
-		public static void BSC(string prefabName, bool isHostile)
+		public static void BSC(string prefabName, int intIsHostile)
 		{
-			if (GameState.s_playerCharacter.IsMouseOnWalkMesh())
-			{
-				Console.AddMessage($"Spawning ${(isHostile ? "Hostile" : "Friendly")}: ${prefabName}", Color.green);
+			if (GameState.s_playerCharacter.IsMouseOnWalkMesh()) {
+				var isHostile = intIsHostile > 0;
+				Console.AddMessage($"Spawning ${(isHostile  ? "Hostile" : "Friendly")}: ${prefabName}", Color.green);
 				var newCreature = GameResources.LoadPrefab<UnityEngine.GameObject>(prefabName, true);
 				if (newCreature != null)
 				{
