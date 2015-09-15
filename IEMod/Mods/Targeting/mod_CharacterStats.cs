@@ -39,7 +39,7 @@ namespace IEMod.Mods.Targeting {
 				//!+ ADDED CODE
 				if (IEModOptions.DisableFriendlyFire) {
 					var faction = enemy.Component<Faction>();
-					if (!mod_AttackBase.HostileEvenIfConfused(enemy, this.gameObject)) {
+					if (mod_AttackBase.FriendlyRightNowAndAlsoWhenConfused(enemy, this.gameObject)) {
 						damage.IsCriticalHit = false;
 						damage.Interrupts = false;
 						damage.IsGraze = false;

@@ -45,7 +45,7 @@ namespace IEMod.Mods.Targeting {
 								continue;
 							}
 							var casterFaction = caster.GetComponent<Faction>();
-							if (IEModOptions.DisableFriendlyFire && ValidTargets == TargetType.All && !mod_AttackBase.HostileEvenIfConfused(targetFaction.gameObject, caster)) {
+							if (IEModOptions.DisableFriendlyFire && ValidTargets == TargetType.All && mod_AttackBase.FriendlyRightNowAndAlsoWhenConfused(targetFaction.gameObject, caster)) {
 								continue;
 							}
 							//if isWithinPureRadius && IsValidTarget(...)
