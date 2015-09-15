@@ -78,8 +78,10 @@ namespace IEMod.Mods.Options {
 		private QuickDropdown<IEModOptions.ExtraSpellsInGrimoire> _extraGrimoireSpellsCmb;
 		[NewMember]
 		private QuickDropdown<IEModOptions.AutoSaveSetting> _autosaveCmb;
+        [NewMember]
+        private QuickDropdown<IEModOptions.MaxAdventurersOptions> _maxAdventurersCmb;
 
-		[NewMember]
+        [NewMember]
 		private QuickCheckbox _disableBackerDialog;
 
 		[NewMember]
@@ -252,6 +254,11 @@ namespace IEMod.Mods.Options {
             _fastSneak.Width = cmbWidth;
             _fastSneak.LabelWidth = cmbLabelWidth;
             _fastSneak.Transform.localPosition = centerCmbTop.Plus(y: -150);
+
+            _maxAdventurersCmb = quickFactory.EnumDropdown(() => IEModOptions.MaxAdventurersCount);
+            _maxAdventurersCmb.Width = cmbWidth;
+            _maxAdventurersCmb.LabelWidth = cmbLabelWidth;
+            _maxAdventurersCmb.Transform.localPosition = centerCmbTop.Plus(y: -180);
 
             // Pallegina dispositions mod page
             quickFactory.CurrentParent = ieModDisposition.Transform;
