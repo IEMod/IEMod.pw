@@ -8,10 +8,10 @@ namespace IEMod.Mods.Targeting {
 	internal class mod_AttackBase : AttackBase {
 		[NewMember]
 		public static bool HostileEvenIfConfused(GameObject target, GameObject caster) {
-			var targetFaction = target.GetComponent<Faction>();
-			var casterFaction = caster.GetComponent<Faction>();
+			var targetFaction = target?.GetComponent<Faction>();
+			var casterFaction = caster?.GetComponent<Faction>();
 			var targetAiController = GameUtilities.FindActiveAIController(target);
-			if (targetFaction.IsHostile(caster) == true || casterFaction.IsHostile(target) == true) {
+			if (targetFaction?.IsHostile(caster) == true || casterFaction?.IsHostile(target) == true) {
 				//they're actually hostile
 				return true;
 			}
@@ -23,11 +23,26 @@ namespace IEMod.Mods.Targeting {
 				//no more checks if the option is disabled.
 				return false;
 			}
-	
-			var targetOriginal = targetAiController.GetOriginalTeam().GetRelationship(casterFaction.CurrentTeam)
+		
+			var targetOriginal = targetAiController.GetOriginalTeam()?.GetRelationship(casterFaction?.CurrentTeam)
 				== Faction.Relationship.Hostile;
 
 			return targetOriginal;
+		}
+
+		[NewMember]
+		public static bool FriendlyRightNowAndAlsoWhenConfused(GameObject target, GameObject caster) {
+			var targetFaction = target?.GetComponent<Faction>();
+			var casterFaction = caster?.GetComponent<Faction>();
+			var targetAiController = GameUtilities.FindActiveAIController(target);
+			if (IEModOptions.TargetTurnedEnemies && targetAiController != null && casterFaction != null) {
+				var targetOriginallyFriendly = targetAiController.GetOriginalTeam()?.GetRelationship(casterFaction.CurrentTeam)
+					== Faction.Relationship.Friendly;
+				if (!targetOriginallyFriendly) {
+					return false;
+				}
+			}
+			return targetFaction?.IsFriendly(caster) == true || casterFaction?.IsHostile(target) == true;
 		}
 
 		[ModifiesMember("IsValidTarget")]
@@ -78,7 +93,7 @@ namespace IEMod.Mods.Targeting {
 					break;
 				}
 				case TargetType.Friendly: {
-					if (!HostileEvenIfConfused(target, caster)) {
+					if (FriendlyRightNowAndAlsoWhenConfused(target, caster)) {
 						return true;
 					}
 					break;
