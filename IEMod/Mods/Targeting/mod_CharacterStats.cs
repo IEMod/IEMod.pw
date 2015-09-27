@@ -133,5 +133,34 @@ namespace IEMod.Mods.Targeting {
 				this.OnPostDamageDealt(base.gameObject, new CombatEventArgs(damage, base.gameObject, enemy));
 			}
 		}
+
+        [NewMember]
+        public Team GetSwappedTeam()
+        {
+            StatusEffect cachedFactionEffect = null;
+
+            for (int i = 0; i < this.m_statusEffects.Count; i++)
+            {
+                StatusEffect item = this.m_statusEffects[i];
+                if (item.Applied)
+                {
+                    if (item.AfflictionOrigin == AfflictionData.Charmed || item.AfflictionOrigin == AfflictionData.Dominated)
+                    {
+                        if (item.Params.AffectsStat == StatusEffect.ModifiedStat.SwapFaction)
+                        {
+                            cachedFactionEffect = item;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            if(cachedFactionEffect == null)
+            {
+                return null;
+            }
+
+            return cachedFactionEffect.GetCachedTeam();
+        }
 	}
 }
