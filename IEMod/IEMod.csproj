@@ -83,6 +83,7 @@
     <Compile Include="Mods\AlterResourcesMod\Serialization\AbilityActionData.cs" />
     <Compile Include="Mods\AlterResourcesMod\Serialization\AbilityChange.cs" />
     <Compile Include="Mods\AlterResourcesMod\Serialization\AfflictionChange.cs" />
+    <Compile Include="Mods\AlterResourcesMod\Serialization\StatusEffectChange.cs" />
     <Compile Include="Mods\AlwaysShowCircles\Mod_AlwaysShowSelectionCircles_Faction.cs" />
     <Compile Include="Mods\BackerStuff\BackerNamesMod.cs" />
     <Compile Include="Mods\BonusSpellsGrimoire\mod_UIGrimoireInSpellRow.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Mods\FastSneak\mod_PartyMemberAI.cs" />
     <Compile Include="Mods\MaxAdventurers\mod_PartyMemberAI.cs" />
     <Compile Include="Mods\NoEngagement\Mod_NoEngagement_HudEngagementIndicator.cs" />
+    <Compile Include="Mods\Targeting\mod_AIController.cs" />
     <Compile Include="Mods\ToggleWalking\mod_MappedInput.cs" />
     <Compile Include="Mods\ToggleWalking\mod_Player.cs" />
     <Compile Include="Mods\ToggleWalking\mod_UIChantEditor.cs" />
