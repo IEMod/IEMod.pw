@@ -371,87 +371,87 @@ namespace IEMod.Mods.AlterResourcesMod
             return prefab;
         }
 
-        [NewMember]
-        [DuplicatesBody(nameof(LoadPrefab))]
-        public static UnityEngine.Object dup_LoadPrefab(string assetName, string bundlePath, Type bundleType, bool instantiate)
-        {
-            return null;
-        }
+        //[NewMember]
+        //[DuplicatesBody(nameof(LoadPrefab))]
+        //public static UnityEngine.Object dup_LoadPrefab(string assetName, string bundlePath, Type bundleType, bool instantiate)
+        //{
+        //    return null;
+        //}
 
-        [ModifiesMember(nameof(LoadPrefab))]
-        public static UnityEngine.Object mod_LoadPrefab(string assetName, string bundlePath, Type bundleType, bool instantiate)
-        {
-            UnityEngine.Object prefab = dup_LoadPrefab(assetName, bundlePath, bundleType, instantiate);
-            HashSet<string> interestedInList = new HashSet<string>()
-            {
-                "FighterAbilityProgressionTable",
-                "CipherAbilityProgressionTable",
-                "ChanterAbilityProgressionTable",
-                "PaladinAbilityProgressionTable",
-                "WizardAbilityProgressionTable",
-                "MonkAbilityProgressionTable",
-                "RogueAbilityProgressionTable",
-                "BarbarianAbilityProgressionTable",
-                "PriestAbilityProgressionTable",
-                "DruidAbilityProgressionTable",
-            };
-            bool interestedIn = interestedInList.Contains(assetName);
-
-
-            if (prefab != null && prefab is AbilityProgressionTable)
-            {
-                AbilityProgressionTable table = prefab as AbilityProgressionTable;
-
-                if (interestedIn)
-                {
-                    IEDebug.Log(string.Format("Found AbilityProgressionTable, name = {1}, ability unlocks count = {0}", table.AbilityPointUnlocks.Length.ToString(), assetName));
-                }
+        //[ModifiesMember(nameof(LoadPrefab))]
+        //public static UnityEngine.Object mod_LoadPrefab(string assetName, string bundlePath, Type bundleType, bool instantiate)
+        //{
+        //    UnityEngine.Object prefab = dup_LoadPrefab(assetName, bundlePath, bundleType, instantiate);
+        //    HashSet<string> interestedInList = new HashSet<string>()
+        //    {
+        //        "FighterAbilityProgressionTable",
+        //        "CipherAbilityProgressionTable",
+        //        "ChanterAbilityProgressionTable",
+        //        "PaladinAbilityProgressionTable",
+        //        "WizardAbilityProgressionTable",
+        //        "MonkAbilityProgressionTable",
+        //        "RogueAbilityProgressionTable",
+        //        "BarbarianAbilityProgressionTable",
+        //        "PriestAbilityProgressionTable",
+        //        "DruidAbilityProgressionTable",
+        //    };
+        //    bool interestedIn = interestedInList.Contains(assetName);
 
 
-                foreach (AbilityProgressionTable.AbilityPointUnlock unlock in table.AbilityPointUnlocks)
-                {
-                    if (interestedIn)
-                    {
-                        IEDebug.Log(string.Format("Found unlock for level {0}", unlock.Level));
-                    }
-                    foreach (AbilityProgressionTable.AbilityPointUnlock.CategoryPointPair pair in unlock.CategoryPointPairs)
-                    {
-                        if (interestedIn)
-                        {
-                            IEDebug.Log(string.Format("Unlock: Type = {0}, Points = {1}", pair.Category.ToString(), pair.PointsGranted.ToString()));
-                        }
+        //    if (prefab != null && prefab is AbilityProgressionTable)
+        //    {
+        //        AbilityProgressionTable table = prefab as AbilityProgressionTable;
 
-                        if (pair.Category == AbilityProgressionTable.CategoryFlag.Talent)
-                        {
-                            pair.PointsGranted = 2;
-                        }
-                    }
+        //        if (interestedIn)
+        //        {
+        //            IEDebug.Log(string.Format("Found AbilityProgressionTable, name = {1}, ability unlocks count = {0}", table.AbilityPointUnlocks.Length.ToString(), assetName));
+        //        }
 
-                }
-                if (interestedIn)
-                {
-                    foreach (AbilityProgressionTable.UnlockableAbility abilityUnlock in table.AbilityUnlocks)
-                    {
-                        IEDebug.Log($"Ability Unlock, Category: {abilityUnlock.Category}, Style: {abilityUnlock.UnlockStyle}, Name: {abilityUnlock.Ability.name}");
-                        if (abilityUnlock.RequirementSets != null)
-                        {
-                            IEDebug.Log($"Ability Requirement Count = {abilityUnlock.RequirementSets.Length}");
-                            foreach (AbilityProgressionTable.AbilityRequirements requirement in abilityUnlock.RequirementSets)
-                            {
-                                IEDebug.Log($"Level {requirement.MinimumLevel} - {requirement.MaximumLevel}");
-                                IEDebug.Log($"MustBePC = {requirement.MustBePlayerCharacter}");
-                                IEDebug.Log($"Class = {requirement.Class}");
-                                IEDebug.Log($"Abilities = {requirement.Abilities.Length}");
-                                IEDebug.Log($"Attributes = {requirement.Attributes.Length}");
-                            }
-                        }
-                    }
-                }
 
-            }
+        //        foreach (AbilityProgressionTable.AbilityPointUnlock unlock in table.AbilityPointUnlocks)
+        //        {
+        //            if (interestedIn)
+        //            {
+        //                IEDebug.Log(string.Format("Found unlock for level {0}", unlock.Level));
+        //            }
+        //            foreach (AbilityProgressionTable.AbilityPointUnlock.CategoryPointPair pair in unlock.CategoryPointPairs)
+        //            {
+        //                if (interestedIn)
+        //                {
+        //                    IEDebug.Log(string.Format("Unlock: Type = {0}, Points = {1}", pair.Category.ToString(), pair.PointsGranted.ToString()));
+        //                }
 
-            return prefab;
-        }
+        //                if (pair.Category == AbilityProgressionTable.CategoryFlag.Talent)
+        //                {
+        //                    pair.PointsGranted = 2;
+        //                }
+        //            }
+
+        //        }
+        //        if (interestedIn)
+        //        {
+        //            foreach (AbilityProgressionTable.UnlockableAbility abilityUnlock in table.AbilityUnlocks)
+        //            {
+        //                IEDebug.Log($"Ability Unlock, Category: {abilityUnlock.Category}, Style: {abilityUnlock.UnlockStyle}, Name: {abilityUnlock.Ability.name}");
+        //                if (abilityUnlock.RequirementSets != null)
+        //                {
+        //                    IEDebug.Log($"Ability Requirement Count = {abilityUnlock.RequirementSets.Length}");
+        //                    foreach (AbilityProgressionTable.AbilityRequirements requirement in abilityUnlock.RequirementSets)
+        //                    {
+        //                        IEDebug.Log($"Level {requirement.MinimumLevel} - {requirement.MaximumLevel}");
+        //                        IEDebug.Log($"MustBePC = {requirement.MustBePlayerCharacter}");
+        //                        IEDebug.Log($"Class = {requirement.Class}");
+        //                        IEDebug.Log($"Abilities = {requirement.Abilities.Length}");
+        //                        IEDebug.Log($"Attributes = {requirement.Attributes.Length}");
+        //                    }
+        //                }
+        //            }
+        //        }
+
+        //    }
+
+        //    return prefab;
+        //}
 
     }
 
