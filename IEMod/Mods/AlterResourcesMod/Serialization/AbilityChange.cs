@@ -19,6 +19,8 @@ namespace IEMod.Mods.AlterResourcesMod.Serialization
         public string BlastAngle { get; set; }
         public string DamageType { get; set; }
         public string DefendedBy { get; set; }
+        public string Speed { get; set; }
+        public List<StatusEffectChange> StatusEffectChanges { get; set; }
         public List<AfflictionChange> AfflictionChanges { get; set;}
         public AbilityChange ExtraAOE { get; set; }
     }

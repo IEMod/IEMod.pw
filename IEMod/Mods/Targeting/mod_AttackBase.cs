@@ -42,7 +42,7 @@ namespace IEMod.Mods.Targeting {
 					return false;
 				}
 			}
-			return targetFaction?.IsFriendly(caster) == true || casterFaction?.IsHostile(target) == true;
+			return targetFaction?.IsFriendly(caster) == true || casterFaction?.IsFriendly(target) == true;
 		}
 
 		[ModifiesMember("IsValidTarget")]
