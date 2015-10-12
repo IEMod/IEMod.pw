@@ -77,7 +77,8 @@ namespace ModdingEnvironment
                 , "Assembly-UnityScript-firstpass"
                 , "OEICommon"
                 , "OEIFormats",
-                "UnityEngine"
+                "UnityEngine",
+                "GalaxyCSharp"
             };
 
             var referencesPath = PathHelper.GetAbsolutePath(RelativePaths.ReferencesPath);

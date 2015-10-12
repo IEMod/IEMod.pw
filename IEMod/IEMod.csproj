@@ -88,7 +88,6 @@
     <Compile Include="Mods\BackerStuff\BackerNamesMod.cs" />
     <Compile Include="Mods\BonusSpellsGrimoire\mod_UIGrimoireInSpellRow.cs" />
     <Compile Include="Mods\BonusSpellsGrimoire\mod_Grimoire.cs" />
-    <Compile Include="Mods\Bugfix2_01_Caster_Centered_Spells\mod_AI_Player_Attack.cs" />
     <Compile Include="Mods\CameraControlMod\Mod_CameraControl.cs" />
     <Compile Include="Mods\CipherFocus\mod_FocusTrait.cs" />
     <Compile Include="Mods\CombatLooting\mod_Container.cs" />

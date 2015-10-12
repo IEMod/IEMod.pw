@@ -995,22 +995,10 @@ namespace IEMod.Mods.ConsoleMod {
         /* * * TJH 8/26/2015 - It's no longer necessary to override RunCommand. We can just make sure all methods are always
             available and not treated as cheats * * */
 
-        [ModifiesMember("GetNonCheatMethods")]
-        public static IEnumerable<MethodInfo> GetNonCheatMethodsNew()
+        [ModifiesMember("MethodIsAvailable")]
+        public static bool MethodIsAvailable(MethodInfo method)
         {
-            return CommandLineRun.GetAllMethods();
-        }
-
-        [ModifiesMember("GetAvailableMethods")]
-        public static IEnumerable<MethodInfo> GetAvailableMethodsNew()
-        {
-            return CommandLineRun.GetAllMethods();
-        }
-
-        [ModifiesMember("GetCheatMethods")]
-        public static IEnumerable<MethodInfo> GetCheatMethodsNew()
-        {
-            return new List<MethodInfo>();
+            return true;
         }
 
     }
