@@ -85,7 +85,7 @@ namespace IEMod.Mods.FastSneak {
             {
                 return;
             }
-            if (GameState.Option.AutoPause.IsEventSet(AutoPauseOptions.PauseEvent.EnemySpotted) || IEModOptions.FastSneak != IEModOptions.FastSneakOptions.Normal)
+            if (GameState.Option.AutoPause.IsEventSet(AutoPauseOptions.PauseEvent.EnemySpotted))
             {
                 this.UpdateEnemySpotted();
             }
@@ -196,9 +196,9 @@ namespace IEMod.Mods.FastSneak {
                         }
                     }
                 }
-                if (desiredSpeed < this.m_mover.GetWalkSpeed() * 0.75f)
+                if (desiredSpeed < 1.5f)
                 {
-                    desiredSpeed = this.m_mover.GetWalkSpeed();
+                    desiredSpeed = 2f;
                 }
                 this.m_mover.UseCustomSpeed(desiredSpeed);
             }

@@ -80,6 +80,11 @@ namespace IEMod.Mods.AlterResourcesMod
             {
                 AddEnumValue<CharacterStats.DefenseType>(AbilityChange.ChangeType.DefendedBy, serializedChangeData.DefendedBy, result);
             }
+            if (!String.IsNullOrEmpty(serializedChangeData.Speed))
+            {
+                AddEnumValue<AttackBase.AttackSpeedType>(AbilityChange.ChangeType.Speed, serializedChangeData.Speed, result);
+            }
+
 
             if (serializedChangeData.AfflictionChanges != null)
             {
@@ -111,7 +116,65 @@ namespace IEMod.Mods.AlterResourcesMod
                 }
             }
 
-            if(serializedChangeData.ExtraAOE != null)
+            if (serializedChangeData.StatusEffectChanges != null)
+            {
+                foreach (Serialization.StatusEffectChange change in serializedChangeData.StatusEffectChanges)
+                {
+                    int index;
+                    float value;
+                    float? duration = null;
+                    float? magnitude = null;
+                    bool flag;
+
+                    flag = int.TryParse(change.Index, out index);
+                    if (flag)
+                    {
+                        if(!string.IsNullOrEmpty(change.Duration))
+                        {
+                            flag = float.TryParse(change.Duration, out value);
+                            if(flag)
+                            {
+                                duration = value;
+                            } else
+                            {
+                                IEDebug.Log($"Failed to parse Status Effect Duration. Expected float, got {change.Duration}");
+                            }
+                        }
+
+                        if (!string.IsNullOrEmpty(change.Magnitude))
+                        {
+                            flag = float.TryParse(change.Magnitude, out value);
+                            if (flag)
+                            {
+                                magnitude = value;
+                            }
+                            else
+                            {
+                                IEDebug.Log($"Failed to parse Status Effect Magnitude. Expected float, got {change.Magnitude}");
+                            }
+                        }
+
+                        if(!duration.HasValue && !magnitude.HasValue)
+                        {
+                            IEDebug.Log($"No change to make, skipping.");
+                        }
+                        else
+                        {
+                            result.Add(new AbilityChange()
+                            {
+                                Type = AbilityChange.ChangeType.StatusEffect,
+                                Value = new AbilityChange.StatusEffectChange() { Index = index, Duration = duration, Magnitude = magnitude },
+                            });
+                        }                       
+                    }
+                    else
+                    {
+                        IEDebug.Log($"Failed to parse Status Effect Index. Expected int, got {change.Index}");
+                    }
+                }
+            }
+
+            if (serializedChangeData.ExtraAOE != null)
             {
                 IEnumerable<AbilityChange> aoeAbilityChanges = TranslateAbilityChanges(serializedChangeData.ExtraAOE);
                 if(aoeAbilityChanges != null)

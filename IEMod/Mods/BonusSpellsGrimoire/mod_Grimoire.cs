@@ -94,53 +94,95 @@ namespace IEMod.Mods.BonusSpellsGrimoire {
 			}
 			return false;
 		}
-		[ModifiesMember("FindNewSpell")]
-		public GenericSpell FindNewSpellNew(GameObject caster, int max_spell_level)
-		{
-			if (caster == null)
-			{
-				return null;
-			}
-			CharacterStats component = caster.GetComponent<CharacterStats>();
-			if (component == null)
-			{
-				return null;
-			}
-			List<GenericSpell> list = new List<GenericSpell>();
-			int num = MaxSpellLevel;
-			if (max_spell_level < num)
-			{
-				num = max_spell_level;
-			}
-			for (int i = 0; i < num; i++)
-			{
-				for (int j = 0; j < MaxSpellsPerLevel + (int)IEModOptions.ExtraWizardSpells; j++)
-				{
-					if (this.Spells[i].SpellData[j] != null)
-					{
-						bool flag = false;
-						foreach (GenericAbility current in component.ActiveAbilities)
-						{
-							if (current is GenericSpell && this.Spells[i].SpellData[j].DisplayName.StringID == current.DisplayName.StringID)
-							{
-								flag = true;
-								break;
-							}
-						}
-						if (!flag)
-						{
-							list.Add(this.Spells[i].SpellData[j]);
-						}
-					}
-				}
-			}
-			GenericSpell result = null;
-			if (list.Count > 0)
-			{
-				int index = UnityEngine.Random.Range(0, list.Count);
-				result = list[index];
-			}
-			return result;
-		}
+
+		[ModifiesMember("FindNewSpells")]
+        public void mod_FindNewSpells(List<GenericSpell> newSpells, CharacterStats casterStats, int maxSpellLevel)
+        {
+            if (!casterStats)
+            {
+                return;
+            }
+            int num = Mathf.Min(maxSpellLevel, 8);
+            for (int i = 0; i < num; i++)
+            {
+                for (int j = 0; j < MaxSpellsPerLevel + (int)IEModOptions.ExtraWizardSpells; j++)
+                {
+                    GenericSpell spellData = this.Spells[i].SpellData[j];
+                    if (spellData != null)
+                    {
+                        bool flag = false;
+                        IEnumerator<GenericAbility> enumerator = casterStats.ActiveAbilities.GetEnumerator();
+                        try
+                        {
+                            while (enumerator.MoveNext())
+                            {
+                                GenericAbility current = enumerator.Current;
+                                if (!(current is GenericSpell) || spellData.DisplayName.StringID != current.DisplayName.StringID)
+                                {
+                                    continue;
+                                }
+                                flag = true;
+                                break;
+                            }
+                        }
+                        finally
+                        {
+                            if (enumerator == null)
+                            {
+                            }
+                            enumerator.Dispose();
+                        }
+                        if (!flag && !newSpells.Contains(spellData))
+                        {
+                            newSpells.Add(spellData);
+                        }
+                    }
+                }
+            }
+                //if (caster == null)
+                //{
+                //	return null;
+                //}
+                //CharacterStats component = caster.GetComponent<CharacterStats>();
+                //if (component == null)
+                //{
+                //	return null;
+                //}
+                //List<GenericSpell> list = new List<GenericSpell>();
+                //int num = MaxSpellLevel;
+                //if (max_spell_level < num)
+                //{
+                //	num = max_spell_level;
+                //}
+                //for (int i = 0; i < num; i++)
+                //{
+                //	for (int j = 0; j < MaxSpellsPerLevel + (int)IEModOptions.ExtraWizardSpells; j++)
+                //	{
+                //		if (this.Spells[i].SpellData[j] != null)
+                //		{
+                //			bool flag = false;
+                //			foreach (GenericAbility current in component.ActiveAbilities)
+                //			{
+                //				if (current is GenericSpell && this.Spells[i].SpellData[j].DisplayName.StringID == current.DisplayName.StringID)
+                //				{
+                //					flag = true;
+                //					break;
+                //				}
+                //			}
+                //			if (!flag)
+                //			{
+                //				list.Add(this.Spells[i].SpellData[j]);
+                //			}
+                //		}
+                //	}
+                //}
+                //GenericSpell result = null;
+                //if (list.Count > 0)
+                //{
+                //	int index = UnityEngine.Random.Range(0, list.Count);
+                //	result = list[index];
+                //}
+                //return result;
+            }
 	}
 }

@@ -60,6 +60,21 @@ namespace IEMod.Mods.AlterResourcesMod
 
                     result = new AbilityActionData(serializedData);
 
+                    //List<AbilityChange> temp = new List<AbilityChange>(result.AbilityChanges["Blizzard"]);
+                    //temp.Add(new AbilityChange()
+                    //{
+                    //    Type = AbilityChange.ChangeType.StatusEffect,
+                    //    Value = new AbilityChange.StatusEffectChange()
+                    //    {
+                    //        Index = 0,
+                    //        Magnitude = .7f,
+                    //        Duration = 15f
+                    //    }
+                    //});
+
+                    //result.AbilityChanges["Blizzard"] = temp;
+
+
                     //value = new Serialization.AbilityActionData();
                     //value.AbilityExports = new List<Serialization.AbilityExport>();
                     //value.AbilityExports.Add(new Serialization.AbilityExport { Name = "Test1" });
@@ -82,7 +97,7 @@ namespace IEMod.Mods.AlterResourcesMod
                     //        MaxDamage = "9.2",
                     //        Accuracy = "12"
                     //    }
-                          
+
                     //});
 
                     //System.Text.StringBuilder sb = new System.Text.StringBuilder();
@@ -153,6 +168,10 @@ namespace IEMod.Mods.AlterResourcesMod
                         attack.DTBypass = singleChange.GetValue<float>();
                         break;
 
+                    case AbilityChange.ChangeType.Speed:
+                        attack.AttackSpeed = singleChange.GetValue<AttackBase.AttackSpeedType>();
+                        break;
+
                     case AbilityChange.ChangeType.BlastRadius:
                         if(!(attack is AttackAOE))
                         {
@@ -172,6 +191,24 @@ namespace IEMod.Mods.AlterResourcesMod
 
                         aoe = attack as AttackAOE;
                         aoe.DamageAngleDegrees = singleChange.GetValue<float>();
+
+                        break;
+
+                    case AbilityChange.ChangeType.StatusEffect:
+                        AbilityChange.StatusEffectChange statusEffectData = singleChange.GetValue<AbilityChange.StatusEffectChange>();
+                        if (attack.StatusEffects.Count <= statusEffectData.Index)
+                        {
+                            throw new InvalidOperationException($"Attempt to change Status Effect at Index {statusEffectData.Index}, but attack only contains {attack.StatusEffects.Count} status effects.");
+                        }
+
+                        if (statusEffectData.Magnitude.HasValue)
+                        {
+                            attack.StatusEffects[statusEffectData.Index].Value = statusEffectData.Magnitude.Value;
+                        }
+                        if (statusEffectData.Duration.HasValue)
+                        {
+                            attack.StatusEffects[statusEffectData.Index].Duration = statusEffectData.Duration.Value;
+                        }
 
                         break;
 
@@ -222,12 +259,13 @@ namespace IEMod.Mods.AlterResourcesMod
             AddIndentedString(attackString, $"Range: {ab.AttackDistance}", indentLevel);
             AddIndentedString(attackString, $"DT Bypass: {ab.DTBypass}", indentLevel);
             AddIndentedString(attackString, $"Speed: {ab.AttackSpeedTime}", indentLevel);
+            AddIndentedString(attackString, $"Push: {ab.PushDistance}", indentLevel);
             AddIndentedString(attackString, $"Defended By: {ab.DefendedBy.ToString()}", indentLevel);
 
             AddIndentedString(attackString, $"Status Effects Count: {ab.StatusEffects.Count}", indentLevel);
             foreach (StatusEffectParams effect in ab.StatusEffects)
             {
-                AddIndentedString(attackString, String.Format("Status Effect: {0} for {1}, {2}", effect.AffectsStat, effect.Duration, effect.Description), indentLevel);
+                AddIndentedString(attackString, String.Format("Status Effect: {0} for {1}, {2}", effect.AffectsStat, effect.Duration, effect.Value), indentLevel);
             }
             AddIndentedString(attackString, $"Afflictions Count: {ab.Afflictions.Count}", indentLevel);
             foreach (AfflictionParams affliction in ab.Afflictions)
@@ -368,8 +406,8 @@ namespace IEMod.Mods.AlterResourcesMod
         //        {
         //            IEDebug.Log(string.Format("Found AbilityProgressionTable, name = {1}, ability unlocks count = {0}", table.AbilityPointUnlocks.Length.ToString(), assetName));
         //        }
-                
-          
+
+
         //        foreach (AbilityProgressionTable.AbilityPointUnlock unlock in table.AbilityPointUnlocks)
         //        {
         //            if (interestedIn)
@@ -388,7 +426,7 @@ namespace IEMod.Mods.AlterResourcesMod
         //                    pair.PointsGranted = 2;
         //                }
         //            }
-                    
+
         //        }
         //        if (interestedIn)
         //        {
@@ -409,7 +447,7 @@ namespace IEMod.Mods.AlterResourcesMod
         //                }
         //            }
         //        }
-                
+
         //    }
 
         //    return prefab;

@@ -34,6 +34,14 @@ namespace IEMod.Mods.AlterResourcesMod
             public float Duration { get; set; }
         }
 
+        [NewType]
+        public class StatusEffectChange
+        {
+            public int Index { get; set; }
+            public float? Magnitude { get; set; }
+            public float? Duration { get; set; }
+        }
+
 
         [NewType]
         public enum ChangeType
@@ -45,9 +53,10 @@ namespace IEMod.Mods.AlterResourcesMod
             Range,
             DTBypass,
             DefendedBy,
+            Speed,
             BlastRadius,
             BlastAngle,
-            //StatusEffect,
+            StatusEffect,
             Affliction,
             ExtraAOE,
             //NewStatusEffect,

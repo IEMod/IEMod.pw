@@ -83,11 +83,11 @@
     <Compile Include="Mods\AlterResourcesMod\Serialization\AbilityActionData.cs" />
     <Compile Include="Mods\AlterResourcesMod\Serialization\AbilityChange.cs" />
     <Compile Include="Mods\AlterResourcesMod\Serialization\AfflictionChange.cs" />
+    <Compile Include="Mods\AlterResourcesMod\Serialization\StatusEffectChange.cs" />
     <Compile Include="Mods\AlwaysShowCircles\Mod_AlwaysShowSelectionCircles_Faction.cs" />
     <Compile Include="Mods\BackerStuff\BackerNamesMod.cs" />
     <Compile Include="Mods\BonusSpellsGrimoire\mod_UIGrimoireInSpellRow.cs" />
     <Compile Include="Mods\BonusSpellsGrimoire\mod_Grimoire.cs" />
-    <Compile Include="Mods\Bugfix2_01_Caster_Centered_Spells\mod_AI_Player_Attack.cs" />
     <Compile Include="Mods\CameraControlMod\Mod_CameraControl.cs" />
     <Compile Include="Mods\CipherFocus\mod_FocusTrait.cs" />
     <Compile Include="Mods\CombatLooting\mod_Container.cs" />
@@ -100,6 +100,7 @@
     <Compile Include="Mods\FastSneak\mod_PartyMemberAI.cs" />
     <Compile Include="Mods\MaxAdventurers\mod_PartyMemberAI.cs" />
     <Compile Include="Mods\NoEngagement\Mod_NoEngagement_HudEngagementIndicator.cs" />
+    <Compile Include="Mods\Targeting\mod_AIController.cs" />
     <Compile Include="Mods\ToggleWalking\mod_MappedInput.cs" />
     <Compile Include="Mods\ToggleWalking\mod_Player.cs" />
     <Compile Include="Mods\ToggleWalking\mod_UIChantEditor.cs" />
