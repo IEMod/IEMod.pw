@@ -71,9 +71,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IEMod\IEMod.csproj">
+    <ProjectReference Include="..\IEMod\IEMod.pw.csproj">
       <Project>{540e5efb-4e95-404d-b511-31cc56a9a492}</Project>
-      <Name>IEMod</Name>
+      <Name>IEMod.pw</Name>
     </ProjectReference>
     <ProjectReference Include="..\Patchwork\cecil-0.9.6\Mono.Cecil.csproj">
       <Project>{d68133bd-1e63-496e-9ede-4fbdbf77b486}</Project>

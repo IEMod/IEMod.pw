@@ -103,8 +103,10 @@ namespace Start {
 
 			//+ Creating patcher
 			var patcher = new AssemblyPatcher(originalDllPath, Log) {
-				EmbedHistory = false
+				EmbedHistory = true
 			};
+			
+			File.Copy(typeof(NewTypeAttribute).Assembly.Location, Path.Combine(copyToFolder, "Patchwork.Attributes.dll"), true);
 
 			//+ Patching assemblies
 			patcher.PatchAssembly(typeof (IEModType).Assembly.Location);
