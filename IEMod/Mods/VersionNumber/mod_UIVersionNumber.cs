@@ -20,7 +20,7 @@ namespace IEMod.Mods.VersionNumber {
 			alias_MonoBehavior_ctor();
 			var ieModVersion = IEMod.IEModVersion.Version;
 			//GR 29/8 - there has to be some const for the version, but I haven't found it :/
-			this.FormatString = $"v2.02.{{0}} {{1}} - IEMod {ieModVersion}";
+			this.FormatString = $"v2.03.{{0}} {{1}} - IEMod {ieModVersion}";
 			this.m_stringBuilder = new StringBuilder();
 		}
 	}
