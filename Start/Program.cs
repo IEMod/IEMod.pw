@@ -117,7 +117,7 @@ namespace Start {
 			if (runPeVerify) {
 				Console.WriteLine(
 					"Running PEVerify on the assembly to check the IL for errors. Please wait.");
-				Log.Information(patcher.RunPeVerify(ignoreErrors: _ignoreErrors));
+				Log.Information(patcher.RunPeVerify(copyToPath,ignoreErrors: _ignoreErrors));
 			}
 			patcher.WriteTo(copyToPath);
 			LogFile.Flush();

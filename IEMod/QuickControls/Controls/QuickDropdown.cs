@@ -165,7 +165,6 @@ namespace IEMod.QuickControls {
 				return asChoice == null ? default(T) : asChoice.Value;
 			}
 			set {
-				var xfg = default(int);
 				var dropdown = DropdownComponent;
 				var tryFindChoice = dropdown.Options.Cast<DropdownChoice<T>>().SingleOrDefault(x => Equals(x.Value, value));
 				dropdown.SelectedItem = tryFindChoice ?? (dropdown.Options.Length == 0 ? null : dropdown.Options[0]);
