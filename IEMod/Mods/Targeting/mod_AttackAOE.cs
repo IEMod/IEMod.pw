@@ -9,7 +9,7 @@ namespace IEMod.Mods.Targeting {
 	public class mod_AttackAOE : AttackAOE {
 
 		[ModifiesMember("FindAoeTargets")]
-		public virtual List<GameObject> FindAoeTargetsNew(GameObject caster, Vector3 parentForward, Vector3 hitPosition) {
+		public virtual List<GameObject> FindAoeTargetsNew(GameObject caster, Vector3 parentForward, Vector3 hitPosition, bool forUI) {
 			List<GameObject> gameObjects = new List<GameObject>();
 			float blastRadius = AdjustedBlastRadius;
 			float adjBlastRadius = blastRadius;

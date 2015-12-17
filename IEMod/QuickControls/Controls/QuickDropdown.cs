@@ -105,23 +105,35 @@ namespace IEMod.QuickControls {
 
 		public int Width {
 			get {
-				
-				return (int) DropdownComponent.Background.transform.localScale.x;
+
+                return (int) DropdownComponent.DropdownBackground.transform.localScale.x;
+                
 			}
 			set {
-				
-				var comboBoxBackground = DropdownComponent.Background;
-				comboBoxBackground.transform.localScale = new Vector3(value, 32, 1); //this is the width of the combobox
 
-				var arrowThing = DropdownComponent.ArrowPivot;
-				arrowThing.transform.localPosition = new Vector3(value - 27, 10, 0);
+                var comboBoxBackground = DropdownComponent.DropdownBackground;
+                comboBoxBackground.transform.localScale = new Vector3(value, 32, 1); //this is the width of the combobox
+                DropdownComponent.BaseCollider.transform.localScale = new Vector3(value, 32, 1); //this is the width of the combobox
+                ////DropdownComponent.DropdownParent.transform.localScale = new Vector3(value, 100, 1); //this is the width of the combobox
+                //if(DropdownComponent.OptionGrid != null)
+                //{
+                //    //DropdownComponent.OptionGrid.transform.localScale = new Vector3(value, 32, 1); //this is the width of the combobox
+                //}
+                //if (DropdownComponent.OptionTable != null)
+                //{
+                //    DropdownComponent.OptionTable.transform.localScale = new Vector3(value, 32, 1); //this is the width of the combobox
+                //    //DropdownComponent.OptionTable.w
+                //}
 
-				var dropdown = DropdownComponent;
-				dropdown.OptionRootText.lineWidth = value;
-				dropdown.SelectedText.lineWidth = value;
-				dropdown.OptionGrid.cellWidth = value;
-				Refresh();
-			}
+                var arrowThing = DropdownComponent.ArrowPivot;
+                arrowThing.transform.localPosition = new Vector3(value - 27, 10, 0);
+
+                var dropdown = DropdownComponent;
+                //dropdown.OptionRootText.lineWidth = value;
+                dropdown.SelectedText.lineWidth = value;
+                dropdown.OptionGrid.cellWidth = value;
+                Refresh();
+            }
 		}
 
 		public UIDropdownMenu DropdownComponent {

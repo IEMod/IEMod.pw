@@ -78,76 +78,91 @@ namespace IEMod.Mods.OnLevelLoad {
 
 		[ModifiesMember("FinalizeLevelLoad")]
 		public void mod_FinalizeLevelLoad() {
-			if (this.CurrentMap != null && !this.CurrentMap.HasBeenVisited && BonusXpManager.Instance
-				&& this.CurrentMap.GivesExplorationXp) {
-				this.CurrentMap.HasBeenVisited = true;
-				int xp = 0;
-				if (BonusXpManager.Instance != null) {
-					xp = BonusXpManager.Instance.MapExplorationXp;
-				}
-				object[] parameters = new object[] {
-					this.CurrentMap.DisplayName,
-					xp * PartyHelper.NumPartyMembers
-				};
-				global::Console.AddMessage("[" + NGUITools.EncodeColor(Color.yellow) + "]"
-					+ global::Console.Format(GUIUtils.GetTextWithLinks(0x661), parameters));
-				PartyHelper.AssignXPToParty(xp, false);
-			}
-			if (OnLevelLoaded != null) {
-				OnLevelLoaded(Application.loadedLevelName, EventArgs.Empty);
-			}
-			if (NewGame && (this.Difficulty == GameDifficulty.Easy)) {
-				Option.AutoPause.SetSlowEvent(AutoPauseOptions.PauseEvent.CombatStart, true);
-			}
-			ScriptEvent.BroadcastEvent(ScriptEvent.ScriptEvents.OnLevelLoaded);
-			GameState.IsLoading = false;
-			if (GameState.s_playerCharacter != null && !GameState.LoadedGame && !GameState.NewGame && GameState.NumSceneLoads > 0) {
-				if (!IEModOptions.SaveBeforeTransition) // added this line
-				{
-					if (FogOfWar.Instance) {
-						FogOfWar.Instance.WaitForFogUpdate();
-					}
-					AutosaveIfAllowed();
-				}
-			}
-			NewGame = false;
-			if (((this.CurrentMap != null) && (this.CouldCampOnLastMap != this.CurrentMap.CanCamp))
-				&& !Option.GetOption(GameOption.BoolOption.DONT_RESTRICT_STASH)) {
-				if (this.CurrentMap.CanCamp) {
-					UISystemMessager.Instance.PostMessage(GUIUtils.GetText(0x61e), Color.white);
-				} else {
-					UISystemMessager.Instance.PostMessage(GUIUtils.GetText(0x61d), Color.white);
-				}
-			}
-			NumSceneLoads++;
-			FatigueCamera.CreateCamera();
-			GammaCamera.CreateCamera();
-			WinCursor.Clip(true);
-			if (this.CurrentMap != null) {
-				TutorialManager.TutorialTrigger trigger =
-					new TutorialManager.TutorialTrigger(TutorialManager.TriggerType.ENTERED_MAP);
-				trigger.Map = this.CurrentMap.SceneName;
-				TutorialManager.STriggerTutorialsOfType(trigger);
-			}
-			if (this.CurrentMap != null && this.CurrentMap.IsValidOnMap("px1")) {
-				GameState.Instance.HasEnteredPX1 = true;
-			}
-			// in here you can place something like if (CurrentMap.SceneName == "AR_0011_Dyrford_Tavern_02") make_an_NPC; or change_NPC's_stats;
-			// added this code
-			DropButton.InjectDropInvButton();
-			if (IEModOptions.EnableCustomUi) {
-				if (IEModOptions.Layout == null) {
-					UICustomizer.Initialize();
-					IEModOptions.Layout = UICustomizer.DefaultLayout.Clone();
-				} else {
-					UICustomizer.LoadLayout(IEModOptions.Layout);	
-				}
-			}
-		
+            try
+            {
+                if (this.CurrentMap != null && !this.CurrentMap.HasBeenVisited && BonusXpManager.Instance && this.CurrentMap.GivesExplorationXp)
+                {
+                    this.CurrentMap.HasBeenVisited = true;
+                    int mapExplorationXp = 0;
+                    if (BonusXpManager.Instance != null)
+                    {
+                        mapExplorationXp = BonusXpManager.Instance.MapExplorationXp;
+                    }
+                    Console.AddMessage(string.Concat("[", NGUITools.EncodeColor(Color.yellow), "]", Console.Format(GUIUtils.GetTextWithLinks(1633), new object[] { this.CurrentMap.DisplayName, mapExplorationXp * PartyHelper.NumPartyMembers })));
+                    PartyHelper.AssignXPToParty(mapExplorationXp, false);
+                }
+                if (GameState.OnLevelLoaded != null)
+                {
+                    GameState.OnLevelLoaded(Application.loadedLevelName, EventArgs.Empty);
+                }
+                if (GameState.NewGame && this.Difficulty == GameDifficulty.Easy)
+                {
+                    GameState.Option.AutoPause.SetSlowEvent(AutoPauseOptions.PauseEvent.CombatStart, true);
+                }
+                ScriptEvent.BroadcastEvent(ScriptEvent.ScriptEvents.OnLevelLoaded);
+                GameState.IsLoading = false;
+                if (GameState.s_playerCharacter != null && !GameState.LoadedGame && !GameState.NewGame && GameState.NumSceneLoads > 0)
+                {
+                    if (!IEModOptions.SaveBeforeTransition) // added this line
+                    {
+                        if (FogOfWar.Instance)
+                        {
+                            FogOfWar.Instance.WaitForFogUpdate();
+                        }
+                        AutosaveIfAllowed();
+                    }
+                }
+                GameState.NewGame = false;
+                if (this.CurrentMap != null && this.CouldAccessStashOnLastMap != this.CurrentMap.GetCanAccessStash() && !GameState.Option.GetOption(GameOption.BoolOption.DONT_RESTRICT_STASH))
+                {
+                    if (!this.CurrentMap.GetCanAccessStash())
+                    {
+                        UISystemMessager.Instance.PostMessage(GUIUtils.GetText(1565), Color.white);
+                    }
+                    else
+                    {
+                        UISystemMessager.Instance.PostMessage(GUIUtils.GetText(1566), Color.white);
+                    }
+                }
+                GameState.NumSceneLoads = GameState.NumSceneLoads + 1;
+                FatigueCamera.CreateCamera();
+                GammaCamera.CreateCamera();
+                WinCursor.Clip(true);
+                if (this.CurrentMap != null)
+                {
+                    TutorialManager.TutorialTrigger tutorialTrigger = new TutorialManager.TutorialTrigger(TutorialManager.TriggerType.ENTERED_MAP)
+                    {
+                        Map = this.CurrentMap.SceneName
+                    };
+                    TutorialManager.STriggerTutorialsOfType(tutorialTrigger);
+                }
+                if (this.CurrentMap != null && this.CurrentMap.IsValidOnMap("px1"))
+                {
+                    GameState.Instance.HasEnteredPX1 = true;
+                }
+                // in here you can place something like if (CurrentMap.SceneName == "AR_0011_Dyrford_Tavern_02") make_an_NPC; or change_NPC's_stats;
+                // added this code
+                DropButton.InjectDropInvButton();
+                if (IEModOptions.EnableCustomUi)
+                {
+                    if (IEModOptions.Layout == null)
+                    {
+                        UICustomizer.Initialize();
+                        IEModOptions.Layout = UICustomizer.DefaultLayout.Clone();
+                    }
+                    else
+                    {
+                        UICustomizer.LoadLayout(IEModOptions.Layout);
+                    }
+                }
 
-
-		BackerNamesMod.FixBackerNames(IEModOptions.FixBackerNames);
-			// end of added code
+                BackerNamesMod.FixBackerNames(IEModOptions.FixBackerNames);
+            }
+            catch (Exception exception)
+            {
+                Debug.LogException(exception);
+                GameState.ReturnToMainMenuFromError();
+            }
 		}
 	}
 }

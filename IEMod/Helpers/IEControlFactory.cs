@@ -139,7 +139,7 @@ namespace IEMod.Helpers {
 
 			var arrowThing = comboBox.Descendant("ArrowPivot");
 			arrowThing.transform.localPosition = new Vector3(width - 27, 10, 0);
-			dropdown.OptionRootText.lineWidth = width;
+			//dropdown.OptionRootText.lineWidth = width;
 			dropdown.SelectedText.lineWidth = width;
 			dropdown.OptionGrid.cellWidth = width;
 			var optGrid = dropdown.OptionGrid;
