@@ -53,6 +53,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{92BE254C-DD62-49C3-9755-CF2E0F4BB7D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PatchworkLauncher", "Patchwork\PatchworkLauncher\PatchworkLauncher.csproj", "{6C30DED5-0078-48AC-91BB-A0A05A1FC899}"
+	ProjectSection(ProjectDependencies) = postProject
+		{540E5EFB-4E95-404D-B511-31CC56A9A492} = {540E5EFB-4E95-404D-B511-31CC56A9A492}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
