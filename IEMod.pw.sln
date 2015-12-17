@@ -27,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{88191D
 		IEMod.SharedAttributes.cs = IEMod.SharedAttributes.cs
 		IEMod\Properties\IEMod.Version.cs = IEMod\Properties\IEMod.Version.cs
 		Patchwork\Patchwork.SharedAttributes.cs = Patchwork\Patchwork.SharedAttributes.cs
-		Patchwork\Patchwork.Attributes\Properties\Patchwork.Version.cs = Patchwork\Patchwork.Attributes\Properties\Patchwork.Version.cs
+		Patchwork\Patchwork.Attributes\Properties\PatchworkVersion.cs = Patchwork\Patchwork.Attributes\Properties\PatchworkVersion.cs
 		PathConsts.DoNotPush.cs = PathConsts.DoNotPush.cs
 		RelativePaths.cs = RelativePaths.cs
 	EndProjectSection
