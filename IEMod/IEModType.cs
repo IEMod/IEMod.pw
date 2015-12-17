@@ -9,7 +9,7 @@ using Patchwork.Attributes;
 namespace IEMod
 {
 	[PatchInfo]
-	public class IEModType : MarshalByRefObject,IPatchInfo
+	public class IEModType : IPatchInfo
 	{
 		public FileInfo GetTargetFile(AppInfo app) {
 			var file = PathHelper.Combine(app.BaseDirectory.FullName, "PillarsOfEternity_Data", "Managed", "Assembly-CSharp.dll");
