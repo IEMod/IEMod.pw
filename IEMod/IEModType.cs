@@ -16,6 +16,10 @@ namespace IEMod
 			return new FileInfo(file);
 		}
 
+		public string CanPatch(AppInfo app) {
+			return null;
+		}
+
 		public string PatchVersion => IEModVersion.Version;
 
 		public string Requirements => "None";

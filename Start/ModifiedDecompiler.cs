@@ -65,8 +65,8 @@ namespace Start {
 				let yourMember = methodAction.YourMember
 				let change = yourMember.Body
 				select new {
-					Start = change.FirstSequencePoint(),
-					End = change.LastSequencePoint(),
+					Start = change.Instructions.First(x => x.SequencePoint != null).SequencePoint,
+					End = change.Instructions.First(x => x.SequencePoint != null).SequencePoint,
 					Name = yourMember.Name,
 					ModifiedMember = methodAction.TargetMember
 				};
