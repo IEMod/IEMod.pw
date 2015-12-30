@@ -11,12 +11,26 @@ namespace PoEGameInfo {
 
     [AppInfoFactory]
     internal class PoEAppInfoFactory : AppInfoFactory {
+
+		
+
         public override AppInfo CreateInfo(DirectoryInfo folderInfo) {
-	        var fileInfo = folderInfo.GetFiles("PillarsOfEternity.exe").Single();
+
+	        FileInfo exeFile;
+	        string exeFileName;
+
+	        exeFileName = Environment.OSVersion.Platform == PlatformID.Unix ? "PillarsOfEternity" : "PillarsOfEternity.exe";
+	        var fileInfos = folderInfo.GetFiles(exeFileName).ToList();
+
+	        if (fileInfos.Count == 0) {
+		        throw new FileNotFoundException("The Pillars of Eternity executable file was not found in this directory.", exeFileName);
+	        }
+	        exeFile = fileInfos[0];
+
 	        return new AppInfo() {
 		        BaseDirectory = folderInfo,
-		        Executable = fileInfo,
-		        AppVersion = FileVersionInfo.GetVersionInfo(fileInfo.FullName).FileVersion,
+		        Executable = exeFile,
+		        AppVersion = FileVersionInfo.GetVersionInfo(exeFile.FullName).FileVersion,
 		        AppName = "Pillars of Eternity",
 		        IgnorePEVerifyErrors = new[] {
 			        //Expected an ObjRef on the stack.(Error: 0x8013185E). 
