@@ -23,7 +23,7 @@ namespace PoEGameInfo {
 	        var fileInfos = folderInfo.GetFiles(exeFileName).ToList();
 
 	        if (fileInfos.Count == 0) {
-		        throw new FileNotFoundException("The Pillars of Eternity executable file was not found in this directory.", exeFileName);
+		        throw new FileNotFoundException($"The Pillars of Eternity executable file '{exeFileName}' was not found in this directory.", exeFileName);
 	        }
 	        exeFile = fileInfos[0];
 
