@@ -72,8 +72,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
-    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(ProjectDir)..\Patchwork\PatchworkLauncher\$(OutputPath)AppInfo.dll" ContinueOnError="false" />
-    <Copy SourceFiles="$(ProjectDir)Readme.txt" DestinationFolder="$(ProjectDir)..\Patchwork\PatchworkLauncher" Condition="'$(Configuration)' == 'Publish'"/>
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(ProjectDir)..\Patchwork\PatchworkLauncher\$(OutDir)AppInfo.dll" ContinueOnError="false" />
+    <Copy SourceFiles="$(ProjectDir)Readme.txt" DestinationFolder="$(ProjectDir)..\Patchwork\PatchworkLauncher\$(OutDir)" Condition="'$(Configuration)' == 'Publish'"/>
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
