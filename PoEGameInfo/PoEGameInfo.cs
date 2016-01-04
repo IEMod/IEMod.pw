@@ -11,27 +11,33 @@ namespace PoEGameInfo {
 
     [AppInfoFactory]
     internal class PoEAppInfoFactory : AppInfoFactory {
-
-		
-
         public override AppInfo CreateInfo(DirectoryInfo folderInfo) {
 
-	        FileInfo exeFile;
 	        string exeFileName;
-
-	        exeFileName = Environment.OSVersion.Platform == PlatformID.Unix ? "PillarsOfEternity" : "PillarsOfEternity.exe";
+	        string iconFile;
+	        string appVersion;
+	        if (Environment.OSVersion.Platform == PlatformID.Unix) {
+		        exeFileName = "PillarsOfEternity";
+		        iconFile = "PillarsOfEternity.png";
+		        appVersion = null;
+	        } else {
+		        exeFileName = iconFile = "PillarsOfEternity.exe";
+		        appVersion = FileVersionInfo.GetVersionInfo(Path.Combine(folderInfo.FullName, exeFileName)).FileVersion;
+	        }
+			
 	        var fileInfos = folderInfo.GetFiles(exeFileName).ToList();
 
 	        if (fileInfos.Count == 0) {
 		        throw new FileNotFoundException($"The Pillars of Eternity executable file '{exeFileName}' was not found in this directory.", exeFileName);
 	        }
-	        exeFile = fileInfos[0];
+	        var exeFile = fileInfos[0];
 
 	        return new AppInfo() {
 		        BaseDirectory = folderInfo,
 		        Executable = exeFile,
-		        AppVersion = FileVersionInfo.GetVersionInfo(exeFile.FullName).FileVersion,
+		        AppVersion = appVersion,
 		        AppName = "Pillars of Eternity",
+				IconLocation = new FileInfo(Path.Combine(folderInfo.FullName, iconFile)),
 		        IgnorePEVerifyErrors = new[] {
 			        //Expected an ObjRef on the stack.(Error: 0x8013185E). 
 			        //-you can ignore the following. They are present in the original DLL. I'm not sure if they are actually errors.
