@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{88191D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Patchwork", "Patchwork", "{C336E71B-BA44-499C-BD3E-B60D047F805C}"
 	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
+		Patchwork\README.md = Patchwork\README.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patchwork.Attributes", "Patchwork\Patchwork.Attributes\Patchwork.Attributes.csproj", "{47DCBAF7-F2E6-486C-8887-FA41C271B74E}"

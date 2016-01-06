@@ -20,7 +20,6 @@ namespace IEMod.Mods.CombatLooting {
 		{
 			[ModifiesMember("get_IsUsable")]
 			get {
-				//TODO: GR 29/8 - manually check if this code is valid
 				//!+ ADDED CODE
 				if (IEModOptions.UnlockCombatInv) {
 					if (GameState.InCombat
