@@ -95,7 +95,7 @@ namespace IEMod.Mods.Options {
 
 		[ModifiesMember("Start")]
 		private void mod_Start() {
-			//TODO: GR 29/8 - manually check if this method is consistent with 2.0. It probably is though.
+
             //NEW CODE HERE
 			var exampleCheckbox =
 				this.ComponentsInDescendants<UIOptionsTag>(true).Single(

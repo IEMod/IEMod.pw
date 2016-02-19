@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IEMod</RootNamespace>
-    <AssemblyName>IEMod</AssemblyName>
+    <AssemblyName>IEMod.pw</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
@@ -40,6 +40,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PrepareEnvironment|AnyCPU'">
     <OutputPath>bin\PrepareEnvironment\</OutputPath>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Publish|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Publish\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
@@ -79,7 +88,6 @@
     <Compile Include="Mods\AlterResourcesMod\AbilityChange.cs" />
     <Compile Include="Mods\AlterResourcesMod\AbilityActionData.cs" />
     <Compile Include="Mods\AlterResourcesMod\mod_GameResources.cs" />
-    <Compile Include="Mods\AI\Mod_AI_PathToPosition.cs" />
     <Compile Include="Mods\AlterResourcesMod\Serialization\AbilityActionData.cs" />
     <Compile Include="Mods\AlterResourcesMod\Serialization\AbilityChange.cs" />
     <Compile Include="Mods\AlterResourcesMod\Serialization\AfflictionChange.cs" />
@@ -105,7 +113,6 @@
     <Compile Include="Mods\ToggleWalking\mod_Player.cs" />
     <Compile Include="Mods\ToggleWalking\mod_UIChantEditor.cs" />
     <Compile Include="Mods\NoEngagement\Mod_NoEngagement_AIController.cs" />
-    <Compile Include="Mods\SaveXML\Mod_SaveRawXML.cs" />
     <Compile Include="Mods\UICustomization\PartyBar\mod_UIPartyPortrait.cs" />
     <Compile Include="Mods\UICustomization\PartyBar\mod_UIPortraitOnClick.cs" />
     <Compile Include="Mods\SelectionCircles\mod_SelectionCircle.cs" />
@@ -171,6 +178,10 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="AfterBuild">
+    <MakeDir Directories="$(SolutionDir)Patchwork\PatchworkLauncher\$(OutDir)Mods" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(SolutionDir)Patchwork\PatchworkLauncher\$(OutDir)Mods" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

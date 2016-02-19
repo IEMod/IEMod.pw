@@ -103,8 +103,10 @@ namespace Start {
 
 			//+ Creating patcher
 			var patcher = new AssemblyPatcher(originalDllPath, Log) {
-				EmbedHistory = false
+				EmbedHistory = true
 			};
+			
+			File.Copy(typeof(NewTypeAttribute).Assembly.Location, Path.Combine(copyToFolder, "Patchwork.Attributes.dll"), true);
 
 			//+ Patching assemblies
 			patcher.PatchAssembly(typeof (IEModType).Assembly.Location);
@@ -115,7 +117,7 @@ namespace Start {
 			if (runPeVerify) {
 				Console.WriteLine(
 					"Running PEVerify on the assembly to check the IL for errors. Please wait.");
-				Log.Information(patcher.RunPeVerify(ignoreErrors: _ignoreErrors));
+				
 			}
 			patcher.WriteTo(copyToPath);
 			LogFile.Flush();

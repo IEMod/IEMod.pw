@@ -105,23 +105,27 @@ namespace IEMod.QuickControls {
 
 		public int Width {
 			get {
-				
-				return (int) DropdownComponent.Background.transform.localScale.x;
+                return (int) DropdownComponent.DropdownBackground.transform.localScale.x;
+                
 			}
 			set {
-				
-				var comboBoxBackground = DropdownComponent.Background;
-				comboBoxBackground.transform.localScale = new Vector3(value, 32, 1); //this is the width of the combobox
 
-				var arrowThing = DropdownComponent.ArrowPivot;
-				arrowThing.transform.localPosition = new Vector3(value - 27, 10, 0);
+                var comboBoxBackground = DropdownComponent.DropdownBackground;
+                comboBoxBackground.transform.localScale = new Vector3(value, 32, 1); //this is the width of the combobox
+                DropdownComponent.BaseCollider.transform.localScale = new Vector3(value, 32, 1); //this is the width of the combobox
 
-				var dropdown = DropdownComponent;
-				dropdown.OptionRootText.lineWidth = value;
-				dropdown.SelectedText.lineWidth = value;
-				dropdown.OptionGrid.cellWidth = value;
-				Refresh();
-			}
+                var arrowThing = DropdownComponent.ArrowPivot;
+                arrowThing.transform.localPosition = new Vector3(value - 27, 10, 0); //the location of the arrow thing
+
+                var dropdown = DropdownComponent;
+				foreach (var label in dropdown.OptionGrid.ComponentsInDescendants<UILabel>()) {
+					label.lineWidth = value; //the width of each line in the OpitonGrid.
+				}
+
+                dropdown.SelectedText.lineWidth = value;
+                dropdown.OptionGrid.cellWidth = value;
+                Refresh();
+            }
 		}
 
 		public UIDropdownMenu DropdownComponent {
@@ -161,7 +165,6 @@ namespace IEMod.QuickControls {
 				return asChoice == null ? default(T) : asChoice.Value;
 			}
 			set {
-				
 				var dropdown = DropdownComponent;
 				var tryFindChoice = dropdown.Options.Cast<DropdownChoice<T>>().SingleOrDefault(x => Equals(x.Value, value));
 				dropdown.SelectedItem = tryFindChoice ?? (dropdown.Options.Length == 0 ? null : dropdown.Options[0]);

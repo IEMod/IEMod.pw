@@ -17,7 +17,6 @@ namespace IEMod.Mods.CombatOnly {
 			
 		}
 
-
 		[ModifiesMember("Update")]
 		protected virtual void mod_Update() {
 			if (originalCombatOnly == null) {
