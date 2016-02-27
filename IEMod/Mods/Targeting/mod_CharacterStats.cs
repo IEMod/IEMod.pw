@@ -27,7 +27,7 @@ namespace IEMod.Mods.Targeting {
             {
                 this.OnAddDamage(base.gameObject, new CombatEventArgs(damage, base.gameObject, enemy));
             }
-            int attackerToHitRollOverride = Random.Range(1, 101);
+            int attackerToHitRollOverride = OEIRandom.DieRoll(100);
             CharacterStats component = enemy.GetComponent<CharacterStats>();
             if (component == null)
             {
@@ -90,24 +90,19 @@ namespace IEMod.Mods.Targeting {
             }
             if (!damage.IsMiss)
             {
-                if (damage.Attack.IsDisengagementAttack)
+                for (int i = 0; i < this.ActiveStatusEffects.Count; i++)
                 {
-                    damage.DamageAdd(this.DisengagementDamageBonus * statDamageHealMultiplier);
-                }
-                if (damage.Attack is AttackMelee)
-                {
-                    damage.DamageMult(this.BonusMeleeDamageMult);
-                    damage.DamageAdd(this.BonusMeleeDamage * statDamageHealMultiplier);
-                    if ((damage.Attack as AttackMelee).Unarmed)
+                    if (this.ActiveStatusEffects[i].Applied)
                     {
-                        damage.DamageAdd(this.BonusUnarmedDamage * statDamageHealMultiplier);
+                        damage.DamageAdd(this.ActiveStatusEffects[i].AdjustDamage(base.gameObject, enemy, damage.Attack) * statDamageHealMultiplier);
+                        damage.DamageMult(this.ActiveStatusEffects[i].AdjustDamageMultiplier(base.gameObject, enemy, damage.Attack));
                     }
                 }
-                for (int i = 0; i < (int)this.BonusDamage.Length; i++)
+                for (int j = 0; j < (int)this.BonusDamage.Length; j++)
                 {
-                    if (this.BonusDamage[i] != 0f)
+                    if (this.BonusDamage[j] != 0f)
                     {
-                        DamagePacket.DamageProcType damageProcType = new DamagePacket.DamageProcType((DamagePacket.DamageType)i, this.BonusDamage[i]);
+                        DamagePacket.DamageProcType damageProcType = new DamagePacket.DamageProcType((DamagePacket.DamageType)j, this.BonusDamage[j]);
                         damage.Damage.DamageProc.Add(damageProcType);
                     }
                 }
@@ -116,26 +111,11 @@ namespace IEMod.Mods.Targeting {
                 if (damage.Attack != null)
                 {
                     Equippable equippable = damage.Attack.GetComponent<Equippable>();
-                    if (equippable != null)
+                    if (equippable)
                     {
-                        if (equippable is Weapon)
+                        if (equippable is Weapon && !(damage.Attack is AttackMelee) && enemy != null && !this.IsEnemyDistant(enemy))
                         {
-                            if (!(damage.Attack is AttackMelee))
-                            {
-                                damage.DamageMult(this.BonusRangedWeaponDamageMult);
-                                if (enemy != null && !this.IsEnemyDistant(enemy))
-                                {
-                                    damage.DamageMult(this.BonusRangedWeaponCloseEnemyDamageMult);
-                                }
-                            }
-                            else
-                            {
-                                damage.DamageMult(this.BonusMeleeWeaponDamageMult);
-                                if (equippable.BothPrimaryAndSecondarySlot)
-                                {
-                                    damage.DamageMult(this.BonusTwoHandedMeleeWeaponDamageMult);
-                                }
-                            }
+                            damage.DamageMult(this.BonusRangedWeaponCloseEnemyDamageMult);
                         }
                         equippable.ApplyItemModDamageProcs(damage);
                     }
