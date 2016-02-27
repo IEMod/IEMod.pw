@@ -21,8 +21,8 @@ namespace IEMod.Mods.Tooltips {
 			if (target != this.Target)
 			{
 				this.Target = target;
-				this.m_Stats = this.Target.GetComponent<CharacterStats>();
-				if (this.OnSelectedCharacterChanged != null)
+                this.SelectedCharacter = this.Target.GetComponent<CharacterStats>();
+                if (this.OnSelectedCharacterChanged != null)
 				{
 					this.OnSelectedCharacterChanged(this.SelectedCharacter);
 				}

@@ -71,7 +71,7 @@ namespace IEMod.Mods.Options {
 		}
 		if (this.OnWindowHidden != null)
 		{
-			this.OnWindowHidden();
+			this.OnWindowHidden(window);
 		}
 		}
 	}

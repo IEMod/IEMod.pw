@@ -15,7 +15,6 @@ namespace IEMod.Mods.RecoveryRate {
             {
                 return;
             }
-            this.FatigueUpdate(Time.deltaTime * (float)WorldTime.Instance.GameSecondsPerRealSecond, this.IsMoving);
             this.NoiseUpdate(Time.deltaTime);
             this.DetectUpdate(Time.deltaTime);
             this.TrapCooldownTimerUpdate(Time.deltaTime);
@@ -72,7 +71,7 @@ namespace IEMod.Mods.RecoveryRate {
                     this.m_updateTracker = true;
                     if (this.OnClearStatusEffect != null)
                     {
-                        this.OnClearStatusEffect(item);
+                        this.OnClearStatusEffect(base.gameObject, item);
                     }
                     item.Reset();
                 }
@@ -133,11 +132,14 @@ namespace IEMod.Mods.RecoveryRate {
             for (int n = 0; n < this.m_statusEffects.Count; n++)
             {
                 StatusEffect statusEffect1 = this.m_statusEffects[n];
-                if (statusEffect1.Stackable && !statusEffect1.HasBeenApplied)
+                if (statusEffect1.Stackable)
                 {
-                    statusEffect1.ApplyEffect(base.gameObject);
+                    if (!statusEffect1.HasBeenApplied)
+                    {
+                        statusEffect1.ApplyEffect(base.gameObject);
+                    }
                 }
-                if (!statusEffect1.Stackable && !statusEffect1.IsSuspended && !statusEffect1.IsSuppressed)
+                else if (!statusEffect1.IsSuspended && !statusEffect1.IsSuppressed)
                 {
                     StatusEffect trackedEffect = this.GetTrackedEffect(statusEffect1.NonstackingEffectType, statusEffect1.GetStackingKey());
                     int num = this.m_statusEffects.IndexOf(trackedEffect);
@@ -167,7 +169,7 @@ namespace IEMod.Mods.RecoveryRate {
                             if (current != null)
                             {
                                 component = current.GetComponent<CharacterStats>();
-                                if (!(component != null) || component.GetFatigueLevel() == CharacterStats.FatigueLevel.None)
+                                if (!(component != null) || component.CurrentFatigueLevel == CharacterStats.FatigueLevel.None)
                                 {
                                     continue;
                                 }
@@ -184,7 +186,7 @@ namespace IEMod.Mods.RecoveryRate {
                     }
                     while (partyMemberAIs.Count > 0 && AfflictionData.Instance.TravelFatigueSoundTimer <= 0f)
                     {
-                        PartyMemberAI partyMemberAI = partyMemberAIs[Random.Range(0, partyMemberAIs.Count)];
+                        PartyMemberAI partyMemberAI = partyMemberAIs[OEIRandom.Index(partyMemberAIs.Count)];
                         this.PlayPartyMemberFatigueSound(partyMemberAI);
                         partyMemberAIs.Remove(partyMemberAI);
                     }
@@ -203,14 +205,12 @@ namespace IEMod.Mods.RecoveryRate {
                     foreach (KeyValuePair<int, StatusEffect> value in mStackTracker.Value)
                     {
                         StatusEffect value1 = value.Value;
-                        if (value1 != null)
+                        if (value1 == null || value1.HasBeenApplied)
                         {
-                            if (!value1.HasBeenApplied)
-                            {
-                                value1.Unsuppress();
-                                value1.ApplyEffect(base.gameObject);
-                            }
+                            continue;
                         }
+                        value1.Unsuppress();
+                        value1.ApplyEffect(base.gameObject);
                     }
                 }
             }
@@ -261,7 +261,7 @@ namespace IEMod.Mods.RecoveryRate {
                     UIDebug.Instance.SetText("Character Stats Debug", this.GetCharacterStatsDebugOutput(), Color.cyan);
                     UIDebug.Instance.SetTextPosition("Character Stats Debug", 0.95f, 0.95f, UIWidget.Pivot.TopRight);
                 }
-            }           
-		}
+            }
+        }
 	}
 }

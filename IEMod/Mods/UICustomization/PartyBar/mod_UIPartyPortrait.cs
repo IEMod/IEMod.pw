@@ -41,74 +41,56 @@ namespace IEMod.Mods.PartyBar {
 
 		[ModifiesMember("Update")]
 		private void UpdateNew() {
-			if (this.m_partyMemberAI == null)
-			{
-				return;
-			}
-			/*
-			pre-2.0:
-			if (this.m_partyMemberAI.Selected)
-			{
-				//GR 27/8/15 - Glow member has been removed :(
-				//this.Glow.alpha = 1f;
-				this.Border.spriteName = "portSelected";
-			}
-			else
-			{
-				//GR 27/8/15 - Glow member has been removed :(
-				//this.Glow.alpha = 0f;
-				this.Border.spriteName = "portSelectedNot";
-			}
-			*/
-			this.m_EnduranceValues.LineBreak = this.Minion.gameObject.activeSelf;
-			this.UpdateLevelTalkGrid();
-			if (this.m_ClassCounterType == UIPartyPortrait.ClassCounterType.Focus)
-			{
-				this.ClassCount = Mathf.FloorToInt(this.m_characterStats.Focus);
-			}
-			else
-			{
-				if (this.m_ClassCounterType == UIPartyPortrait.ClassCounterType.Phrases)
-				{
-					if (!this.m_characterChanter)
-					{
-						this.m_characterChanter = this.m_characterStats.GetChanterTrait();
-					}
-					if (this.m_characterChanter)
-					{
-						this.ClassCount = this.m_characterChanter.PhraseCount;
-					}
-					else
-					{
-						Debug.LogError("PartyBar thinks '" + this.m_characterStats.name + "' is a Chanter, but no chanter trait found.");
-					}
-				}
-			}
-			if (this.m_CipherFocusVfx)
-			{
-				this.m_CipherFocusVfx.transform.localPosition = new Vector3(this.m_CipherFocusVfx.transform.localPosition.x, this.m_CipherFocusVfx.transform.localPosition.y);
-			}
-			float num = this.PulseMinAlpha + (this.PulseMaxAlpha - this.PulseMinAlpha) * Mathf.Sin(3.14159274f * TimeController.sUnscaledDelta / this.PulsePeriodSeconds);
-			if (this.m_StaminaPulseSprite && this.m_HealthPulseSprite)
-			{
-				UIWidget arg_1DD_0 = this.m_StaminaPulseSprite;
-				float alpha = num;
-				this.m_HealthPulseSprite.alpha = alpha;
-				arg_1DD_0.alpha = alpha;
-			}
-			int num2 = 0;
-			foreach (StatusEffect current in this.m_characterStats.ActiveStatusEffects)
-			{
-				num2 += -Mathf.RoundToInt(current.DotExpectedDamage(this.m_partyMemberAI.gameObject));
-			}
+            if (this.m_partyMemberAI == null)
+            {
+                return;
+            }
+            this.m_EnduranceValues.LineBreak = this.Minion.gameObject.activeSelf;
+            this.ActionIcon.Visible = (!GameState.InCombat ? false : GameState.Option.GetOption(GameOption.BoolOption.SHOW_PORTRAIT_ACTION_ICONS));
+            this.UpdateLevelTalkGrid();
+            if (this.m_ClassCounterType == UIPartyPortrait.ClassCounterType.Focus)
+            {
+                this.ClassCount = Mathf.FloorToInt(this.m_characterStats.Focus);
+            }
+            else if (this.m_ClassCounterType == UIPartyPortrait.ClassCounterType.Phrases)
+            {
+                if (!this.m_characterChanter)
+                {
+                    this.m_characterChanter = this.m_characterStats.GetChanterTrait();
+                }
+                if (this.m_characterChanter)
+                {
+                    this.ClassCount = this.m_characterChanter.PhraseCount;
+                }
+            }
+            if (this.m_CipherFocusVfx)
+            {
+                Transform mCipherFocusVfx = this.m_CipherFocusVfx.transform;
+                float single = this.m_CipherFocusVfx.transform.localPosition.x;
+                Vector3 vector3 = this.m_CipherFocusVfx.transform.localPosition;
+                mCipherFocusVfx.localPosition = new Vector3(single, vector3.y);
+            }
+            float pulseMinAlpha = this.PulseMinAlpha + (this.PulseMaxAlpha - this.PulseMinAlpha) * Mathf.Sin(3.14159274f * TimeController.sUnscaledDelta / this.PulsePeriodSeconds);
+            if (this.m_StaminaPulseSprite && this.m_HealthPulseSprite)
+            {
+                UISprite mStaminaPulseSprite = this.m_StaminaPulseSprite;
+                float single1 = pulseMinAlpha;
+                this.m_HealthPulseSprite.alpha = single1;
+                mStaminaPulseSprite.alpha = single1;
+            }
+            int num = 0;
+            for (int i = 0; i < this.m_characterStats.ActiveStatusEffects.Count; i++)
+            {
+                num = num + -Mathf.RoundToInt(this.m_characterStats.ActiveStatusEffects[i].DotExpectedDamage(this.m_partyMemberAI.gameObject));
+            }
 
-			//BEGINNING OF MOD CODE:
-			//num2 = 0;
-			//foreach (StatusEffect effect in this.m_characterStats.ActiveStatusEffects)
-			//{
-			//    num2 += -Mathf.RoundToInt(effect.DotExpectedDamage(this.m_partyMemberAI.gameObject));
-			//}
-			if (TimeController.Instance != null)
+            //BEGINNING OF MOD CODE:
+            //num2 = 0;
+            //foreach (StatusEffect effect in this.m_characterStats.ActiveStatusEffects)
+            //{
+            //    num2 += -Mathf.RoundToInt(effect.DotExpectedDamage(this.m_partyMemberAI.gameObject));
+            //}
+            if (TimeController.Instance != null)
 			{
 				//this is pretty impressive!
 				if (IsVertical) // ADDED THIS CONDITIONAL
@@ -194,30 +176,34 @@ namespace IEMod.Mods.PartyBar {
 					}
 				}
 			}
-			//END OF MOD CODE
-			this.UpdateHealthBar();
-			this.Stamina.gameObject.SetActive(this.m_health.HealthVisible);
-			this.StaminaPulse.gameObject.SetActive(this.m_health.HealthVisible);
-			this.HealthObfuscator.gameObject.SetActive(!this.m_health.HealthVisible);
-			if (this.m_health.HealthVisible)
-			{
-				float b = Mathf.Max(0f, this.m_health.CurrentHealth);
-				float num5 = Mathf.Max(0f, this.m_health.CurrentStamina);
-				float num6 = this.m_health.MaxStamina;
-				num6 = Mathf.Min(num6, b);
-				float num7 = this.m_characterStats.BaseMaxStamina - num6;
-				float num8 = Mathf.Clamp01(num7 / this.m_characterStats.BaseMaxStamina);
-				float num9 = 1f - Mathf.Clamp01(num5 / num6);
-				num9 = Mathf.Min(num9, 1f - num8);
-				this.Stamina.sliderValue = num9;
-				this.StaminaCap.sliderValue = num8;
-				this.PortraitTexture.material.SetFloat(this.m_SaturationMinV, 1f - this.StaminaCap.sliderValue);
-			}
-			else
-			{
-				this.PortraitTexture.material.SetFloat(this.m_SaturationMinV, 0f);
-			}
-		}
+            //END OF MOD CODE
+            bool healthVisible = this.m_health.HealthVisible;
+            this.UpdateHealthBar();
+            this.Stamina.gameObject.SetActive(healthVisible);
+            this.StaminaPulse.gameObject.SetActive(healthVisible);
+            this.StaminaEdge.gameObject.SetActive(healthVisible);
+            this.HealthObfuscator.gameObject.SetActive(!healthVisible);
+            if (!healthVisible)
+            {
+                this.PortraitTexture.material.SetFloat(UIPartyPortrait.m_Saturation, 0f);
+                this.PortraitTexture.material.SetFloat(UIPartyPortrait.m_SaturationMinV, 0f);
+            }
+            else
+            {
+                float single5 = Mathf.Max(0f, this.m_health.CurrentHealth);
+                float single6 = Mathf.Max(0f, this.m_health.CurrentStamina);
+                float maxStamina = this.m_health.MaxStamina;
+                maxStamina = Mathf.Min(maxStamina, single5);
+                float baseMaxStamina = this.m_characterStats.BaseMaxStamina - maxStamina;
+                float single7 = Mathf.Clamp01(baseMaxStamina / this.m_characterStats.BaseMaxStamina);
+                float single8 = 1f - Mathf.Clamp01(single6 / maxStamina);
+                single8 = Mathf.Min(single8, 1f - single7);
+                this.Stamina.sliderValue = single8;
+                this.StaminaCap.sliderValue = single7;
+                this.PortraitTexture.material.SetFloat(UIPartyPortrait.m_Saturation, 0f);
+                this.PortraitTexture.material.SetFloat(UIPartyPortrait.m_SaturationMinV, 1f - this.StaminaCap.sliderValue);
+            }
+        }
 		[ModifiesMember("Displace")]
 		private void DisplaceNew() 
 		{

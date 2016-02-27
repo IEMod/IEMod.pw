@@ -32,9 +32,9 @@ namespace IEMod.Mods.FastSneak {
             }
             if (this.m_instructions != null)
             {
-                foreach (SpellCastData mInstruction in this.m_instructions)
+                for (int i = 0; i < this.m_instructions.Count; i++)
                 {
-                    mInstruction.Update();
+                    this.m_instructions[i].Update();
                 }
             }
             if (GameState.s_playerCharacter != null && base.gameObject == GameState.s_playerCharacter.gameObject && PartyMemberAI.DebugParty)
@@ -78,7 +78,6 @@ namespace IEMod.Mods.FastSneak {
                 {
                     this.m_ai.Update();
                 }
-                base.DrawDebugText();
                 return;
             }
             if (this.m_ai == null)
@@ -93,7 +92,7 @@ namespace IEMod.Mods.FastSneak {
             {
                 AIState currentState = this.m_ai.CurrentState;
                 Consumable component = this.QueuedAbility.GetComponent<Consumable>();
-                if (!(component != null) || !component.IsIngestibleOrPotion)
+                if (!(component != null) || !component.IsFoodDrugOrPotion)
                 {
                     Attack attack = currentState as Attack;
                     TargetedAttack targetedAttack = currentState as TargetedAttack;
