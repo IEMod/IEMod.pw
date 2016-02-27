@@ -109,7 +109,7 @@ namespace IEMod.Mods.OnLevelLoad {
                         {
                             FogOfWar.Instance.WaitForFogUpdate();
                         }
-                        AutosaveIfAllowed();
+                        GameState.Autosave();
                     }
                 }
                 GameState.NewGame = false;
@@ -117,11 +117,11 @@ namespace IEMod.Mods.OnLevelLoad {
                 {
                     if (!this.CurrentMap.GetCanAccessStash())
                     {
-                        UISystemMessager.Instance.PostMessage(GUIUtils.GetText(1565), Color.white);
+                        UISystemMessager.Instance.PostMessage(GUIUtils.GetText(1566), Color.white);
                     }
                     else
                     {
-                        UISystemMessager.Instance.PostMessage(GUIUtils.GetText(1566), Color.white);
+                        UISystemMessager.Instance.PostMessage(GUIUtils.GetText(1565), Color.white);
                     }
                 }
                 GameState.NumSceneLoads = GameState.NumSceneLoads + 1;
@@ -139,6 +139,10 @@ namespace IEMod.Mods.OnLevelLoad {
                 if (this.CurrentMap != null && this.CurrentMap.IsValidOnMap("px1"))
                 {
                     GameState.Instance.HasEnteredPX1 = true;
+                    if (GameGlobalVariables.HasStartedPX2())
+                    {
+                        this.HasEnteredPX2 = true;
+                    }
                 }
                 // in here you can place something like if (CurrentMap.SceneName == "AR_0011_Dyrford_Tavern_02") make_an_NPC; or change_NPC's_stats;
                 // added this code
@@ -163,6 +167,37 @@ namespace IEMod.Mods.OnLevelLoad {
                 Debug.LogException(exception);
                 GameState.ReturnToMainMenuFromError();
             }
-		}
+            if (!this.RetroactiveSpellMasteryChecked)
+            {
+                for (int i = 0; i < (int)PartyMemberAI.PartyMembers.Length; i++)
+                {
+                    if (PartyMemberAI.PartyMembers[i] != null)
+                    {
+                        CharacterStats component = PartyMemberAI.PartyMembers[i].GetComponent<CharacterStats>();
+                        if (component)
+                        {
+                            if (component.MaxMasteredAbilitiesAllowed() > component.GetNumMasteredAbilities())
+                            {
+                                UIWindowManager.ShowMessageBox(UIMessageBox.ButtonStyle.OK, GUIUtils.GetText(2252), GUIUtils.GetText(2303));
+                                break;
+                            }
+                        }
+                    }
+                }
+                this.RetroactiveSpellMasteryChecked = true;
+            }
+            if (GameUtilities.HasPX2() && GameState.LoadedGame)
+            {
+                if (GameGlobalVariables.HasFinishedPX1())
+                {
+                    QuestManager.Instance.StartPX2Umbrella();
+                }
+                else if (!this.HasNotifiedPX2Installation)
+                {
+                    UIWindowManager.ShowMessageBox(UIMessageBox.ButtonStyle.OK, string.Empty, GUIUtils.GetText(2438));
+                    this.HasNotifiedPX2Installation = true;
+                }
+            }
+        }
 	}
 }
