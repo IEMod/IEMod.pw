@@ -206,7 +206,47 @@ namespace IEMod.Mods.Targeting {
 					}
 					break;
 				}
-			}
+
+                case AttackBase.TargetType.SpiritOrSummonedCreature:
+                    {
+                        if (characterStat && characterStat.CharacterRace == CharacterStats.Race.Spirit || aIController && aIController.SummonType == AIController.AISummonType.Summoned)
+                        {
+                            return true;
+                        }
+                        break;
+                    }
+                case AttackBase.TargetType.OwnAnimalCompanion:
+                    {
+                        if (aIController.SummonType == AIController.AISummonType.AnimalCompanion && aIController.Summoner == caster)
+                        {
+                            return true;
+                        }
+                        break;
+                    }
+                case AttackBase.TargetType.HostileWithNpcAppearance:
+                    {
+                        NPCAppearance nPCAppearance = target.GetComponent<NPCAppearance>();
+                        if (nPCAppearance && nPCAppearance.isActiveAndEnabled && this.IsValidTarget(target, caster, AttackBase.TargetType.Hostile))
+                        {
+                            return true;
+                        }
+                        break;
+                    }
+                case AttackBase.TargetType.OwnerOfPairedAbility:
+                    {
+                        PairedAbility pairedAbility = base.GetComponent<PairedAbility>();
+                        if (!pairedAbility)
+                        {
+                            UIDebug.Instance.LogOnScreenWarning(string.Concat("Ability '", base.name, "' must have a PairedAbility component to use OwnerOfPairedAbility target type."), UIDebug.Department.Design, 10f);
+                            return false;
+                        }
+                        return (!pairedAbility.OtherAbility ? false : target == pairedAbility.OtherAbility.Owner);
+                    }
+                case AttackBase.TargetType.AnyWithResonance:
+                    {
+                        return characterStat.CountStatusEffects("resonance", caster) > 0;
+                    }
+            }
 			//!+END MODIFICATIONS
 			return false;
 		}

@@ -106,6 +106,7 @@
     <Compile Include="Mods\ConsoleMod\mod_UIConsole.cs" />
     <Compile Include="Mods\DropButtonMod\DropButton.cs" />
     <Compile Include="Mods\FastSneak\mod_PartyMemberAI.cs" />
+    <Compile Include="Mods\HideAnticlassSpells\mod_UIAbilityBarButtonSet.cs" />
     <Compile Include="Mods\MaxAdventurers\mod_PartyMemberAI.cs" />
     <Compile Include="Mods\NoEngagement\Mod_NoEngagement_HudEngagementIndicator.cs" />
     <Compile Include="Mods\Targeting\mod_AIController.cs" />

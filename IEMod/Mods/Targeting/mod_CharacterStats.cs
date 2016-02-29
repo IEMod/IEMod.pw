@@ -40,18 +40,23 @@ namespace IEMod.Mods.Targeting {
             if (damage.DefendedBy != CharacterStats.DefenseType.None)
             {
                 this.ComputeHitAdjustment(attackerToHitRollOverride + num - num1, component, damage);
+
                 //!+ ADDED CODE
-                if (IEModOptions.DisableFriendlyFire) {
-					var faction = enemy.Component<Faction>();
-					if (mod_AttackBase.FriendlyRightNowAndAlsoWhenConfused(enemy, this.gameObject)) {
-						damage.IsCriticalHit = false;
-						damage.Interrupts = false;
-						damage.IsGraze = false;
-						damage.IsKillingBlow = false;
-						damage.IsMiss = true;
-					}
-				}
+                if (IEModOptions.DisableFriendlyFire)
+                {
+                    var faction = enemy.Component<Faction>();
+                    if (mod_AttackBase.FriendlyRightNowAndAlsoWhenConfused(enemy, this.gameObject))
+                    {
+                        damage.IsCriticalHit = false;
+                        damage.Interrupts = false;
+                        damage.IsGraze = false;
+                        damage.IsKillingBlow = false;
+                        damage.IsMiss = true;
+                    }
+                }
                 //!+ END ADD
+
+
                 if (!testing && this.OnAttackRollCalculated != null)
                 {
                     this.OnAttackRollCalculated(base.gameObject, new CombatEventArgs(damage, base.gameObject, enemy));
