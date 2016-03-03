@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root> <!--Racial/Background bonuses are NOT included in the stats entered here, they will be added automatically by the game, these are the base stats-->
+	<NPC name="Aloth" > <!--Racial/Background bonuses: +1 Dexterity, +1 Perception, +1 Resolve-->
+		<Might>12</Might>
+		<Constitution>10</Constitution>
+		<Dexterity>14</Dexterity>
+		<Perception>11</Perception>
+		<Intellect>16</Intellect>
+		<Resolve>12</Resolve>
+	</NPC>
+	<NPC name="Eder" > <!--Racial/Background bonuses: +1 Might, +2 Resolve-->
+		<Might>15</Might>
+		<Constitution>16</Constitution>
+		<Dexterity>11</Dexterity>
+		<Perception>12</Perception>
+		<Intellect>10</Intellect>
+		<Resolve>11</Resolve>
+	</NPC>
+	<NPC name="Kana" >  <!--Racial/Background bonuses: +2 Might, +1 Constitution-->
+		<Might>14</Might>
+		<Constitution>11</Constitution>
+		<Dexterity>9</Dexterity>
+		<Perception>14</Perception>
+		<Intellect>17</Intellect>
+		<Resolve>10</Resolve>
+	</NPC>
+	<NPC name="Sagani" >  <!--Racial/Background bonuses: +2 Might, +1 Constitution, -1 Dexterity +1 Perception-->
+		<Might>13</Might>
+		<Constitution>11</Constitution>
+		<Dexterity>16</Dexterity>
+		<Perception>12</Perception>
+		<Intellect>13</Intellect>
+		<Resolve>10</Resolve>
+	</NPC>
+	<NPC name="Itumaak" > <!--Racial/Background bonuses: None -->
+		<Might>10</Might>
+		<Constitution>8</Constitution>
+		<Dexterity>15</Dexterity>
+		<Perception>15</Perception>
+		<Intellect>5</Intellect>
+		<Resolve>12</Resolve>
+	</NPC>
+	<NPC name="Durance" > <!--Racial/Background bonuses: +1 Might, +2 Resolve-->
+		<Might>13</Might>
+		<Constitution>13</Constitution>
+		<Dexterity>9</Dexterity>
+		<Perception>9</Perception>
+		<Intellect>15</Intellect>
+		<Resolve>17</Resolve>
+	</NPC>
+	<NPC name="Pallegina" > <!--Racial/Background bonuses: +1 Dexterity, + 2 Intellect-->
+		<Might>12</Might>
+		<Constitution>13</Constitution>
+		<Dexterity>10</Dexterity>
+		<Perception>14</Perception>
+		<Intellect>11</Intellect>
+		<Resolve>15</Resolve>
+	</NPC>
+	<NPC name="Hiravias" >  <!--Racial/Background bonuses: -1 Might, +2 Perception, +1 Resolve, +1 Constitution-->
+		<Might>15</Might>
+		<Constitution>12</Constitution>
+		<Dexterity>12</Dexterity>
+		<Perception>11</Perception>
+		<Intellect>15</Intellect>
+		<Resolve>9</Resolve>
+	</NPC>
+	<NPC name="Grieving" > <!--Racial/Background bonuses: +1 Might, +2 Resolve-->
+		<Might>10</Might>
+		<Constitution>12</Constitution>
+		<Dexterity>16</Dexterity>
+		<Perception>12</Perception>
+		<Intellect>17</Intellect>
+		<Resolve>9</Resolve>
+	</NPC>
+	<NPC name="Devil" >  <!--Racial/Background bonuses: +1 Resolve -->
+		<Might>13</Might>
+		<Constitution>10</Constitution>
+		<Dexterity>10</Dexterity>
+		<Perception>16</Perception>
+		<Intellect>12</Intellect>
+		<Resolve>15</Resolve>
+	</NPC>
+	<NPC name="Zahua" > <!--Racial/Background bonuses: +1 Might, +2 Resolve-->
+		<Might>16</Might>
+		<Constitution>17</Constitution>
+		<Dexterity>13</Dexterity>
+		<Perception>10</Perception>
+		<Intellect>10</Intellect>
+		<Resolve>9</Resolve>
+	</NPC>
+	<NPC name="Maneha" > <!--Racial/Background bonuses: +2 Might, +1 Constitution -->
+		<Might>16</Might>
+		<Constitution>14</Constitution>
+		<Dexterity>9</Dexterity>
+		<Perception>12</Perception>
+		<Intellect>13</Intellect>
+		<Resolve>11</Resolve>
+	</NPC>
+</root>
