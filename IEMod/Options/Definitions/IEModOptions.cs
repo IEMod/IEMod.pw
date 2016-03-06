@@ -393,6 +393,11 @@ namespace IEMod.Mods.Options {
         [Description("Hides Anticlass spells from showing up on the ability bar and adds them to a spell submenu of an existing class.  For example, if you add Druid spells to your Wizard, the added Druid spells will show up under the Wizard spells submenu of the appropriate level.")]
         public static bool HideAnticlassSpells;
 
+        [Save]
+        [Label("Hide Weapon Effects")]
+        [Description("Hides all of the special effects added to the weapons like the lashes and the glows.")]
+        public static bool HideWeaponEffects;
+
         private static AutoSaveSetting _autoSaveSetting;
 		private static Dictionary<string, PropertyInfo> _propertyCache;
 
