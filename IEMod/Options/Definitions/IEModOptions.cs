@@ -398,6 +398,11 @@ namespace IEMod.Mods.Options {
         [Description("Hides all of the special effects added to the weapons like the lashes and the glows.")]
         public static bool HideWeaponEffects;
 
+        [Save]
+        [Label("Auto-Load Custom NPC Stats")]
+        [Description("Applies the NPC stats located in Managed/iemod/customStats/custom after loading a map")]
+        public static bool AutoLoadCustomStats;
+
         private static AutoSaveSetting _autoSaveSetting;
 		private static Dictionary<string, PropertyInfo> _propertyCache;
 
