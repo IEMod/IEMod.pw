@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Xml;
 using IEMod.Helpers;
 using IEMod.Mods.ObjectBrowser;
 using IEMod.Mods.Options;
@@ -986,6 +987,58 @@ namespace IEMod.Mods.ConsoleMod {
 				((Mod_OnGUI_Player)GameState.s_playerCharacter).showModelViewer = true;
 			}
 		}
+		
+		/// <summary>
+        /// Method serving as a band-aid fix for the stats not sticking after reloads in 3.01
+        /// Looks in an xml file located in Managed/iemod/customStats and extracts the values for NPC stats     
+        /// located inside it. Inspired heavily by the FindCharacter and AttributeScore methods in the vanilla dll.
+        /// </summary>
+        /// <param name="filename">Name of the .xml file containing the stats to be applied to all NPCs</param>
+        [NewMember]
+        public static void ImportStats(string fileName)
+        {
+            // Load document
+            XmlDocument doc = new XmlDocument();
+            string xmlPath = PathHelper.Combine(Application.dataPath, "Managed/iemod/customStats", (fileName+".xml"));
+            try
+            {
+                doc.Load(xmlPath);
+            }
+            catch (FileNotFoundException e)
+            {
+                Console.AddMessage("File not found");
+                return;
+            }
+
+            // Retrieve all CharStats in current game
+            CharacterStats[] characterStatsArray = UnityEngine.Object.FindObjectsOfType<CharacterStats>();
+            foreach (XmlNode node in doc.DocumentElement)
+            {
+               
+                string npcName = node.Attributes[0].Value;
+                //Find Character sheet associated with that name, heavily insipired by the orignial FindCharacter command
+                for (int i = 0; i < (int)characterStatsArray.Length; i++)
+                {
+                    CharacterStats characterStat = characterStatsArray[i];
+                    if (characterStat.name.ToLower().Contains(npcName.ToLower()) || CharacterStats.Name(characterStat).ToLower().Contains(npcName.ToLower()))
+                    {
+                        // Switch stats arround accordingly
+                        characterStat.BaseMight = int.Parse(node["Might"].InnerText);
+                        characterStat.BaseConstitution = int.Parse(node["Constitution"].InnerText);
+                        characterStat.BaseDexterity = int.Parse(node["Dexterity"].InnerText);
+                        characterStat.BasePerception = int.Parse(node["Perception"].InnerText);
+                        characterStat.BaseIntellect = int.Parse(node["Intellect"].InnerText);
+                        characterStat.BaseResolve = int.Parse(node["Resolve"].InnerText);
+
+                        //  Display change in console... Mostly for testing and paranoia 
+                        Console.AddMessage(string.Concat(new string[] { characterStat.name, "'s stats have been imported from ", fileName }));
+
+                        // Break out of inner loop once that NPC has been adjusted... ugly but probably quicker than anything else I know....
+                        break;
+                    }
+                }
+            }
+        }
 
 	}
 
