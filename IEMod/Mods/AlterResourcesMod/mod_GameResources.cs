@@ -59,54 +59,7 @@ namespace IEMod.Mods.AlterResourcesMod
                     }
 
                     result = new AbilityActionData(serializedData);
-
-                    //List<AbilityChange> temp = new List<AbilityChange>(result.AbilityChanges["Blizzard"]);
-                    //temp.Add(new AbilityChange()
-                    //{
-                    //    Type = AbilityChange.ChangeType.StatusEffect,
-                    //    Value = new AbilityChange.StatusEffectChange()
-                    //    {
-                    //        Index = 0,
-                    //        Magnitude = .7f,
-                    //        Duration = 15f
-                    //    }
-                    //});
-
-                    //result.AbilityChanges["Blizzard"] = temp;
-
-
-                    //value = new Serialization.AbilityActionData();
-                    //value.AbilityExports = new List<Serialization.AbilityExport>();
-                    //value.AbilityExports.Add(new Serialization.AbilityExport { Name = "Test1" });
-                    //value.AbilityExports.Add(new Serialization.AbilityExport { Name = "Test2" });
-                    //value.AbilityChanges = new List<Serialization.AbilityChange>();
-                    //value.AbilityChanges.Add(new Serialization.AbilityChange()
-                    //{
-                    //    Name = "Test3",
-                    //    MinDamage = "3",
-                    //    MaxDamage = "5.5",
-                    //    Accuracy = "12",
-                    //    BlastRadius = "3.2",
-                    //    BlastAngle = "120",
-                    //    DTBypass = "4.4",
-                    //    Range = "10",
-                    //    ExtraAOE = new Serialization.AbilityChange()
-                    //    {
-                    //        Name="Doesn't Matter",
-                    //        MinDamage = "6",
-                    //        MaxDamage = "9.2",
-                    //        Accuracy = "12"
-                    //    }
-
-                    //});
-
-                    //System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                    //using (var writer = new StringWriter(sb)) {
-                    //    serializer.Serialize(writer, value);
-
-                    //    IEDebug.Log($"Serialization example: {sb.ToString()}");
-                    //}
-
+                    
                 }
                 catch (Exception ex)
                 {
