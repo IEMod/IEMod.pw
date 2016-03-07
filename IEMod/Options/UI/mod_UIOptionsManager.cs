@@ -80,6 +80,12 @@ namespace IEMod.Mods.Options {
 		private QuickDropdown<IEModOptions.AutoSaveSetting> _autosaveCmb;
         [NewMember]
         private QuickDropdown<IEModOptions.MaxAdventurersOptions> _maxAdventurersCmb;
+        [NewMember]
+        private QuickCheckbox _hideAntiClassSpells;
+        [NewMember]
+        private QuickCheckbox _hideWeaponEffects;
+        [NewMember]
+        private QuickCheckbox _autoLoadCustomStats;
 
         [NewMember]
 		private QuickCheckbox _disableBackerDialog;
@@ -220,7 +226,17 @@ namespace IEMod.Mods.Options {
 			_enableCustomUI = quickFactory.Checkbox(() => IEModOptions.EnableCustomUi);
 			_enableCustomUI.LocalPosition = column2Top.Plus(y: -210);
 
-			var centerCmbTop = new Vector3(-80, -40, 0);
+            _hideAntiClassSpells = quickFactory.Checkbox(() => IEModOptions.HideAnticlassSpells);
+            _hideAntiClassSpells.LocalPosition = column2Top.Plus(y: -240);
+
+            _hideWeaponEffects = quickFactory.Checkbox(() => IEModOptions.HideWeaponEffects);
+            _hideWeaponEffects.LocalPosition = column2Top.Plus(y: -270);
+
+            _autoLoadCustomStats = quickFactory.Checkbox(() => IEModOptions.AutoLoadCustomStats);
+            _autoLoadCustomStats.LocalPosition = column1Top.Plus(y: -270);
+            
+
+            var centerCmbTop = new Vector3(-80, -40, 0);
 			const int cmbLabelWidth = 300;
 			const int cmbWidth = 515;
 
