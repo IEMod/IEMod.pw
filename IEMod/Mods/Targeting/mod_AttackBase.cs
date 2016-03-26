@@ -184,10 +184,9 @@ namespace IEMod.Mods.Targeting {
 						return true;
 					}
 					if (caster != null) {
-						Faction faction1 = caster.GetComponent<Faction>();
-						if (faction1 != null && aIController != null) {
+						if (casterFaction != null && aIController != null) {
 							Team originalTeam = aIController.GetOriginalTeam();
-							if (originalTeam != null && originalTeam.GetRelationship(faction1.CurrentTeam) != Faction.Relationship.Hostile) {
+							if (originalTeam != null && originalTeam.GetRelationship(casterFaction.CurrentTeam) != Faction.Relationship.Hostile) {
 								return true;
 							}
 						}

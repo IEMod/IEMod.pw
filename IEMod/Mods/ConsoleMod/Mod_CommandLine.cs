@@ -1083,7 +1083,7 @@ namespace IEMod.Mods.ConsoleMod {
                 ItemMod itemMod1 = modsToRemove[j];
                 this.m_Equippable.DestroyFirstMod(itemMod1);
             }
-            if (!UIItemInspectManager.ReloadWindowsForObject(base.gameObject))
+            if (!UIItemInspectManager.ReloadWindowsForObject(base.gameObject, true))
             {
                 UIItemInspectManager.ExamineSoulbindUnlock(this, this.m_Equippable.EquippedOwner);
             }

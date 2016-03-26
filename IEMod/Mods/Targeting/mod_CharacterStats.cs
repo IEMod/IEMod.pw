@@ -17,7 +17,15 @@ namespace IEMod.Mods.Targeting {
 		/// <param name="testing"></param>
 		[ModifiesMember(nameof(AdjustDamageDealt))]
 		public void mod_AdjustDamageDealt(GameObject enemy, DamageInfo damage, bool testing) {
-            float statDamageHealMultiplier = this.StatDamageHealMultiplier;
+            float statDamageHealMultiplier;
+            if ((damage.Attack != null) && damage.Attack.IgnoreCharacterStats)
+            {
+                statDamageHealMultiplier = 1f;
+            }
+            else
+            {
+                statDamageHealMultiplier = this.StatDamageHealMultiplier;
+            }
             damage.DamageMult(statDamageHealMultiplier);
             if (!testing && this.OnPreDamageDealt != null)
             {
@@ -88,6 +96,10 @@ namespace IEMod.Mods.Targeting {
             if (!testing && damage.Immune)
             {
                 UIHealthstringManager.Instance.ShowNotice(GUIUtils.GetText(2188), enemy, 1f);
+                if (this.IsPartyMember)
+                {
+                    SoundSet.TryPlayVoiceEffectWithLocalCooldown(base.gameObject, SoundSet.SoundAction.TargetImmune, SoundSet.s_LongVODelay, false);
+                }
             }
             if (!testing && this.OnAdjustCritGrazeMiss != null)
             {
@@ -149,34 +161,5 @@ namespace IEMod.Mods.Targeting {
                 this.OnPostDamageDealt(base.gameObject, new CombatEventArgs(damage, base.gameObject, enemy));
             }
         }
-
-        [NewMember]
-        public Team GetSwappedTeam()
-        {
-            StatusEffect cachedFactionEffect = null;
-
-            for (int i = 0; i < this.m_statusEffects.Count; i++)
-            {
-                StatusEffect item = this.m_statusEffects[i];
-                if (item.Applied)
-                {
-                    if (item.AfflictionOrigin == AfflictionData.Charmed || item.AfflictionOrigin == AfflictionData.Dominated)
-                    {
-                        if (item.Params.AffectsStat == StatusEffect.ModifiedStat.SwapFaction)
-                        {
-                            cachedFactionEffect = item;
-                            break;
-                        }
-                    }
-                }
-            }
-            
-            if(cachedFactionEffect == null)
-            {
-                return null;
-            }
-
-            return cachedFactionEffect.GetCachedTeam();
-        }
-	}
+    }
 }
