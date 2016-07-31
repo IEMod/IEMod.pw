@@ -7,9 +7,8 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 using IEMod.Helpers;
-using IEMod.Mods.ObjectBrowser;
 using IEMod.Mods.Options;
-using IEMod.Mods.UICustomization;
+//using IEMod.Mods.UICustomization;
 //using IEMod.Mods.UICustomization;
 using Patchwork.Attributes;
 using UnityEngine;
@@ -31,6 +30,62 @@ namespace IEMod.Mods.ConsoleMod
             else
                 global::Console.AddMessage("Your achievements are doing fine.", Color.green);
         }
+
+        [NewMember]
+        public static void SwitchPOTD()
+        {
+            if (GameState.Instance.Difficulty != GameDifficulty.PathOfTheDamned)
+            {
+                GameState.Instance.Difficulty = GameDifficulty.PathOfTheDamned;
+                global::Console.AddMessage("The difficulty is now: Path of the Damned.");
+            }
+            else
+            {
+                GameState.Instance.Difficulty = GameDifficulty.Hard;
+                global::Console.AddMessage("The difficulty is now: Hard.");
+            }
+        }
+
+        [NewMember]
+        public static void Jump()
+        {
+            if (GameState.s_playerCharacter.IsMouseOnWalkMesh())
+            {
+                foreach (var partymember in PartyMemberAI.GetSelectedPartyMembers())
+                {
+                    partymember.transform.position = GameInput.WorldMousePosition;
+                }
+            }
+            else
+            {
+                global::Console.AddMessage("Mouse is not on navmesh.");
+            }
+        }
+
+        [NewMember]
+        public static void UnlockSoulBound()
+        {
+
+            List<GameObject> partyMembers = PartyMemberAI.GetSelectedPartyMembers();
+
+            foreach (GameObject partyMember in partyMembers)
+            {
+                EquipmentSoulbind[] soulbound = partyMember.GetComponentsInChildren<EquipmentSoulbind>();
+
+                if (soulbound.Length > 0)
+                {
+                    foreach (EquipmentSoulbind elem in soulbound)
+                    {
+                        elem.DebugLevelUp();
+                    }
+                }
+                else {
+                    global::Console.AddMessage("No soulbound items found on selectede characters");
+                }
+            }
+        }
+
+
     }
     /*
         [ModifiesType("CommandLineRun")]

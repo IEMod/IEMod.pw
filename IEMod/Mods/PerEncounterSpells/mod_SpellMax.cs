@@ -2,13 +2,12 @@
 using IEMod.Mods.Options;
 using System;
 using System.Collections.Generic;
-using Patchwork.Attributes;
 using UnityEngine;
 
 
 namespace IEMod.Mods.PerEncounterSpells
 {
-
+    
     [ModifiesType]
     public class mod_CharacterStats : CharacterStats
     {
@@ -122,6 +121,8 @@ namespace IEMod.Mods.PerEncounterSpells
             }
         }
 
+
+
         /// <summary>
         /// 
         /// Injection of a call to the ResetSpellUsage(int casterLeevl) Method created above at the end 
@@ -130,7 +131,7 @@ namespace IEMod.Mods.PerEncounterSpells
         /// </summary>
 
         [ModifiesMember("HandleGameUtilitiesOnCombatEnd")]
-        private void HandleGameUtilitiesOnCombatEnd(object sender, EventArgs e)
+        private new void HandleGameUtilitiesOnCombatEnd(object sender, EventArgs e)
         {
             try
             {

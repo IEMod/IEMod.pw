@@ -227,6 +227,7 @@ namespace IEMod.Mods.OnLevelLoad {
             }
             catch (System.IO.FileNotFoundException e)
             {
+                Console.AddMessage(e.Message);
                 return;
             }
 
