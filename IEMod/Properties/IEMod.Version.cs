@@ -7,6 +7,6 @@ namespace IEMod {
 	[NewType]
 	public static class IEModVersion {
 		public const string StupidVersion = "5.2.2";
-		public const string Version = "5.3.1";
+		public const string Version = "3.03.2";
 	}
 }

@@ -403,6 +403,11 @@ namespace IEMod.Mods.Options {
         [Description("Applies the NPC stats located in Managed/iemod/customStats/custom after loading a map")]
         public static bool AutoLoadCustomStats;
 
+        [Save]
+        [Label("Enable Cheat Keys")]
+        [Description("Enables the use of the classic cheat keys and a few more, look at the readme for the available options")]
+        public static bool EnableCheatKeys;
+
         private static AutoSaveSetting _autoSaveSetting;
 		private static Dictionary<string, PropertyInfo> _propertyCache;
 

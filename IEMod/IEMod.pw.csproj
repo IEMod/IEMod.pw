@@ -97,6 +97,8 @@
     <Compile Include="Mods\BonusSpellsGrimoire\mod_UIGrimoireInSpellRow.cs" />
     <Compile Include="Mods\BonusSpellsGrimoire\mod_Grimoire.cs" />
     <Compile Include="Mods\CameraControlMod\Mod_CameraControl.cs" />
+    <Compile Include="Mods\CheatKeys\mod_CheatKeyFunctions.cs" />
+    <Compile Include="Mods\CheatKeys\Mod_GameCursors.cs" />
     <Compile Include="Mods\CipherFocus\mod_FocusTrait.cs" />
     <Compile Include="Mods\CombatLooting\mod_Container.cs" />
     <Compile Include="Mods\CombatLooting\mod_UIInventoryGridItem.cs" />

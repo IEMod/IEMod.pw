@@ -86,6 +86,8 @@ namespace IEMod.Mods.Options {
         private QuickCheckbox _hideWeaponEffects;
         [NewMember]
         private QuickCheckbox _autoLoadCustomStats;
+        [NewMember]
+        private QuickCheckbox _enableCheatKeys;
 
         [NewMember]
 		private QuickCheckbox _disableBackerDialog;
@@ -234,7 +236,10 @@ namespace IEMod.Mods.Options {
 
             _autoLoadCustomStats = quickFactory.Checkbox(() => IEModOptions.AutoLoadCustomStats);
             _autoLoadCustomStats.LocalPosition = column1Top.Plus(y: -270);
-            
+
+            _enableCheatKeys = quickFactory.Checkbox(() => IEModOptions.EnableCheatKeys);
+            _enableCheatKeys.LocalPosition = column1Top.Plus(y: -300);
+
 
             var centerCmbTop = new Vector3(-80, -40, 0);
 			const int cmbLabelWidth = 300;

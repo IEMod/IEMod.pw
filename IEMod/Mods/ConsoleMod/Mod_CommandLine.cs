@@ -62,12 +62,70 @@ namespace IEMod.Mods.ConsoleMod
             }
         }
 
+        /// <summary>
+        /// This method fixes a bug in the original Skill command (that only applied the new value as your current bonus,
+        ///     not actually replacing the score). This bug was still present in v2.0 of PoE.
+        /// </summary>
+        /// <param name="character">The character to modify. The Guid will be filled in by CommandLineRun before we get here</param>
+        /// <param name="skill">The skill to modify. This will be converted from string to Enum by CommandLineRun</param>
+        /// <param name="score">The new score value to assign. This will be validated as a number by CommandLineRun. Note
+        ///     that this is NOT the actual score, it's the "points invested" in score. Thus to attain a score of 9, you
+        ///     would need to pass in 45 (the sum of 1 to 9). </param>
+        [ModifiesMember("Skill")]
+        public static void Skill(Guid character, CharacterStats.SkillType skill, int score)
+        {
+            CharacterStats characterStatsComponent = Scripts.GetCharacterStatsComponent(character);
+            if (characterStatsComponent == null)
+            {
+                Debug.Log(string.Concat("Skill: Error - stats component not found for '", character, "'."));
+                return;
+            }
+
+            switch (skill)
+            {
+                case CharacterStats.SkillType.Stealth:
+                    {
+                        characterStatsComponent.StealthSkill = score;
+                        break;
+                    }
+                case CharacterStats.SkillType.Athletics:
+                    {
+                        characterStatsComponent.AthleticsSkill = score;
+                        break;
+                    }
+                case CharacterStats.SkillType.Lore:
+                    {
+                        characterStatsComponent.LoreSkill = score;
+                        break;
+                    }
+                case CharacterStats.SkillType.Mechanics:
+                    {
+                        characterStatsComponent.MechanicsSkill = score;
+                        break;
+                    }
+                case CharacterStats.SkillType.Survival:
+                    {
+                        characterStatsComponent.SurvivalSkill = score;
+                        break;
+                    }
+                case CharacterStats.SkillType.Crafting:
+                    {
+                        characterStatsComponent.CraftingSkill = score;
+                        break;
+                    }
+            }
+            Console.AddMessage(string.Concat(new object[] { characterStatsComponent.name, "'s ", skill, " is now ", score.ToString() }));
+        }
+
+        /// <summary>
+        /// Forces soulbound items to progress for selected characters
+        /// </summary>
         [NewMember]
         public static void UnlockSoulBound()
         {
 
             List<GameObject> partyMembers = PartyMemberAI.GetSelectedPartyMembers();
-
+            
             foreach (GameObject partyMember in partyMembers)
             {
                 EquipmentSoulbind[] soulbound = partyMember.GetComponentsInChildren<EquipmentSoulbind>();
@@ -77,10 +135,11 @@ namespace IEMod.Mods.ConsoleMod
                     foreach (EquipmentSoulbind elem in soulbound)
                     {
                         elem.DebugLevelUp();
+                        global::Console.AddMessage("Soulbound item found on selected character", Color.green);
                     }
                 }
                 else {
-                    global::Console.AddMessage("No soulbound items found on selectede characters");
+                    global::Console.AddMessage("No soulbound items found on selected character", Color.red);
                 }
             }
         }
@@ -171,6 +230,16 @@ namespace IEMod.Mods.ConsoleMod
         }
     }
 }
+
+
+
+
+
+
+
+
+
+
 
 /*
  * 
