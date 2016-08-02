@@ -326,6 +326,11 @@ namespace IEMod.Mods.CheatKeys
                             CheatKeyFunctions.Unlock();
                             //Console.AddMessage(" CTRL + L Unlocks container", Color.green);
                         }
+                        else if (GameInput.GetKeyDown(KeyCode.S))
+                        {
+                            CheatKeyFunctions.RestoreSpellsAndAbility();
+                            //Console.AddMessage(" CTRL + S restore spell and ability usage", Color.green);
+                        }
                     }
                 }
                 //End of mod

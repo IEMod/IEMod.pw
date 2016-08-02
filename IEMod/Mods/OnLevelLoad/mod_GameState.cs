@@ -29,7 +29,24 @@ namespace IEMod.Mods.OnLevelLoad {
 			}
 		}
 
-		[ModifiesMember("ChangeLevel")]
+        [ModifiesMember("Autosave")]
+        public static void mod_Autosave() {
+            if (IEModOptions.SaveInterval > 0)
+            {
+                if (GameState.Mode.TrialOfIron)
+                {
+                    GameState.TrialOfIronSave();
+                }
+                else if (GameResources.SaveGame(SaveGameInfo.GetAutosaveFileName()))
+                {
+                    GameResources.DeleteSavedGame(SaveGameInfo.GetOldAutosaveFileName());
+                }
+                GameState instance = GameState.Instance;
+                instance.AutosaveCycleNumber = instance.AutosaveCycleNumber + 1;
+            }
+        }
+
+        [ModifiesMember("ChangeLevel")]
 		public  static void mod_ChangeLevel(MapData map)
 		{
 			if (IEModOptions.SaveBeforeTransition) // added this block
@@ -111,7 +128,7 @@ namespace IEMod.Mods.OnLevelLoad {
                         {
                             FogOfWar.Instance.WaitForFogUpdate();
                         }
-                        GameState.Autosave();
+                        AutosaveIfAllowed();
                     }
                 }
                 GameState.NewGame = false;

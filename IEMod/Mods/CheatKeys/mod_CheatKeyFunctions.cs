@@ -4,10 +4,28 @@ using UnityEngine;
 
 namespace IEMod.Mods.CheatKeys
 {
-    /// <summary>
-    /// Utility class that stores the cheat key functions
-    /// These could be called in any update method, but GameCursor was chosen for some reason...
-    /// </summary>
+
+    [ModifiesType("CharacterStats")]
+    public class mod_CharacterStats : CharacterStats
+    {
+        [NewMember]
+        public void ClearNonRestingAfflictions()
+        {
+            for (int i = this.m_statusEffects.Count - 1; i >= 0; i--)
+            {
+                if (this.m_statusEffects[i].AfflictionOrigin != null && !this.m_statusEffects[i].AfflictionOrigin.FromResting)
+                {
+                    this.ClearEffect(this.m_statusEffects[i]);
+                }
+            }
+        }
+    }
+
+
+        /// <summary>
+        /// Utility class that stores the cheat key functions
+        /// These could be called in any update method, but GameCursor was chosen for some reason...
+        /// </summary>
     [NewType]
     public static class CheatKeyFunctions
     {
@@ -59,37 +77,27 @@ namespace IEMod.Mods.CheatKeys
         /// </summary>
         public static void RestoreUnderCursor()
         {
-
+            
             GameObject underCursor = GameCursor.CharacterUnderCursor;
             CharacterStats stats = underCursor.GetComponent<CharacterStats>();
-
-
-            Health healthComponent = underCursor.GetComponent<Health>();
-
-            if (stats) {
-                stats.HandleGameOnResting();
-            }
-
-            IEnumerator<GenericAbility> enumerator = stats.ActiveAbilities.GetEnumerator();
-            try
+            Health component = underCursor.GetComponent<Health>();
+            
+            // Revive and restore health
+            if (component)
             {
-                while (enumerator.MoveNext())
+                if (component.Unconscious)
                 {
-                    GenericAbility current = enumerator.Current;
-                    if (current == null)
-                    {
-                        continue;
-                    }
-                    current.RestoreCooldown();
+                    component.OnRevive();
                 }
+                component.AddHealth(component.MaxHealth - component.CurrentHealth);
+                component.AddStamina(component.MaxStamina - component.CurrentStamina, true);
             }
-            finally
+            
+            // Clear afflictions (Maiming and stuff)
+            if (stats)
             {
-                if (enumerator == null)
-                {
-                }
-                enumerator.Dispose();
-            }
+                stats.ClearEffectsFromAfflictions();
+            }          
         }
 
         /// <summary>
@@ -128,6 +136,44 @@ namespace IEMod.Mods.CheatKeys
                 enumerator.Dispose();
             }
 
-        }       
+        }
+
+        /// <summary>
+        /// Restore spell usages
+        /// Direct call to Scripts AdvanceTimeByHoursNoRest
+        /// </summary>
+        public static void RestoreSpellsAndAbility()
+        {
+            GameObject underCursor = GameCursor.CharacterUnderCursor;
+            CharacterStats stats = underCursor.GetComponent<CharacterStats>();
+
+            if (stats)
+            {
+                for (int i = 0; i < stats.SpellCastCount.Length; i++)
+                {
+                    stats.SpellCastCount[i] = 0;
+                }
+            }
+            IEnumerator<GenericAbility> enumerator = stats.ActiveAbilities.GetEnumerator();
+            try
+            {
+                while (enumerator.MoveNext())
+                {
+                    GenericAbility current = enumerator.Current;
+                    if (current == null)
+                    {
+                        continue;
+                    }
+                    current.RestoreCooldown();
+                }
+            }
+            finally
+            {
+                if (enumerator == null)
+                {
+                }
+                enumerator.Dispose();
+            }
+        }
     }
 }
