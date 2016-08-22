@@ -107,6 +107,16 @@ namespace IEMod.Mods.CheatKeys
         public static void AdvanceTime()
         {
             Scripts.AdvanceTimeByHoursNoRest(8);
+
+            Stronghold stronghold = GameState.Stronghold;
+
+            if (stronghold != null)
+            {
+                stronghold.AddTurns(1);
+                stronghold.AdvanceOneTurn();
+                Console.AddMessage("Stronghold turn advanced by 1", Color.green);
+            }
+           
         }
 
         /// <summary>
