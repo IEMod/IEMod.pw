@@ -399,7 +399,7 @@ namespace IEMod.Mods.Options {
         public static bool HideWeaponEffects;
 
         [Save]
-        [Label("Auto-Load Custom NPC Stats")]
+        [Label("Custom NPC Stats")]
         [Description("Applies the NPC stats located in Managed/iemod/customStats/custom after loading a map")]
         public static bool AutoLoadCustomStats;
 
@@ -407,6 +407,13 @@ namespace IEMod.Mods.Options {
         [Label("Enable Cheat Keys")]
         [Description("Enables the use of the classic cheat keys and a few more, look at the readme for the available options")]
         public static bool EnableCheatKeys;
+
+        /*
+        [Save]
+        [Label("XP for monster kills")]
+        [Description("Gives XP for every monster killed. The beastiary will not update normaly if this is enabled")]
+        public static bool XpForMonsterKills;
+        */
 
         private static AutoSaveSetting _autoSaveSetting;
 		private static Dictionary<string, PropertyInfo> _propertyCache;

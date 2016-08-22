@@ -31,7 +31,7 @@ namespace IEMod.Mods.OnLevelLoad {
 
         [ModifiesMember("Autosave")]
         public static void mod_Autosave() {
-            if (IEModOptions.SaveInterval > 0)
+            if (IEModOptions.SaveInterval != -1)
             {
                 if (GameState.Mode.TrialOfIron)
                 {

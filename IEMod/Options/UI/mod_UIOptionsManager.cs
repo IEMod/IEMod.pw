@@ -89,6 +89,11 @@ namespace IEMod.Mods.Options {
         [NewMember]
         private QuickCheckbox _enableCheatKeys;
 
+        /*
+        [NewMember]
+        private QuickCheckbox _xpForMonsterKills;
+        */
+
         [NewMember]
 		private QuickCheckbox _disableBackerDialog;
 
@@ -240,6 +245,10 @@ namespace IEMod.Mods.Options {
             _enableCheatKeys = quickFactory.Checkbox(() => IEModOptions.EnableCheatKeys);
             _enableCheatKeys.LocalPosition = column1Top.Plus(y: -300);
 
+            /*
+            _xpForMonsterKills = quickFactory.Checkbox(() => IEModOptions.XpForMonsterKills);
+            _xpForMonsterKills.LocalPosition = column2Top.Plus(y: -300);
+            */
 
             var centerCmbTop = new Vector3(-80, -40, 0);
 			const int cmbLabelWidth = 300;
