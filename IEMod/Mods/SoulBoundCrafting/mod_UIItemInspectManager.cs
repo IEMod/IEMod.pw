@@ -1,4 +1,8 @@
-﻿using System;
+﻿
+/// Requires DLC, Take it out if compiling for non-DLC DLL.
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

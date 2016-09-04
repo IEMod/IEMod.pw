@@ -88,6 +88,8 @@ namespace IEMod.Mods.Options {
         private QuickCheckbox _autoLoadCustomStats;
         [NewMember]
         private QuickCheckbox _enableCheatKeys;
+        [NewMember]
+        private QuickCheckbox _chanterPhraseCount;
 
         /*
         [NewMember]
@@ -244,11 +246,9 @@ namespace IEMod.Mods.Options {
 
             _enableCheatKeys = quickFactory.Checkbox(() => IEModOptions.EnableCheatKeys);
             _enableCheatKeys.LocalPosition = column1Top.Plus(y: -300);
-
-            /*
-            _xpForMonsterKills = quickFactory.Checkbox(() => IEModOptions.XpForMonsterKills);
-            _xpForMonsterKills.LocalPosition = column2Top.Plus(y: -300);
-            */
+          
+            _chanterPhraseCount = quickFactory.Checkbox(() => IEModOptions.ChanterPhraseCount);
+            _chanterPhraseCount.LocalPosition = column2Top.Plus(y: -300);       
 
             var centerCmbTop = new Vector3(-80, -40, 0);
 			const int cmbLabelWidth = 300;

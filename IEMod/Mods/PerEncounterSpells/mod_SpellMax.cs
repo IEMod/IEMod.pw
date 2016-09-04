@@ -82,6 +82,13 @@ namespace IEMod.Mods.PerEncounterSpells
                     result[5] = 14;
                     break;
 
+                case IEModOptions.PerEncounterSpells.Levels_4_8_12_16:
+                    result[0] = 4;
+                    result[1] = 8;
+                    result[2] = 12;
+                    result[3] = 16;
+                    break;
+
                 case IEModOptions.PerEncounterSpells.AllPerEncounter:
                     for (int i = 0; i < Grimoire.MaxSpellLevel; i++)
                     {

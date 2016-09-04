@@ -231,7 +231,7 @@ namespace IEMod.Mods.Options {
 		[Save]
 		[Label("Improved AI")]
 		[Description("Some improvements to the combat AI.")]
-		public static bool ImprovedAI;
+		public static bool ImprovedAI = false;
 
 		[Save]
 		[Label("Nerfed XP table")]
@@ -408,12 +408,10 @@ namespace IEMod.Mods.Options {
         [Description("Enables the use of the classic cheat keys and a few more, look at the readme for the available options")]
         public static bool EnableCheatKeys;
 
-        /*
         [Save]
-        [Label("XP for monster kills")]
-        [Description("Gives XP for every monster killed. The beastiary will not update normaly if this is enabled")]
-        public static bool XpForMonsterKills;
-        */
+        [Label("Chanter Starting Phrases")]
+        [Description("Gives the chanter the necessary amount of phrases to cast his highest level invocation at combat start")]
+        public static bool ChanterPhraseCount;
 
         private static AutoSaveSetting _autoSaveSetting;
 		private static Dictionary<string, PropertyInfo> _propertyCache;
@@ -534,7 +532,10 @@ namespace IEMod.Mods.Options {
 			[Description("Per-encounter spells gained at levels 4, 6, 8, 10, 12 and 14")]
 			Levels_4_6_8_10_12_14,
 
-			[Description("All spells per-encounter")]
+            [Description("Per-encounter spells gained at levels 4, 8, 12 and 16")]
+            Levels_4_8_12_16,
+
+            [Description("All spells per-encounter")]
 			AllPerEncounter,
 
 			[Description("All spells per-rest")]

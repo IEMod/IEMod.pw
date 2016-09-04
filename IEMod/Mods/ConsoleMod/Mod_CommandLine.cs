@@ -757,7 +757,10 @@ namespace IEMod.Mods.ConsoleMod
 
         /// <summary>
         /// Forces soulbound items to progress for selected characters
+        /// Requires DLC, Take it out if compiling for non-DLC DLL.
         /// </summary>
+
+        
         [NewMember]
         public static void UnlockSoulBound()
         {
@@ -781,7 +784,7 @@ namespace IEMod.Mods.ConsoleMod
                 }
             }
         }
-
+        
 
     }
     /*
