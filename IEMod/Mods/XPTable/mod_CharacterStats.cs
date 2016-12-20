@@ -14,7 +14,9 @@ namespace IEMod.Mods.XPTable {
 					return (level - 1) * level * 500;
 				case IEModOptions.NerfedXpTable.Increase25:
 					return (level - 1) * level * 625;
-				case IEModOptions.NerfedXpTable.Increase50:
+                case IEModOptions.NerfedXpTable.Increase33:
+                    return (level - 1) * level * 665;
+                case IEModOptions.NerfedXpTable.Increase50:
 					return (level - 1) * level * 750;
 				case IEModOptions.NerfedXpTable.Square:
 					return (level - 1) * (level - 1) * 1000;
@@ -32,7 +34,9 @@ namespace IEMod.Mods.XPTable {
 					return currentLevel * (currentLevel + 1) * 500;
 				case IEModOptions.NerfedXpTable.Increase25:
 					return currentLevel * (currentLevel + 1) * 625;
-				case IEModOptions.NerfedXpTable.Increase50:
+                case IEModOptions.NerfedXpTable.Increase33:
+                    return currentLevel * (currentLevel + 1) * 665;
+                case IEModOptions.NerfedXpTable.Increase50:
 					return currentLevel * (currentLevel + 1) * 750;
 				case IEModOptions.NerfedXpTable.Square:
 					return currentLevel * currentLevel * 1000;

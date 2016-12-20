@@ -78,6 +78,19 @@ namespace IEMod.Mods.ConsoleMod
         }
 
         [NewMember]
+        public static void AddExperienceSelected(int XP)
+        {
+            List<GameObject> partyMembers = PartyMemberAI.GetSelectedPartyMembers();
+
+            foreach (GameObject partyMember in partyMembers)
+            {
+                CharacterStats charStat =  partyMember.GetComponent<CharacterStats>();
+                charStat.AddExperience(XP);
+                Console.AddMessage( "Added " + XP + " experience to " + charStat.OverrideName , Color.green);
+            }
+        }
+
+        [NewMember]
         public static void PlayerPrefs_DeleteAll(bool confirmation)
         {
             if (!confirmation)
@@ -131,6 +144,18 @@ namespace IEMod.Mods.ConsoleMod
             GameObject npc = UnityEngine.GameObject.Find(guid);
             if (npc != null && npc.GetComponent<CharacterStats>() != null)
                 npc.GetComponent<CharacterStats>().OverrideName = newname;
+        }
+
+        [NewMember]
+        public static void RenameCreature(string guid, string newname, string newname2)
+        {
+            RenameCreature(guid, newname + newname2);
+        }
+
+        [NewMember]
+        public static void RenameCreature(string guid, string newname, string newname2, string newname3)
+        {
+            RenameCreature(guid, newname + newname2 + newname3);
         }
 
 
@@ -760,7 +785,6 @@ namespace IEMod.Mods.ConsoleMod
         /// Requires DLC, Take it out if compiling for non-DLC DLL.
         /// </summary>
 
-        
         [NewMember]
         public static void UnlockSoulBound()
         {
@@ -784,7 +808,13 @@ namespace IEMod.Mods.ConsoleMod
                 }
             }
         }
-        
+        /*
+        [NewMember]
+        public static void FogOpacity()
+        {
+
+        }
+        */
 
     }
     /*

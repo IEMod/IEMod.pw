@@ -90,6 +90,10 @@ namespace IEMod.Mods.Options {
         private QuickCheckbox _enableCheatKeys;
         [NewMember]
         private QuickCheckbox _chanterPhraseCount;
+        [NewMember]
+        private QuickCheckbox _capesHidden;
+        [NewMember]
+        private QuickCheckbox _spiritShiftToggle;
 
         /*
         [NewMember]
@@ -289,6 +293,14 @@ namespace IEMod.Mods.Options {
             _maxAdventurersCmb.Width = cmbWidth;
             _maxAdventurersCmb.LabelWidth = cmbLabelWidth;
             _maxAdventurersCmb.Transform.localPosition = centerCmbTop.Plus(y: -180);
+
+            _capesHidden = quickFactory.Checkbox(() => IEModOptions.CapesHidden);
+            _capesHidden.LocalPosition = column1Top.Plus(y: -330);
+            
+            
+            _spiritShiftToggle = quickFactory.Checkbox(() => IEModOptions.SpiritshiftToggleable);
+            _spiritShiftToggle.LocalPosition = column2Top.Plus(y: -330);
+            
 
             // Pallegina dispositions mod page
             quickFactory.CurrentParent = ieModDisposition.Transform;

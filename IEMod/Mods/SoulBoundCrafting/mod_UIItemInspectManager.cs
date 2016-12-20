@@ -117,7 +117,7 @@ namespace IEMod.Mods.SoulBoundCrafting
                         stringBuilder.Append(" ");
                         stringBuilder.Append(backerContent.BackerName);
                     }
-                    bool flag1 = (this.InspectionObject.GetComponent<Shield>() || this.InspectionObject.GetComponent<Armor>() || equippable is Weapon ? !equipmentSoulbind : false);
+                    bool flag1 =(this.InspectionObject.GetComponent<Shield>() || this.InspectionObject.GetComponent<Armor>() || equippable is Weapon ? !equipmentSoulbind : false);
                     bool flag2 = (!flag1 ? false : !equippable.IsPrefab);
                     if (equippable.EquippedOwner)
                     {

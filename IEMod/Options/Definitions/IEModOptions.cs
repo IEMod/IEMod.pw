@@ -413,6 +413,26 @@ namespace IEMod.Mods.Options {
         [Description("Gives the chanter the necessary amount of phrases to cast his highest level invocation at combat start")]
         public static bool ChanterPhraseCount;
 
+        [Save]
+        [Label("Use Abilities From Any Equipped Weapons")]
+        [Description("Allows the use of special abilites from weapons equipped in all slots")]
+        public static bool AllItemAbilities;
+
+        [Save]
+        [Label("Toggle Cape/Cloak visibility")]
+        [Description("Removes the visuals from the capes and cloaks")]
+        public static bool CapesHidden;
+
+        [Save]
+        [Label("Fog Thickness")]
+        [Description("Number between 0-1 that makes the fog lighter or thicker")]
+        public static float FogOpacity;
+
+        [Save]
+        [Label("Spiritshift Toggle")]
+        [Description("Takes away the timer on Spiritshift, allows toggle instead")]
+        public static bool SpiritshiftToggleable;
+
         private static AutoSaveSetting _autoSaveSetting;
 		private static Dictionary<string, PropertyInfo> _propertyCache;
 
@@ -502,7 +522,10 @@ namespace IEMod.Mods.Options {
 			[Description("25% increase: 1250,3750,...82,500")]
 			Increase25,
 
-			[Description("50% increase: 1500,4500,...99,000")]
+            [Description("33% increase: 1330,3990,...87,780")]
+            Increase33,
+
+            [Description("50% increase: 1500,4500,...99,000")]
 			Increase50,
 
 			[Description("Square progression: 1000,4000,...121,000")]
