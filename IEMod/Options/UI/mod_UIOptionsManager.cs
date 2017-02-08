@@ -93,8 +93,11 @@ namespace IEMod.Mods.Options {
         [NewMember]
         private QuickCheckbox _capesHidden;
         [NewMember]
-        private QuickCheckbox _spiritShiftToggle;
+        private QuickCheckbox _allInventorySlots;
 
+        /*[NewMember]
+        private QuickCheckbox _spiritShiftToggle;
+        */
         /*
         [NewMember]
         private QuickCheckbox _xpForMonsterKills;
@@ -295,12 +298,10 @@ namespace IEMod.Mods.Options {
             _maxAdventurersCmb.Transform.localPosition = centerCmbTop.Plus(y: -180);
 
             _capesHidden = quickFactory.Checkbox(() => IEModOptions.CapesHidden);
-            _capesHidden.LocalPosition = column1Top.Plus(y: -330);
-            
-            
-            _spiritShiftToggle = quickFactory.Checkbox(() => IEModOptions.SpiritshiftToggleable);
-            _spiritShiftToggle.LocalPosition = column2Top.Plus(y: -330);
-            
+            _capesHidden.LocalPosition = column1Top.Plus(y: -327);
+
+            _allInventorySlots = quickFactory.Checkbox(() => IEModOptions.AllInventorySlots);
+            _allInventorySlots.LocalPosition = column2Top.Plus(y: -327);
 
             // Pallegina dispositions mod page
             quickFactory.CurrentParent = ieModDisposition.Transform;

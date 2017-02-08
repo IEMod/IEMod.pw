@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿/*
+ * Friendly AOE was not affecting caster regardles of other intentions... 
+ * Since the damage is done in mod_AdjustDamageDealt of mod_CharacterSats this will only affect the UI but messes up the whole thing otherwise... 
+ * I think the virtual property is messing this up somehow, in the meantime I'm taking it out
+
+using System.Collections.Generic;
 using IEMod.Mods.Options;
 using Patchwork.Attributes;
 using UnityEngine;
@@ -94,6 +99,12 @@ namespace IEMod.Mods.Targeting {
             }
             return gameObjects;
         }
+
+    }
+
+}
+
+Leftover from 2.0, from another modder
         /*
         public virtual List<GameObject> FindAoeTargetsNew(GameObject caster, Vector3 parentForward, Vector3 hitPosition, bool forUI) {
 			List<GameObject> gameObjects = new List<GameObject>();
@@ -152,6 +163,3 @@ namespace IEMod.Mods.Targeting {
 			return gameObjects;
 		}
         */
-    }
-
-}

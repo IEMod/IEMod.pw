@@ -109,14 +109,14 @@
     <Compile Include="Mods\ConsoleMod\mod_UIConsole.cs" />
     <Compile Include="Mods\DropButtonMod\DropButton.cs" />
     <Compile Include="Mods\FastSneak\mod_PartyMemberAI.cs" />
-    <Compile Include="Mods\FogOfWar\mod_FogOfWar.cs" />
     <Compile Include="Mods\HideAnticlassSpells\mod_UIAbilityBarButtonSet.cs" />
     <Compile Include="Mods\HideCape\mod_NPCAppearance.cs" />
     <Compile Include="Mods\HideWeaponEffects\mod_ItemModComponent.cs" />
+    <Compile Include="Mods\InventorySlots\mod_CharacterStats.cs" />
+    <Compile Include="Mods\InventorySlots\mod_Equipment.cs" />
     <Compile Include="Mods\MaxAdventurers\mod_PartyMemberAI.cs" />
     <Compile Include="Mods\NoEngagement\Mod_NoEngagement_HudEngagementIndicator.cs" />
     <Compile Include="Mods\SoulBoundCrafting\mod_UIItemInspectManager.cs" />
-    <Compile Include="Mods\SpiritshiftMod\mod_Spiritshift.cs" />
     <Compile Include="Mods\ToggleWalking\mod_MappedInput.cs" />
     <Compile Include="Mods\ToggleWalking\mod_Player.cs" />
     <Compile Include="Mods\ToggleWalking\mod_UIChantEditor.cs" />

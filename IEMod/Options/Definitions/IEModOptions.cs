@@ -409,17 +409,17 @@ namespace IEMod.Mods.Options {
         public static bool EnableCheatKeys;
 
         [Save]
-        [Label("Chanter Starting Phrases")]
-        [Description("Gives the chanter the necessary amount of phrases to cast his highest level invocation at combat start")]
+        [Label("Chanter Base Phrases")]
+        [Description("Gives the chanter the necessary amount of phrases to cast his highest level invocation when combat starts")]
         public static bool ChanterPhraseCount;
 
         [Save]
-        [Label("Use Abilities From Any Equipped Weapons")]
-        [Description("Allows the use of special abilites from weapons equipped in all slots")]
-        public static bool AllItemAbilities;
+        [Label("Unlock All Inventory Slots")]
+        [Description("Unlocks every inventory slot for all characters. Clipping is expected for helmets on Godlike characters since it was never meant to happen. Also allows multiple pets if you equip them on different companions.")]
+        public static bool AllInventorySlots;
 
         [Save]
-        [Label("Toggle Cape/Cloak visibility")]
+        [Label("Make Cape/Cloak invisible")]
         [Description("Removes the visuals from the capes and cloaks")]
         public static bool CapesHidden;
 
