@@ -86,6 +86,22 @@ namespace IEMod.Mods.Options {
         private QuickCheckbox _hideWeaponEffects;
         [NewMember]
         private QuickCheckbox _autoLoadCustomStats;
+        [NewMember]
+        private QuickCheckbox _enableCheatKeys;
+        [NewMember]
+        private QuickCheckbox _chanterPhraseCount;
+        [NewMember]
+        private QuickCheckbox _capesHidden;
+        [NewMember]
+        private QuickCheckbox _allInventorySlots;
+
+        /*[NewMember]
+        private QuickCheckbox _spiritShiftToggle;
+        */
+        /*
+        [NewMember]
+        private QuickCheckbox _xpForMonsterKills;
+        */
 
         [NewMember]
 		private QuickCheckbox _disableBackerDialog;
@@ -234,7 +250,12 @@ namespace IEMod.Mods.Options {
 
             _autoLoadCustomStats = quickFactory.Checkbox(() => IEModOptions.AutoLoadCustomStats);
             _autoLoadCustomStats.LocalPosition = column1Top.Plus(y: -270);
-            
+
+            _enableCheatKeys = quickFactory.Checkbox(() => IEModOptions.EnableCheatKeys);
+            _enableCheatKeys.LocalPosition = column1Top.Plus(y: -300);
+          
+            _chanterPhraseCount = quickFactory.Checkbox(() => IEModOptions.ChanterPhraseCount);
+            _chanterPhraseCount.LocalPosition = column2Top.Plus(y: -300);       
 
             var centerCmbTop = new Vector3(-80, -40, 0);
 			const int cmbLabelWidth = 300;
@@ -275,6 +296,12 @@ namespace IEMod.Mods.Options {
             _maxAdventurersCmb.Width = cmbWidth;
             _maxAdventurersCmb.LabelWidth = cmbLabelWidth;
             _maxAdventurersCmb.Transform.localPosition = centerCmbTop.Plus(y: -180);
+
+            _capesHidden = quickFactory.Checkbox(() => IEModOptions.CapesHidden);
+            _capesHidden.LocalPosition = column1Top.Plus(y: -327);
+
+            _allInventorySlots = quickFactory.Checkbox(() => IEModOptions.AllInventorySlots);
+            _allInventorySlots.LocalPosition = column2Top.Plus(y: -327);
 
             // Pallegina dispositions mod page
             quickFactory.CurrentParent = ieModDisposition.Transform;

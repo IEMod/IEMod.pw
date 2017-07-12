@@ -1,3 +1,4 @@
+
 using Patchwork.Attributes;
 
 namespace IEMod.Mods.Options {
@@ -44,11 +45,22 @@ namespace IEMod.Mods.Options {
 				flag5 |= window3.ClickOffCloses && !window3.DimsBackground;
 			}
 		}
-		if (window.EatsKeyInput && (CameraControl.Instance != null))
-		{
-			CameraControl.Instance.EnablePlayerControl(true);
-		}
-		if (!flag && (InGameHUD.Instance != null))
+            if (this.m_WindowHasInputDisabled && !flag3)
+            {
+                this.m_WindowHasInputDisabled = false;
+                if (CameraControl.Instance)
+                {
+                    CameraControl.Instance.EnablePlayerControl(true);
+                }
+            }
+            //Previous Bug ?
+            /*
+            if (window.EatsKeyInput && (CameraControl.Instance != null))
+            {
+                CameraControl.Instance.EnablePlayerControl(true);
+            }
+            */
+            if (!flag && (InGameHUD.Instance != null))
 		{
 			InGameHUD.Instance.HidePause = false;
 		}

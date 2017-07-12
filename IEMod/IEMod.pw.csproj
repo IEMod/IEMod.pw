@@ -97,6 +97,9 @@
     <Compile Include="Mods\BonusSpellsGrimoire\mod_UIGrimoireInSpellRow.cs" />
     <Compile Include="Mods\BonusSpellsGrimoire\mod_Grimoire.cs" />
     <Compile Include="Mods\CameraControlMod\Mod_CameraControl.cs" />
+    <Compile Include="Mods\ChanterPhrase\mod_ChanterTrait.cs" />
+    <Compile Include="Mods\CheatKeys\mod_CheatKeyFunctions.cs" />
+    <Compile Include="Mods\CheatKeys\Mod_GameCursors.cs" />
     <Compile Include="Mods\CipherFocus\mod_FocusTrait.cs" />
     <Compile Include="Mods\CombatLooting\mod_Container.cs" />
     <Compile Include="Mods\CombatLooting\mod_UIInventoryGridItem.cs" />
@@ -107,10 +110,13 @@
     <Compile Include="Mods\DropButtonMod\DropButton.cs" />
     <Compile Include="Mods\FastSneak\mod_PartyMemberAI.cs" />
     <Compile Include="Mods\HideAnticlassSpells\mod_UIAbilityBarButtonSet.cs" />
+    <Compile Include="Mods\HideCape\mod_NPCAppearance.cs" />
     <Compile Include="Mods\HideWeaponEffects\mod_ItemModComponent.cs" />
+    <Compile Include="Mods\InventorySlots\mod_CharacterStats.cs" />
+    <Compile Include="Mods\InventorySlots\mod_Equipment.cs" />
     <Compile Include="Mods\MaxAdventurers\mod_PartyMemberAI.cs" />
     <Compile Include="Mods\NoEngagement\Mod_NoEngagement_HudEngagementIndicator.cs" />
-    <Compile Include="Mods\Targeting\mod_AIController.cs" />
+    <Compile Include="Mods\SoulBoundCrafting\mod_UIItemInspectManager.cs" />
     <Compile Include="Mods\ToggleWalking\mod_MappedInput.cs" />
     <Compile Include="Mods\ToggleWalking\mod_Player.cs" />
     <Compile Include="Mods\ToggleWalking\mod_UIChantEditor.cs" />
@@ -127,6 +133,7 @@
     <Compile Include="Mods\StringTable\mod_StringTableManager.cs" />
     <Compile Include="Mods\StringTable\IEModString.cs" />
     <Compile Include="Mods\UICustomization\UICustomizer.cs" />
+    <Compile Include="Mods\XpForMonsterKills\mod_BestiaryManager.cs" />
     <Compile Include="Options\Definitions\IEModOptions.cs" />
     <Compile Include="Helpers\LabelAttribute.cs" />
     <Compile Include="Mods\StringTable\mod_StringTableType.cs" />

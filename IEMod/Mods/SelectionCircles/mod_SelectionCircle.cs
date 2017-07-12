@@ -56,7 +56,7 @@ namespace IEMod.Mods.SelectionCircles {
 
 		[NewMember]
 		[DuplicatesBody("SetMaterial")]
-		public void SetMaterialOriginal(bool isFoe, bool isSelected, bool isStealthed) {
+		public void SetMaterialOriginal(bool isFoe, bool isSelected, bool isStealthed, bool isDominated) {
 			throw new DeadEndException("SetMaterialOriginal");
 		}
 
@@ -67,27 +67,27 @@ namespace IEMod.Mods.SelectionCircles {
 		/// <param name="isSelected"></param>
 		/// <param name="isStealthed"></param>
 		[ModifiesMember("SetMaterial")]
-		public void SetMaterialNew(bool isFoe, bool isSelected, bool isStealthed)
+		public void SetMaterialNew(bool isFoe, bool isSelected, bool isStealthed, bool isDominated)
 		{
 			if (base.renderer == null) {
 				return;
 			}
-			if (IEModOptions.BlueCircles && !isFoe && !isStealthed && !InGameHUD.Instance.UseColorBlindSettings) {
+			if (IEModOptions.BlueCircles && !isFoe && !isStealthed && !isDominated && !InGameHUD.Instance.UseColorBlindSettings) {
 				var isPartyMember = m_Owner.HasComponent<PartyMemberAI>()
 					&& m_Owner.Component<Faction>().CurrentTeam == Team.GetTeamByTag("player");
 				if (!isPartyMember) {
 					//colorblind material for friendlies happens to be a nice azure. The non-selected material is an ugly navy.
 					//selected colorblind material for non-stealthed friendlies.
-					this.m_selectedMaterial = InGameHUD.Instance.CircleMaterials.Get(true, true, false, false);
+					this.m_selectedMaterial = InGameHUD.Instance.CircleMaterials.Get(true, true, false, false, false);
 					//non-selected colorblind material for non-stealthed friendlies
-					this.m_Circle.sharedMaterial = InGameHUD.Instance.CircleMaterials.Get(true, true, true, false);
+					this.m_Circle.sharedMaterial = InGameHUD.Instance.CircleMaterials.Get(true, true, true, false, false);
 					this.OnColorChanged(this.m_Circle.sharedMaterial.color);
 					this.OnSharedMaterialChanged?.Invoke(this.m_Circle.sharedMaterial);
 					return;
 				}
 				//if party member, just get the regular circle.
 			}
-			SetMaterialOriginal(isFoe, isSelected, isStealthed);
+			SetMaterialOriginal(isFoe, isSelected, isStealthed, isDominated);
 		}
 
 	}

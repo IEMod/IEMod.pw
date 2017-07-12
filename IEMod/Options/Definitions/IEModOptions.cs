@@ -231,7 +231,7 @@ namespace IEMod.Mods.Options {
 		[Save]
 		[Label("Improved AI")]
 		[Description("Some improvements to the combat AI.")]
-		public static bool ImprovedAI;
+		public static bool ImprovedAI = false;
 
 		[Save]
 		[Label("Nerfed XP table")]
@@ -399,9 +399,39 @@ namespace IEMod.Mods.Options {
         public static bool HideWeaponEffects;
 
         [Save]
-        [Label("Auto-Load Custom NPC Stats")]
+        [Label("Custom NPC Stats")]
         [Description("Applies the NPC stats located in Managed/iemod/customStats/custom after loading a map")]
         public static bool AutoLoadCustomStats;
+
+        [Save]
+        [Label("Enable Cheat Keys")]
+        [Description("Enables the use of the classic cheat keys and a few more, look at the readme for the available options")]
+        public static bool EnableCheatKeys;
+
+        [Save]
+        [Label("Chanter Base Phrases")]
+        [Description("Gives the chanter the necessary amount of phrases to cast his highest level invocation when combat starts")]
+        public static bool ChanterPhraseCount;
+
+        [Save]
+        [Label("Unlock All Inventory Slots")]
+        [Description("Unlocks every inventory slot for all characters. Clipping is expected for helmets on Godlike characters since it was never meant to happen. Also allows multiple pets if you equip them on different companions.")]
+        public static bool AllInventorySlots;
+
+        [Save]
+        [Label("Make Cape/Cloak invisible")]
+        [Description("Removes the visuals from the capes and cloaks")]
+        public static bool CapesHidden;
+
+        [Save]
+        [Label("Fog Thickness")]
+        [Description("Number between 0-1 that makes the fog lighter or thicker")]
+        public static float FogOpacity;
+
+        [Save]
+        [Label("Spiritshift Toggle")]
+        [Description("Takes away the timer on Spiritshift, allows toggle instead")]
+        public static bool SpiritshiftToggleable;
 
         private static AutoSaveSetting _autoSaveSetting;
 		private static Dictionary<string, PropertyInfo> _propertyCache;
@@ -492,7 +522,10 @@ namespace IEMod.Mods.Options {
 			[Description("25% increase: 1250,3750,...82,500")]
 			Increase25,
 
-			[Description("50% increase: 1500,4500,...99,000")]
+            [Description("33% increase: 1330,3990,...87,780")]
+            Increase33,
+
+            [Description("50% increase: 1500,4500,...99,000")]
 			Increase50,
 
 			[Description("Square progression: 1000,4000,...121,000")]
@@ -522,7 +555,10 @@ namespace IEMod.Mods.Options {
 			[Description("Per-encounter spells gained at levels 4, 6, 8, 10, 12 and 14")]
 			Levels_4_6_8_10_12_14,
 
-			[Description("All spells per-encounter")]
+            [Description("Per-encounter spells gained at levels 4, 8, 12 and 16")]
+            Levels_4_8_12_16,
+
+            [Description("All spells per-encounter")]
 			AllPerEncounter,
 
 			[Description("All spells per-rest")]
